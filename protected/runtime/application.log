@@ -1,0 +1,150 @@
+2016/12/28 13:47:49 [warning] [application] Failed to set unsafe attribute "printed_start_date" of "BookDiscounts".
+in D:\Important\Xamppp\htdocs\book\protected\modules\manageBooks\controllers\ManageBooksBaseManageController.php (613)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2016/12/28 13:47:49 [warning] [application] Failed to set unsafe attribute "printed_end_date" of "BookDiscounts".
+in D:\Important\Xamppp\htdocs\book\protected\modules\manageBooks\controllers\ManageBooksBaseManageController.php (613)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:04:54 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (668)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:10:33 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (668)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:02 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:14 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:19 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:22 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:27 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:30 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:33 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:36 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:31:41 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:32:05 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:32:09 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 12:32:36 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:06:46 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:09:28 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:09:30 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:09:36 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:09:50 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:09:54 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:10:00 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:10:06 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:10:12 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:10:23 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:11:14 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/01/22 13:12:26 [warning] [application] Failed to set unsafe attribute "report_type" of "BookBuys".
+in D:\Important\Xamppp\htdocs\book\protected\controllers\BookController.php (599)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:28:55 [warning] [application] Failed to set unsafe attribute "year_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:28:55 [warning] [application] Failed to set unsafe attribute "month_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:28:55 [warning] [application] Failed to set unsafe attribute "from_date_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:28:55 [warning] [application] Failed to set unsafe attribute "to_date_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:29:03 [warning] [application] Failed to set unsafe attribute "year_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:29:03 [warning] [application] Failed to set unsafe attribute "month_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:29:03 [warning] [application] Failed to set unsafe attribute "from_date_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:29:03 [warning] [application] Failed to set unsafe attribute "to_date_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:30:05 [warning] [application] Failed to set unsafe attribute "year_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:30:05 [warning] [application] Failed to set unsafe attribute "month_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:30:05 [warning] [application] Failed to set unsafe attribute "from_date_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/23 12:30:05 [warning] [application] Failed to set unsafe attribute "to_date_altField" of "ShopOrder".
+in D:\Important\Xamppp\htdocs\book\protected\modules\shop\controllers\ShopOrderController.php (630)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/27 11:27:46 [warning] [application] Failed to set unsafe attribute "shop_allow" of "DiscountCodes".
+in D:\Important\Xamppp\htdocs\book\protected\modules\discountCodes\controllers\DiscountCodesManageController.php (58)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/27 11:27:46 [warning] [application] Failed to set unsafe attribute "digital_allow" of "DiscountCodes".
+in D:\Important\Xamppp\htdocs\book\protected\modules\discountCodes\controllers\DiscountCodesManageController.php (58)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/27 11:29:24 [warning] [application] Failed to set unsafe attribute "shop_allow" of "DiscountCodes".
+in D:\Important\Xamppp\htdocs\book\protected\modules\discountCodes\controllers\DiscountCodesManageController.php (58)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)
+2017/02/27 11:29:24 [warning] [application] Failed to set unsafe attribute "digital_allow" of "DiscountCodes".
+in D:\Important\Xamppp\htdocs\book\protected\modules\discountCodes\controllers\DiscountCodesManageController.php (58)
+in D:\Important\Xamppp\htdocs\book\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\book\index.php (11)

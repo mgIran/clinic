@@ -1,0 +1,31 @@
+a:2:{i:0;s:4507:"1477210373|.chart-label{padding:5px;margin:5px;color:#FFF;-webkit-border-radius:5px;-khtml-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:2px 2px 5px #202020;-moz-box-shadow:2px 2px 5px #202020;box-shadow:2px 2px 5px #202020;text-shadow:0 -1px 1px #666666, 0 1px 1px #FFF}.labels{display:block}html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}ol,ul{list-style:none;margin:0;padding:0}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}a{text-decoration:none}.txt-rt{text-align:right}.txt-lt{text-align:left}.txt-center{text-align:center}.float-rt{float:right}.float-lt{float:left}.clear{clear:both}.pos-relative{position:relative}.pos-absolute{position:absolute}.vertical-base{vertical-align:baseline}.vertical-top{vertical-align:top}.underline{padding-bottom:5px;border-bottom:1px solid #eee;margin:0
+0 20px 0}nav.vertical ul
+li{display:block}nav.horizontal ul
+li{display:inline-block}img{max-width:100%}@font-face{font-family:'Yekan';src:url('/yusef/book/themes/market/fonts/yekan/BYekan.eot');src:url('/yusef/book/themes/market/fonts/yekan/BYekan.eot?#iefix') format('embedded-opentype'),
+url('/yusef/book/themes/market/fonts/yekan/BYekan.woff') format('woff'),
+url('/yusef/book/themes/market/fonts/yekan/BYekan.ttf') format('truetype'),
+url('/yusef/book/themes/market/fonts/yekan/BYekan.svg#Yekan') format('svg');font-weight:normal;font-style:normal}@font-face{font-family:'IranaianSans';src:url('/yusef/book/themes/market/fonts/Iranian%20Sans.ttf') format('truetype');font-weight:normal;font-style:normal}body{background:url('/yusef/book/themes/market/images/bg.jpg') no-repeat 100%;background-size:100%;font-family:'IranaianSans';font-size:100%;background-repeat:no-repeat;background-attachment:fixed;background-size:cover;direction:rtl;height:100vh;overflow:hidden}.wrap{width:70%;margin:0
+auto 4%}.logo{padding:1em;text-align:center;padding:1% 1% 5% 1%}.logo
+h1{display:block;color:#fff;font-size:150px;font-weight:bold;padding:50px
+0;font-family:'Yekan'}.logo
+span{font-size:1.4em;color:#fff;line-height:40px}.logo span
+img{width:40px;height:40px;vertical-align:bottom;margin:0px
+10px}.buttom{background:url('/yusef/book/themes/market/images/bg2.png') no-repeat 100% 0%;background-size:100%;text-align:center;vertical-align:middle;margin:0
+auto;width:556px}.seach_bar{padding:4em
+2em}.seach_bar
+p{color:#fff;font-weight:300;margin:3.2em 0em 0.9em 0em}.seach_bar span
+a{font-size:1em;color:#fff;text-decoration:underline;font-weight:300}.search_box{position:relative;width:75%;margin:0
+auto}.search_box
+img{vertical-align:middle;margin-right:10px}.search_box form input[type="text"]{border:none;outline:none;background:#f1f3f6;padding:10px
+15px;border-radius:3px;color:#666;width:100%;font-family:'IranaianSans';-webkit-apperance:none;box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box}.search_box form input[type="submit"]{border:none;cursor:pointer;background:url('/yusef/book/themes/market/images/search.png') no-repeat center / 20px auto;position:absolute;left:0;width:34px;height:37px;outline:none;-webkit-appearance:none}@media only screen and (max-width: 768px){.wrap{width:80%}.logo
+img{width:315px}}@media only screen and (max-width: 640px){.wrap{width:85%}.logo{padding:1% 1% 12% 1%}.buttom{width:515px}.logo
+img{width:300px}}@media only screen and (max-width: 480px){.wrap{width:90%}.logo{padding:1% 1% 12% 1%}.buttom{width:440px}.logo
+span{font-size:1.6em}.seach_bar
+p{font-size:1.2em;margin:2.6em 0em 0.7em 0em}.search_box{padding:3px
+10px}.logo
+img{width:270px}}@media only screen and (max-width: 320px){.wrap{width:90%}.logo{padding:1% 1% 12% 1%}.buttom{width:290px}.logo
+span{font-size:1.4em}.seach_bar
+p{font-size:1em;margin:1.5em 0em 2em 0em}.logo span
+img{vertical-align:middle}.logo
+img{width:200px}.copy_right{padding:2em
+0px 0px 0px}}";i:1;N;}

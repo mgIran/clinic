@@ -1,0 +1,271 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face{
+    font-family:'BYekan';
+    src:
+    url(../fonts/yekan/yekan.woff) format('woff'),
+    url(../fonts/yekan/yekan.eot) format('embedded-opentype'),
+    url(../fonts/yekan/yekan.svg),
+    url(../fonts/yekan/yekan.ttf)  format('truetype'),
+    url(../fonts/yekan/yekannumbers.woff),
+    url(../fonts/yekan/yekannumbers.ttf),
+    url(../fonts/yekan/yekannumbers.svg),
+    url(../fonts/yekan/yekannumbers.eot);
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face{
+    font-family:'BMitra';
+    src:url(../fonts/mitra/mitra.ttf) format('truetype'),
+    url(../fonts/mitra/mitra.svg),
+    url(../fonts/mitra/mitra.eot) format('embedded-opentype'),
+    url(../fonts/mitra/mitra.woff) format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+body *{
+    font-family:IRANSans, "BYekan" ,"DejaVu Sans", "Trebuchet MS", Verdana, sans-serif !important;
+    direction: rtl;
+}
+.navbar .nav,
+.navbar .nav > li {
+    float: right;
+}
+#login-form label{
+    display: inline-block;
+    width: 120px;
+}
+.error ,
+.error input,
+.error select,
+.error textarea,
+.errorMessage
+{
+    color:#ef1111;
+    border-color: #ef1111;
+}
+.errorMessage{
+    display: inline-block;
+    margin-right: 10px;
+}
+h1{
+    font-size: 30px;
+}
+.grid-view table.items th, .grid-view table.items td {
+    font-size: 12px;
+}
+
+.navbar{
+    height: auto;
+}
+.navbar >li >a{
+    height: auto;
+}
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='url'],
+input[type='number'],
+select
+{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: inline-block;
+    font-size: 12px;
+    padding: 4px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+}
+input[type='text']:disabled,
+input[type='password']:disabled,
+input[type='email']:disabled,
+input[type='url']:disabled,
+input[type='number']:disabled,
+select:disabled{
+    background: #eee;
+    cursor: not-allowed;
+}
+.navbar .nav  > li > a{
+    height: 50px;
+}
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus{
+    background-color: transparent;
+    color: #fff !important;
+}
+.caret{
+    border-bottom-color: #fff !important;
+    border-top-color: #fff !important;
+}
+.show-in-tablet{
+     display: none !important;
+ }
+.menu-btn:before{
+    position: absolute;
+}
+.menu-btn{
+    font-size: 22px;
+}
+.breadcrumb{
+    background-color: #eee;
+}
+@media (max-width: 960px) {
+    .show-in-tablet{
+        display: inline-block !important;
+    }
+}
+
+.row{
+    margin: 10px 0;
+}
+label{
+    min-width: 100px;
+}
+
+#cat-form.form{
+    margin-top: 30px;
+}
+.form{
+    display: block;
+    overflow: hidden;
+}
+.attrOpts{
+    display: inline-block;
+}
+.optBox .trash-opt{
+    margin-right: 10px;
+}
+
+.btn-input{
+    width: 30%;
+}
+
+.add-multipliable-input,
+.remove-multipliable-input
+{
+    position: absolute;
+    left: 20px;
+    bottom: 7px;
+    font-size: 16px;
+    color: #555;
+}
+.remove-multipliable-input
+{
+    left: 0;
+}
+.multipliable-input-container
+{
+    position: relative;
+}
+.multipliable-input
+{
+    width: 90%;
+    margin-bottom: 15px;
+}
+.clearfix{
+    clear: both;
+}
+.transparent-form .btn{
+    width: 130px;
+}
+
+#message-list {
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+}
+.message-item {
+    border-bottom: 1px solid #f1f1f1;
+    margin: 15px 0;
+    position: relative;
+}
+.message-item .avatar {
+    background-color: #f0f0f0;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    color: #aaa;
+    display: inline-block;
+    font-size: 24px;
+    height: 60px;
+    margin-left: 15px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 60px;
+}
+.avatar .icon {
+    display: block;
+    margin-top: -13.5px;
+    position: relative;
+    top: 50%;
+}
+.ticket-box .icon {
+    font-size: 30px;
+}
+.ticket-box .form {
+    display: block;
+    overflow: hidden;
+}
+.message-date {
+    display: block;
+    font-size: 12px;
+    font-weight: 300;
+    left: 0;
+    overflow: hidden;
+    padding: 0 0 0 15px;
+    position: absolute;
+    right: 75px;
+    text-align: left;
+    top: 0;
+}
+.message-content {
+    display: block;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 30px 75px 30px 15px;
+    text-align: justify;
+}
+.message-date .title {
+    font-size: 16px;
+    font-weight: 500;
+}
+.attachment-link {
+    border-bottom: 1px dashed #26bede;
+    color: #26bede;
+}
+.attachment-link:hover, .attachment-link:active, .attachment-link:focus {
+    border-bottom: 1px dashed #0084be;
+    color: #0084be;
+}
+.relative{
+    position: relative !important;
+}
+
+
+.stars{
+    overflow: hidden;
+}
+.stars .icon {
+    width: 18px;
+    height: 20px;
+    background: url("star-red.svg") no-repeat center;
+    background-size: 20px;
+    float: right;
+}
+.stars .icon.half{
+    opacity: 0.3;
+}
+.stars .icon.off {
+    opacity: 0.3;
+}
+.pagination .page.selected a {
+    background-color: #eee;
+}
+
+.table .odd td {
+    background-color: #eee !important;
+}

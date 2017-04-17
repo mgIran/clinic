@@ -1,0 +1,1 @@
+&copy; <?php echo date('Y');?> <strong>Ketabic</strong>. All rights reserved.

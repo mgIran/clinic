@@ -1,0 +1,47 @@
+#modules_tree
+{
+    background: #eee;
+    padding: 5px 5%;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+}
+.js-tree-title
+{
+    position: relative;
+    z-index: 10;
+    color:#000;
+}
+.jstree-proton .jstree-node
+{
+    padding: 10px;
+}
+.jstree-proton .jstree-wholerow
+{
+    padding: 12px;
+    border-radius: 3px;
+}
+.jstree-proton .jstree-anchor{
+    line-height:24px;
+    height:24px;
+    position: static;
+}
+.jstree-icon.jstree-checkbox{
+    left: 0;
+    position: absolute;
+}
+.jstree-rtl .jstree-anchor > .jstree-themeicon {
+    display: none;
+}
+.jstree-anchor.jstree-clicked .jstree-icon.jstree-checkbox
+{
+    background-position: -229px -5px;
+}
+.jstree-proton .jstree-wholerow-clicked
+{
+    background: #ddd;
+}
+.jstree-proton .jstree-wholerow-hovered
+{
+    background: #ddd;
+}

@@ -1,0 +1,26 @@
+allow from all
+Options +FollowSymLinks
+IndexIgnore */*
+Options -Indexes
+RewriteEngine on
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+
+RewriteRule . index.php
+
+<IfModule mod_expires.c>
+    ExpiresActive on
+
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+</IfModule>
+
+<FilesMatch .*\.(zip|doc|docx|pdf|rar|apk)>
+Deny from all
+</FilesMatch>
