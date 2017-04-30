@@ -49,88 +49,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        Yii::import('rows.models.*');
-        Yii::app()->theme = 'frontend';
-        $this->layout = '//layouts/index';
-        $activeRows = array();
-        $categoriesDP = new CActiveDataProvider('BookCategories', array('criteria' => BookCategories::model()->getValidCategories()));
-        // get suggested list
-        $suggestedDP = null;
-        $model = RowsHomepage::model()->findByAttributes(array('query' => 'suggested'));
-        $activeRows['suggested'] = $model ? $model->status : 0;
-        if ($model && $model->status == 1) {
-            $visitedCats = CJSON::decode(base64_decode(Yii::app()->request->cookies['VC']));
-            $suggestedCookieDataProvider = Books::model()->findAll(Books::model()->getValidBooks($visitedCats));
-            if (count($suggestedCookieDataProvider) < 10) {
-                $criteria = $model->getConstCriteria(Books::model()->getValidBooks(null, 'id DESC', (10 - count($suggestedCookieDataProvider))));
-                $suggestedDP = Books::model()->findAll($criteria);
-                $data = $suggestedCookieDataProvider;
-                $cookieIds = CHtml::listData($suggestedCookieDataProvider, 'id', 'id');
-                foreach ($suggestedDP as $item) {
-                    if (!in_array($item->id, $cookieIds))
-                        $data[] = $item;
-                }
-            } else $data = $suggestedCookieDataProvider;
-            $suggestedDP = new CArrayDataProvider($data, array('pagination' => array('pageSize' => 10)));
-        }
-        // latest books
-        $latestBooksDP = null;
-        $model = RowsHomepage::model()->findByAttributes(array('query' => 'latest'));
-        $activeRows['latest'] = $model ? $model->status : 0;
-        if ($model && $model->status == 1) {
-            $latestBooksDP = new CActiveDataProvider('Books', array(
-                'criteria' => $model->getConstCriteria(Books::model()->getValidBooks(null, 'id DESC', 10))
-            ));
-        }
-        // most purchase books
-        $buyBooksDP = null;
-        $model = RowsHomepage::model()->findByAttributes(array('query' => 'buy'));
-        $activeRows['buy'] = $model ? $model->status : 0;
-        if ($model && $model->status == 1) {
-            $buyBooksDP = new CActiveDataProvider('Books', array(
-                'criteria' => $model->getConstCriteria(Books::model()->getValidBooks(null, 'id DESC', 10))
-            ));
-        }
-
-        // popular books
-        $popularBooksDP = null;
-        $model = RowsHomepage::model()->findByAttributes(array('query' => 'popular'));
-        $activeRows['popular'] = $model ? $model->status : 0;
-        if ($model && $model->status == 1) {
-            $popularBooksDP = new CActiveDataProvider('Books', array(
-                'criteria' => $model->getConstCriteria(Books::model()->getValidBooks(null, 'id DESC', 10))
-            ));
-        }
-
-        // get advertise
-        Yii::import('advertises.models.*');
-        $advertises = new CActiveDataProvider('Advertises', array('criteria' => Advertises::model()->getActiveAdvertises()));
-
-        // get rows
-        Yii::import('rows.models.*');
-        $rows = new CActiveDataProvider('RowsHomepage', array(
-            'criteria' => RowsHomepage::model()->getActiveRows(),
-            'pagination' => false
-        ));
-
-        // get news
-        Yii::import('news.models.*');
-        $news = new CActiveDataProvider('News', array(
-            'criteria' => News::model()->getValidNews(null, 10),
-            'pagination' => array('pageSize' => 10)
-        ));
-
-        $this->render('index', array(
-            'categoriesDP' => $categoriesDP,
-            'latestBooksDP' => $latestBooksDP,
-            'buyBooksDP' => $buyBooksDP,
-            'suggestedDP' => $suggestedDP,
-            'popularBooksDP' => $popularBooksDP,
-            'activeRows' => $activeRows,
-            'advertises' => $advertises,
-            'news' => $news,
-            'rows' => $rows
-        ));
+        Yii::app()->theme="frontend";
+        $this->layout="public";
+        $this->render('index');
     }
 
     /**

@@ -27,6 +27,8 @@
  * @property UserDevIdRequests $userDevIdRequests
  * @property UserTransactions[] $transactions
  * @property UserRoles $role
+ * @property ClinicPersonnels $clinicPersonnels
+ * @property Clinics[] $clinics
  */
 class Users extends CActiveRecord
 {
@@ -112,6 +114,8 @@ class Users extends CActiveRecord
             'bookRate' => array(self::BELONGS_TO, 'BookRatings', 'id'),
             'sessions' => array(self::HAS_MANY, 'Sessions', 'user_id', 'on' => 'user_type = "user"'),
             'addresses' => array(self::HAS_MANY, 'ShopAddresses', 'user_id', 'on' => 'addresses.deleted = 0'),
+            'clinicPersonnels' => array(self::BELONGS_TO, 'ClinicPersonnels', 'id'),
+            'clinics' => array(self::MANY_MANY, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
         );
     }
 

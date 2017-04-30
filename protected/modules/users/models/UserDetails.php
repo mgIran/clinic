@@ -5,8 +5,8 @@
  *
  * The followings are the available columns in table '{{user_details}}':
  * @property string $user_id
- * @property string $fa_name
- * @property string $en_name
+ * @property string $first_name
+ * @property string $last_name
  * @property string $fa_web_url
  * @property string $en_web_url
  * @property string $national_code
@@ -59,7 +59,9 @@ class UserDetails extends CActiveRecord
 
     public $roleLabels = array(
         'user' => 'کاربر عادی',
-        'publisher' => 'ناشر'
+        'clinicAdmin' => 'مدیر درمانگاه',
+        'doctor' => 'دکتر',
+        'secretary' => 'منشی درمانگاه',
     );
 
     public $detailsStatusLabels = array(
@@ -86,8 +88,8 @@ class UserDetails extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('fa_name, publication_name, national_code, phone, zip_code, address, national_card_image, nickname, publisher_id', 'required', 'on' => 'update_real_profile'),
-            array('fa_name, publication_name, nickname, post, company_name, registration_number, phone, zip_code, address, registration_certificate_image, publisher_id', 'required', 'on' => 'update_legal_profile'),
+            array('first_name, publication_name, national_code, phone, zip_code, address, national_card_image, nickname, publisher_id', 'required', 'on' => 'update_real_profile'),
+            array('first_name, publication_name, nickname, post, company_name, registration_number, phone, zip_code, address, registration_certificate_image, publisher_id', 'required', 'on' => 'update_legal_profile'),
             array('publisher_id', 'required', 'on' => 'confirmDev'),
             array('publisher_id', 'unique'),
             array('credit, national_code, phone, zip_code, score', 'numerical'),
@@ -96,7 +98,7 @@ class UserDetails extends CActiveRecord
             array('bank_name, account_number', 'length', 'max' => 50),
             array('national_code, zip_code', 'length', 'min' => 10),
             array('phone', 'length', 'min' => 8),
-            array('fa_name, en_name, national_card_image, company_name, registration_number, registration_certificate_image', 'length', 'max' => 50),
+            array('first_name, last_name, national_card_image, company_name, registration_number, registration_certificate_image', 'length', 'max' => 50),
             array('fa_web_url, en_web_url, avatar', 'length', 'max' => 255),
             array('phone', 'length', 'max' => 11),
             array('publisher_id, nickname', 'length', 'max' => 20, 'min' =>3),
@@ -114,7 +116,7 @@ class UserDetails extends CActiveRecord
             array('credit', 'required', 'on' => 'change-credit'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, publisher_id, details_status, monthly_settlement, iban, nickname, score, avatar, account_owner_name, account_owner_family, account_number, bank_name, financial_info_status, publication_name, earning', 'safe', 'on' => 'search'),
+            array('user_id, first_name, last_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, publisher_id, details_status, monthly_settlement, iban, nickname, score, avatar, account_owner_name, account_owner_family, account_number, bank_name, financial_info_status, publication_name, earning', 'safe', 'on' => 'search'),
         );
     }
 
@@ -144,8 +146,8 @@ class UserDetails extends CActiveRecord
     {
         return array(
             'user_id' => 'کاربر',
-            'fa_name' => 'نام و نام خانوادگی',
-            'en_name' => 'نام انگلیسی',
+            'first_name' => 'نام و نام خانوادگی',
+            'last_name' => 'نام انگلیسی',
             'fa_web_url' => 'آدرس وبسایت',
             'en_web_url' => 'آدرس سایت انگلیسی',
             'national_code' => 'کد ملی',
@@ -199,8 +201,8 @@ class UserDetails extends CActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('user_id', $this->user_id, true);
-        $criteria->compare('fa_name', $this->fa_name, true);
-        $criteria->compare('en_name', $this->en_name, true);
+        $criteria->compare('first_name', $this->first_name, true);
+        $criteria->compare('last_name', $this->last_name, true);
         $criteria->compare('fa_web_url', $this->fa_web_url, true);
         $criteria->compare('en_web_url', $this->en_web_url, true);
         $criteria->compare('national_code', $this->national_code, true);
@@ -256,10 +258,8 @@ class UserDetails extends CActiveRecord
      */
     public function getShowName()
     {
-        if (Yii::app()->language == 'fa_ir')
-            return !empty($this->fa_name) ? $this->fa_name : $this->user->email;
-        elseif (Yii::app()->language == 'en')
-            return !empty($this->en_name) ? $this->en_name : $this->user->email;
+        if ($this->first_name or $this->last_name)
+            return $this->first_name . ' ' . $this->last_name;
         else
             return $this->user->email;
     }
@@ -309,6 +309,6 @@ class UserDetails extends CActiveRecord
 
     public function getPublisherName()
     {
-        return $this->nickname ? $this->nickname : $this->fa_name;
+        return $this->nickname ? $this->nickname : $this->first_name;
     }
 }

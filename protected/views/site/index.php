@@ -1,213 +1,187 @@
 <?
 /* @var $this SiteController */
-/* @var $categoriesDP CActiveDataProvider */
-/* @var $latestBooksDP CActiveDataProvider */
-/* @var $buyBooksDP CActiveDataProvider */
-/* @var $suggestedDP CActiveDataProvider */
-/* @var $popularBooksDP CActiveDataProvider */
-/* @var $activeRows [] */
-/* @var $advertises CActiveDataProvider */
-/* @var $news CActiveDataProvider */
-/* @var $rows CActiveDataProvider */
 
-Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
-Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
-Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl.carousel.min.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/persian-date.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/persian-datepicker-0.4.5.min.js');
 ?>
-<?php
-if($advertises->totalItemCount):
-    ?>
-    <div class="slider" <?= $advertises->totalItemCount>1?'data-loop="true"':'' ?>>
-        <?php
-        foreach($advertises->getData() as $advertise):
-            $this->renderPartial('_advertise_item',array('data'=>$advertise));
-        endforeach;
-        ?>
-    </div>
-<?
-endif;
-?>
-    <div class="categories">
+
+<div class="big-image-container">
+    <img src="<?php echo Yii::app()->baseUrl."/uploads/slide.jpg";?>">
+    <div class="black-gradient hidden-xs"></div>
+    <div class="content">
         <div class="container">
-            <div class="heading">
-                <h2>دسته بندی ها</h2>
+            <h2>ما کار را برای شما آسوده کرده ایم</h2>
+            <h3 class="hidden-xs">به راحتی می توانید از پزشک خود نوبت ویزیت دریافت کنید</h3>
+            <a href="#">شروع کنید</a>
+        </div>
+    </div>
+</div>
+
+<div class="steps-guide">
+    <div class="container">
+        <div class="item">
+            <div class="content">
+                <div class="num">
+                    <div class="bg"></div>
+                    <span>۱</span>
+                </div>
+                <div class="text">
+                    <h4>پزشک خود را بیابید</h4>
+                    <span>پزشک مورد نظر خود را با مشخص کردن تخصص، بیمارستان، درمانگاه و... پیدا کنید.</span>
+                </div>
             </div>
-            <div class="is-carousel" data-item-selector="cat-item" data-margin="10" data-dots="1" data-nav="0" data-mouse-drag="1" data-responsive='{"1920":{"items":"5"},"1200":{"items":"4"},"992":{"items":"3"},"768":{"items":"3"},"480":{"items":"2"},"0":{"items":"1"}}'>
-                <?php
-                $this->widget('zii.widgets.CListView',array(
-                    'id' => 'categories-list',
-                    'dataProvider' => $categoriesDP,
-                    'itemView' => '_category_item',
-                    'template' => '{items}'
-                ))
-                ?>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="num">
+                    <div class="bg"></div>
+                    <span>۲</span>
+                </div>
+                <div class="text">
+                    <h4>اطلاعات خود را وارد کنید</h4>
+                    <span>فرم اطلاعات را جهت دریافت نوبت با مشخصات صحیح پر کنید.</span>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="num">
+                    <div class="bg"></div>
+                    <span>۳</span>
+                </div>
+                <div class="text">
+                    <h4>حق ویزیت را پرداخت کنید</h4>
+                    <span>با استفاده از کلیه کارت های عضو شتاب میتوانید حق ویزیت را پرداخت نمایید.</span>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="content">
+                <div class="num">
+                    <div class="bg"></div>
+                    <span>۴</span>
+                </div>
+                <div class="text">
+                    <h4>اطلاعات نوبت خود را دریافت کنید</h4>
+                    <span>اطلاعات نوبت رزرو شده از طریق پست الکترونیکی برای شما ارسال خواهد شد.</span>
+                </div>
             </div>
         </div>
     </div>
-<?php if($activeRows['suggested'] && $suggestedDP->totalItemCount):?>
-    <div class="offers paralax">
+</div>
+
+<div class="reservation-box">
+    <div class="container">
         <div class="content">
-            <div class="container">
-                <div class="head">
-                    <h2>پیشنهاد ما</h2>
-                </div>
-                <div class="is-carousel" data-item-selector="thumbnail-container" data-mouse-drag="1" data-responsive='{"1200":{"items":"5"},"1024":{"items":"4"},"992":{"items":"3"},"768":{"items":"3"},"480":{"items":"2"},"0":{"items":"1"}}'     data-nav="1" data-dots="1">
-                    <?php
-                    $this->widget('zii.widgets.CListView',array(
-                        'id' => 'suggested-list',
-                        'dataProvider' => $suggestedDP,
-                        'itemView' => '_book_item',
-                        'template' => '{items}',
-                        'viewData' => array('itemClass' => 'full')
-                    ));
-                    ?>
-                </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs image">
+                <img src="<?php echo Yii::app()->baseUrl."/uploads/nurse.jpg";?>">
             </div>
-        </div>
-    </div>
-    <?
-endif;
-?>
-<?php
-if($activeRows['latest'] && $latestBooksDP->totalItemCount):
-    ?>
-    <div class="newest">
-        <div class="container">
-            <div class="heading">
-                <h2>تازه ترین کتابها</h2>
-            </div>
-            <div class="thumbnail-list">
-                <?php
-                $this->widget('zii.widgets.CListView',array(
-                    'id' => 'latest-list',
-                    'dataProvider' => $latestBooksDP,
-                    'itemView' => '_book_item',
-                    'template' => '{items}',
-                    'viewData' => array('itemClass' => 'simple')
-                ));
-                ?>
-            </div>
-            <a href="<?= $this->createUrl('/book/index') ?>" class="more"><i class="icon"></i>کتابهای بیشتر</a>
-        </div>
-    </div>
-<?php
-endif;
-?>
-<?php
-if($activeRows['buy'] && $buyBooksDP->totalItemCount):
-?>
-    <div class="bestselling paralax">
-        <div class="content">
-            <div class="container">
-                <div class="head">
-                    <h2>پرفروش ترین ها</h2>
-                </div>
-                <div class="is-carousel auto-width" data-item-selector="thumbnail-container" data-mouse-drag="1" data-responsive='{"1600":{"items":"5"},"1024":{"items":"4"},"992":{"items":"3"},"768":{"items":"3"},"480":{"items":"2"},"0":{"items":"1"}}' data-dots="1" data-nav="1">
-                    <?php
-                    $this->widget('zii.widgets.CListView',array(
-                        'id' => 'latest-list',
-                        'dataProvider' => $buyBooksDP,
-                        'itemView' => '_book_item',
-                        'template' => '{items}',
-                        'viewData' => array('itemClass' => 'small')
-                    ));
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php
-endif;
-?>
-<?php
-if($activeRows['popular'] && $popularBooksDP->totalItemCount):
-?>
-    <div class="newest">
-        <div class="container">
-            <div class="heading">
-                <h2>پربازدیدترین ها</h2>
-            </div>
-            <div class="is-carousel auto-width" data-item-selector="thumbnail-container" data-mouse-drag="1" data-responsive='{"1600":{"items":"5"},"1024":{"items":"4"},"992":{"items":"3"},"768":{"items":"3"},"480":{"items":"2"},"0":{"items":"1"}}' data-dots="1" data-nav="0">
-                <?php
-                $this->widget('zii.widgets.CListView',array(
-                    'id' => 'latest-list',
-                    'dataProvider' => $popularBooksDP,
-                    'itemView' => '_book_item',
-                    'template' => '{items}',
-                    'viewData' => array('itemClass' => 'small')
-                ));
-                ?>
-            </div>
-        </div>
-    </div>
-<?php
-endif;
-?>
-<?php
-if($rows->totalItemCount):
-    $rowData = $rows->getData();
-?>
-    <div class="tabs">
-        <div class="container">
-            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                <ul class="nav nav-pills nav-stacked row">
-                    <?php
-                    foreach ($rowData as $key=>$row):
-                        ?>
-                        <li role="presentation"<?= $key == 0?' class="active"':'' ?>><a data-toggle="tab" href="#row-<?= $key ?>"><?= $row->title ?></a></li>
-                        <?
-                    endforeach;
-                    ?>
-                </ul>
-            </div>
-            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 tabs-container">
-                <div class="tab-content">
-                    <?php
-                    foreach ($rowData as $key=>$row):
-                        ?>
-                        <div id="row-<?= $key ?>" class="tab-pane fade<?= $key == 0?' in active':'' ?>">
-                            <div class="is-carousel" data-item-selector="thumbnail-container" data-mouse-drag="1" data-responsive='{"992":{"items":"3"},"768":{"items":"2"},"700":{"items":"3"},"480":{"items":"2"},"0":{"items":"1"}}' data-dots="1" data-nav="0">
-                                <?php
-                                $this->widget('zii.widgets.CListView',array(
-                                    'id' => 'row-'.$key.'-carousel-list',
-                                    'dataProvider' => new CArrayDataProvider($row->books(Books::model()->getValidBooks(array(),'confirm_date DESC',null,'books'))),
-                                    'itemView' => '_book_item',
-                                    'template' => '{items}',
-                                    'viewData' => array('itemClass' => 'simple')
-                                ));
-                                ?>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 form-container">
+                <h2>همین حالا شروع کنید<small>جهت رزرو نوبت، فرم زیر را پر کنید</small></h2>
+                <form>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">بیمارستان<i class="green-white-arrow-icon"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">نکوئی</a></li>
+                                    <li><a href="#">کامکار</a></li>
+                                    <li><a href="#">امام رضا (ع)</a></li>
+                                </ul>
                             </div>
                         </div>
-                        <?
-                    endforeach;
-                    ?>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">درمانگاه<i class="green-white-arrow-icon"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">نکوئی</a></li>
+                                    <li><a href="#">کامکار</a></li>
+                                    <li><a href="#">امام رضا (ع)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">تخصص پزشک<i class="green-white-arrow-icon"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">قلب و عروق</a></li>
+                                    <li><a href="#">مغز و اعصاب</a></li>
+                                    <li><a href="#">اطفال</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">نام پزشک<i class="green-white-arrow-icon"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">دکتر یار احمدی</a></li>
+                                    <li><a href="#">دکتر کهندانی</a></li>
+                                    <li><a href="#">دکتر رضایی</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="date-input" id="from-date" placeholder="از تاریخ">
+                            <input type="hidden" id="from-date_altField">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="date-input" id="to-date" placeholder="تا تاریخ">
+                            <input type="hidden" id="to-date_altField">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="button" class="submit-button" value="جستجو">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="statistics">
+    <div class="container">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <h2 class="counter-up" data-count="25">۰</h2>
+            <h4>درمانگاه</h4>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <h2 class="counter-up" data-count="57">۰</h2>
+            <h4>پزشک</h4>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <h2 class="counter-up" data-count="210">۰</h2>
+            <h4>کاربر فعال</h4>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <h2 class="counter-up" data-count="120">۰</h2>
+            <h4>نوبت رزرو شده</h4>
+        </div>
+    </div>
+</div>
+
+<div class="about-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <h4>پزشک یار چیست؟</h4>
+                <div class="text">
+                    لـورم ایپسوم متـن ساخـتگی با تولیـد سـادگی نامفـهوم از صنـعت چـاپ و با استـفاده از طراحان گرافیک است. چاپگرها و متون بـلکه روزنـامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکـنولوژی مورد نیاز و کاربـردهـای متنـوع با هـدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصـد گـذشته، حـال و آیـنده شـناخت فراوان جامعه و متخصـصان را مـی طلـبد تا با نـرم افزارهـا شناخت بیـشتری را بـرای طراحان رایانـه ای علـی الخـصوص طراحـان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تـمام و دشـواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفـچینی دستـاوردهـای اصـلی و جوابـگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <h4>با ما در ارتباط باشید</h4>
+                <div class="text">
+                    قم . بلوار شهید کیوانفر . خیابان شهید مطهری . مجتمع تندیس . طبقه سوم . واحد ۵۱۱۱
+                    <br>
+                    کد پستی&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;۳۷۱۸۸۹۵۶۹۱<br>
+                    تلفن تماس&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;۳۶۶۱۰۶۶۹ - ۰۲۵<br>
+                    شماره فکس&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;۳۶۶۱۰۶۶۹ - ۰۲۵
                 </div>
             </div>
         </div>
     </div>
-<?php
-endif;
-?>
-<?php
-if($news->totalItemCount):
-?>
-    <div class="news">
-        <div class="container">
-            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                <div class="is-carousel" data-dots="0" data-nav="1" data-autoplay="1" data-autoplay-hover-pause="1" data-loop="0" data-responsive='{"0":{"items":1}}' data-mouseDrag="0">
-                    <?php
-                    foreach($news->getData() as $new):
-                        $this->renderPartial('_news_item',array('data'=>$new));
-                    endforeach;
-                    ?>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 controls">
-                <i class="arrow-icon next"></i>
-                <i class="arrow-icon prev"></i>
-            </div>
-        </div>
-    </div>
-    <?php
-endif;
-?>
+</div>

@@ -2,6 +2,8 @@
 /**
  * Controller is the customized base controller class.
  * All controller classes for this application should extend from this base class.
+ *
+ * @var $userDetails UserDet    ails
  */
 class Controller extends AuthController
 {
@@ -34,7 +36,6 @@ class Controller extends AuthController
     public $userNotifications;
     public $aboutFooter;
     public $siteAppUrls = array();
-    public $booksCount = 0;
     public $pageSizes = array(10 => 10, 20 => 20, 50 => 50, 100 => 100);
 
     public function getPageSizeDropDownTag()
@@ -79,60 +80,7 @@ class Controller extends AuthController
             ->from('ym_site_setting')
             ->where('name = "default_title"')
             ->queryScalar();
-        $bookCategories = BookCategories::model()->findAll();
-        $this->categories = $bookCategories;
-        $this->navbarCategories = $bookCategories;
-        $criteria = new CDbCriteria();
-        $criteria->select = 'COUNT(id) as id';
-        $criteria->addCondition('status = :status');
-        $criteria->addCondition('confirm = :confirm');
-        $criteria->addCondition('deleted = 0');
-        $criteria->params = array(
-            ':status' => 'enable',
-            ':confirm' => 'accepted',
-        );
-        $this->booksCount = Books::model()->find($criteria)->id;
-        Yii::import('pages.models.*');
-        $this->aboutFooter = Pages::model()->findByPk(2)->summary;
-        Yii::import('setting.models.*');
-        $this->siteAppUrls['android'] = SiteSetting::model()->findByAttributes(array('name' => 'android_app_url'))->value;
-        $this->siteAppUrls['windows'] = SiteSetting::model()->findByAttributes(array('name' => 'windows_app_url'))->value;
         return true;
-    }
-
-    public function getConstBooks($type, $limit = 3)
-    {
-        $criteria = Books::model()->getValidBooks();
-        switch($type){
-            case 'popular':
-                $criteria->order = 'seen DESC';
-                break;
-            case 'latest':
-                $criteria->order = 'confirm_date DESC';
-                break;
-            default:
-                break;
-        }
-        $criteria->limit = $limit;
-        return new CActiveDataProvider("Books", array('criteria' => $criteria, 'pagination' => array('pageSize' => $limit)));
-    }
-
-    public function getConstNews($type, $limit = 3)
-    {
-        Yii::import('news.models.*');
-        $criteria = News::model()->getValidNews();
-        switch($type){
-            case 'popular':
-                $criteria->order = 'seen DESC';
-                break;
-            case 'latest':
-                $criteria->order = 'publish_date DESC';
-                break;
-            default:
-                break;
-        }
-        $criteria->limit = $limit;
-        return new CActiveDataProvider("News", array('criteria' => $criteria, 'pagination' => array('pageSize' => $limit)));
     }
 
     public function getCategoryBooks($id)
@@ -154,40 +102,26 @@ class Controller extends AuthController
                     'label' => 'پیشخوان',
                     'url' => array('/admins/dashboard')
                 ),
+//                array(
+//                    'label' => 'کتاب ها<span class="caret"></span>',
+//                    'url' => '#',
+//                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
+//                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+//                    'items' => array(
+//                        array('label' => 'مدیریت کتاب ها', 'url' => Yii::app()->createUrl('/manageBooks/baseManage/admin/')),
+//                        array('label' => 'مدیریت دسته بندی کتاب ها', 'url' => Yii::app()->createUrl('/category/admin/')),
+//                        array('label' => 'تخفیفات', 'url' => Yii::app()->createUrl('/manageBooks/baseManage/discount/')),
+//                        array('label' => 'تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
+//                        array('label' => 'نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminBooks')),
+//                    )
+//                ),
                 array(
-                    'label' => 'کتاب ها<span class="caret"></span>',
+                    'label' => 'مطب ها<span class="caret"></span>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'مدیریت کتاب ها', 'url' => Yii::app()->createUrl('/manageBooks/baseManage/admin/')),
-                        array('label' => 'مدیریت دسته بندی کتاب ها', 'url' => Yii::app()->createUrl('/category/admin/')),
-                        array('label' => 'تخفیفات', 'url' => Yii::app()->createUrl('/manageBooks/baseManage/discount/')),
-                        array('label' => 'تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
-                        array('label' => 'نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminBooks')),
-                    )
-                ),
-                array(
-                    'label' => 'فروشگاه<span class="caret"></span>',
-                    'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
-                    'items' => array(
-                        array('label' => 'مدیریت سفارشات', 'url' => Yii::app()->createUrl('/shop/order/admin/')),
-                        array('label' => 'مدیریت روش های پرداخت', 'url' => Yii::app()->createUrl('/shop/payment/admin/')),
-                        array('label' => 'مدیریت روش های تحویل', 'url' => Yii::app()->createUrl('/shop/shipping/admin/')),
-                        array('label' => 'گزارش سفارشات', 'url' => Yii::app()->createUrl('/shop/order/report/')),
-                    )
-                ),
-                array(
-                    'label' => 'اخبار<span class="caret"></span>',
-                    'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
-                    'items' => array(
-                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/news/manage/admin/')),
-                        array('label' => ' افزودن خبر', 'url' => Yii::app()->createUrl('/news/manage/create/')),
-                        array('label' => 'مدیریت دسته بندی ها', 'url' => Yii::app()->createUrl('/news/category/admin/')),
+                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/clinics/manage/admin')),
+                        array('label' => 'افزودن', 'url' => Yii::app()->createUrl('/clinics/manage/create')),
                     )
                 ),
                 array(
@@ -214,16 +148,6 @@ class Controller extends AuthController
                     )
                 ),
                 array(
-                    'label' => 'ردیف های کتاب<span class="caret"></span>',
-                    'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
-                    'items' => array(
-                        array('label' => 'مدیریت ردیف های دلخواه', 'url' => Yii::app()->createUrl('/rows/manage/admin')),
-                        array('label' => 'مدیریت ردیف های ثابت', 'url' => Yii::app()->createUrl('/rows/manage/const')),
-                    )
-                ),
-                array(
                     'label' => 'مدیران <span class="caret"></span>',
                     'url' => '#',
                     'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
@@ -240,15 +164,12 @@ class Controller extends AuthController
                     'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
                         array('label' => 'افزودن ناشر', 'url' => Yii::app()->createUrl('/publishers/panel/create')),
+                        array('label' => 'مدیریت تخصص ها', 'url' => Yii::app()->createUrl('/users/expertises/admin')),
                         array('label' => 'مدیریت ناشران', 'url' => Yii::app()->createUrl('/users/manage/adminPublishers')),
                         array('label' => 'مدیریت کاربران', 'url' => Yii::app()->createUrl('/users/manage')),
                         array('label' => 'مدیریت بن های خرید', 'url' => Yii::app()->createUrl('/users/bon')),
                         array('label' => 'مدیریت کد های تخفیف', 'url' => Yii::app()->createUrl('/discountCodes/manage/admin')),
                     )
-                ),
-                array(
-                    'label' => 'پشتیبانی',
-                    'url' => Yii::app()->createUrl('/tickets/manage/admin'),
                 ),
                 array(
                     'label' => 'تنظیمات<span class="caret"></span>',

@@ -1,16 +1,15 @@
 <?php
-Yii::setPathOfAlias('chartjs', dirname(__FILE__).'/../extensions/yii-chartjs');
 return array(
 	//'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
 	//'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
 	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'کتابیک',
+	'name'=>'پزشک یار',
 	'timeZone' => 'Asia/Tehran',
 	'theme' => 'abound',
 	'sourceLanguage' => '00',
 	'language' => 'fa_ir',
 	// preloading 'log' component
-	'preload'=>array('log','userCounter','chartjs'),
+	'preload'=>array('log','userCounter'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -18,7 +17,7 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'ext.yiiSortableModel.models.*',
-		'application.modules.shop.models.*',
+		'application.modules.places.models.*',
 	),
 
 	'modules'=>array(
@@ -31,6 +30,7 @@ return array(
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
 		'admins',
+		'clinics',
 		'users',
 		'setting',
 		'pages',
@@ -96,13 +96,6 @@ return array(
 		'yexcel' => array(
 			'class' => 'ext.yexcel.Yexcel'
 		),
-		'session' => array(
-			'class' => 'YmDbHttpSession',
-			'autoStart' => false,
-			'connectionID' => 'db',
-			'sessionTableName' => 'ym_sessions',
-			'timeout' => 600
-		),
 		'userCounter' => array(
 			'class' => 'application.components.UserCounter',
 			'tableUsers' => 'ym_counter_users',
@@ -130,7 +123,7 @@ return array(
 			'appendParams'=>true,
 			'rules'=>array(
 				'<action:(about|contactus|help|publishers)>' => 'site/<action>',
-				'<action:(register|login)>' => 'users/public/index',
+				'<action:(login)>' => 'users/public/login',
 				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded)>' => 'users/public/<action>',
 				'/help'=>'site/help',
 				'books/<id:\d+>'=>'books/view',

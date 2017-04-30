@@ -1,5 +1,5 @@
 <?php
 return array (
-  'template' => 'persian',
+  'template' => 'default',
   'baseControllerClass' => 'Controller',
 );

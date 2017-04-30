@@ -55,50 +55,19 @@ class UsersPublicController extends Controller
     {
         Yii::app()->theme = 'frontend';
         $this->layout = '//layouts/panel';
-        $model = Users::model()->findByPk(Yii::app()->user->getId());
 
-        // get suggested list
-        $visitedCats = CJSON::decode(base64_decode(Yii::app()->request->cookies['VC']));
-        $suggestedDataProvider = new CActiveDataProvider('Books', array('criteria' => Books::model()->getValidBooks($visitedCats)));
-
-        $messages = array();
-        if ($model->role_id == 2) {
-            $credit = $model->userDetails->getSettlementAmount();
-            if ($credit) {
-                $messages[0]['type'] = 'info';
-                $messages[0]['message'] = 'مبلغ قابل تسویه شما: ' . Controller::parseNumbers(number_format($credit)) . ' تومان';
-            }
-            if ($credit && !$model->userDetails->validateAccountingInformation()) {
-                $link = CHtml::link('اینجا', array('/publishers/panel/settlement'));
-                $messages[1]['type'] = 'danger';
-                $messages[1]['message'] = 'اطلاعات بانکی شما به منظور انجام تسویه حساب ناقص است و تا زمانی که این اطلاعات تکمیل نشود تسویه حساب برای شما انجام نمی شود. برای تکیمل اطلاعات ' .
-                    $link .
-                    ' کلیک کنید.';
-            }
-        }
-
-        // create book buys for search in grid view
-        $bookBuys = new BookBuys('search');
-        $bookBuys->unsetAttributes();
-        if (isset($_GET['BookBuys']) && isset($_GET['ajax']) && $_GET['ajax'] == 'book-buys-list')
-            $bookBuys->attributes = $_GET['BookBuys'];
-        $bookBuys->user_id = $model->id;
-        //
-
-        // create downloaded model from Library for search in grid view
-        $transactions = new UserTransactions('search');
-        $transactions->unsetAttributes();
-        if (isset($_GET['UserTransactions']) && isset($_GET['ajax']) && $_GET['ajax'] == 'transactions-list')
-            $transactions->attributes = $_GET['UserTransactions'];
-        $transactions->user_id = $model->id;
-        //
+        /* @var $user Users */
+        $user = Users::model()->findByPk(Yii::app()->user->id);
+        $criteria = new CDbCriteria();
+        $criteria->select = 'clinics_clinics.post as post, clinics.*';
+        $clinics = new CArrayDataProvider($user->clinics($criteria), array(
+            'pagination'=>array(
+                'pageSize'=>1
+            )
+        ));
 
         $this->render('dashboard', array(
-            'model' => $model,
-            'suggestedDataProvider' => $suggestedDataProvider,
-            'bookBuys' => $bookBuys,
-            'transactions' => $transactions,
-            'messages' => new CArrayDataProvider($messages, array('keyField' => 'type')),
+            'clinics' => $clinics,
         ));
     }
 
@@ -178,7 +147,7 @@ class UsersPublicController extends Controller
     public function actionForgetPassword()
     {
         Yii::app()->theme = 'frontend';
-        $this->layout = '//layouts/login';
+        $this->layout = '//layouts/public';
         if (!Yii::app()->user->isGuest and Yii::app()->user->type != 'admin')
             $this->redirect($this->createAbsoluteUrl('//'));
         else if (!Yii::app()->user->isGuest and Yii::app()->user->type == 'admin')
@@ -409,7 +378,7 @@ class UsersPublicController extends Controller
     public function actionIndex()
     {
         Yii::app()->theme = 'frontend';
-        $this->layout = '//layouts/login';
+        $this->layout = '//layouts/public';
 
         if (!Yii::app()->user->isGuest && Yii::app()->user->type == 'user')
             $this->redirect($this->createAbsoluteUrl('//'));
@@ -486,6 +455,50 @@ class UsersPublicController extends Controller
         $this->render('index', array(
             'login' => $login,
             'register' => $register,
+        ));
+    }
+
+    public function actionLogin()
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = '//layouts/public';
+
+        if (!Yii::app()->user->isGuest && Yii::app()->user->type == 'user')
+            $this->redirect($this->createAbsoluteUrl('//'));
+
+        $model = new UserLoginForm;
+
+        // Login codes
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'login-form') {
+            $errors = CActiveForm::validate($model);
+            if (CJSON::decode($errors)) {
+                echo $errors;
+                Yii::app()->end();
+            }
+        }
+        // collect user input data
+        if (isset($_POST['UserLoginForm'])) {
+            $model->attributes = $_POST['UserLoginForm'];
+            if(isset($_POST['returnUrl']))
+                Yii::app()->user->returnUrl = $_POST['returnUrl'];
+            // validate user input and redirect to the previous page if valid
+            if ($model->validate() && $model->login()) {
+                if (Yii::app()->user->returnUrl != Yii::app()->request->baseUrl . '/')
+                    $redirect = Yii::app()->createUrl('/'.Yii::app()->user->returnUrl);
+                else
+                    $redirect = Yii::app()->createAbsoluteUrl('/users/public/dashboard');
+                if (isset($_POST['ajax'])) {
+                    echo CJSON::encode(array('status' => true, 'url' => $redirect, 'msg' => 'در حال انتقال ...'));
+                    Yii::app()->end();
+                } else
+                    $this->redirect($redirect);
+            } else
+                $model->password = '';
+        }
+        // End of login codes
+
+        $this->render('login', array(
+            'model' => $model,
         ));
     }
 
