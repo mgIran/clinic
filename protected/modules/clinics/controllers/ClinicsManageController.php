@@ -13,7 +13,7 @@ class ClinicsManageController extends Controller
 		return array(
 			'backend' => array(
 				'create', 'update', 'admin', 'delete', 'upload',
-				'adminPersonnel', 'addPersonnel', 'removePersonnel', 'updatePersonnel'
+				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
 			)
 		);
 	}
@@ -153,41 +153,87 @@ class ClinicsManageController extends Controller
 		));
 	}
 
-	public function actionAddPersonnel($clinic){
+	public function actionAddPersonnel($clinic)
+	{
 		$model = new ClinicPersonnels();
 		$model->clinic_id = $clinic;
 		if(isset($_POST['ClinicPersonnels'])){
-			$model->attributes=$_POST['ClinicPersonnels'];
+			$model->user_id = $_POST['ClinicPersonnels']['user_id'];
+			$model->post = $_POST['ClinicPersonnels']['post'];
 			if($model->save()){
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-				$this->redirect(array('adminPersonnel', 'id' => $model->clinic_id));
+				$this->redirect(array('manage/adminPersonnel/'.$model->clinic_id));
 			}else
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
 
-		$this->render('add_personnel',array(
+		$this->render('add_personnel', array(
+			'model' => $model
+		));
+	}
+
+	public function actionAddNewPersonnel($clinic)
+	{
+		$model = new ClinicPersonnels('add_personnel');
+		$model->clinic_id = $clinic;
+		if(isset($_POST['ClinicPersonnels'])){
+			$userModel = new Users();
+			$userModel->attributes = $_POST['ClinicPersonnels'];
+			$userModel->role_id = $_POST['ClinicPersonnels']['post'];
+			$userModel->status = 'active';
+			$userModel->create_date = time();
+			$userModel->password = $userModel->generatePassword();
+			if($userModel->save()){
+				$model->scenario = 'insert';
+				$model->post = $_POST['ClinicPersonnels']['post'];
+				$model->user_id = $userModel->id;
+				if($model->save()){
+					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد. <span style="font-weight: 500;font-size: 18px">کلمه عبور کاربر: '.$userModel->generatePassword().'</span>');
+					$this->redirect(array('manage/updatePersonnel/'.$model->clinic_id.'/'.$model->user_id));
+				}else
+					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}else{
+				$model->addErrors($userModel->errors);
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}
+		}
+
+		$this->render('add_new_personnel', array(
 			'model' => $model
 		));
 	}
 
 	public function actionUpdatePersonnel($clinic, $person){
 		$model = $this->loadPersonnelModel($clinic, $person);
-
+		$model->scenario = 'update_personnel';
+		$model->loadPropertyValues();
 		if(isset($_POST['ClinicPersonnels'])){
-			$model->attributes=$_POST['ClinicPersonnels'];
-			if($model->save()){
-				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-				$this->redirect(array('adminPersonnel', 'id' => $model->clinic_id));
-			}else
-				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			$model->post=$_POST['ClinicPersonnels']['post'];
+			$model->loadPropertyValues($_POST['ClinicPersonnels']);
+			$userModel = Users::model()->findByPk($model->user_id);
+			$userModel->scenario = '';
+			$userModel->attributes=$_POST['ClinicPersonnels'];
+			if($userModel->save())
+			{
+				if($model->save()){
+					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+					$this->redirect(array('manage/adminPersonnel/'.$model->clinic_id));
+				}else
+					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}else{
+				$model->addErrors($userModel->errors);
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}
 		}
-
 		$this->render('update_personnel',array(
 			'model' => $model
 		));
 	}
-	public function actionRemovePersonnel(){
+	public function actionRemovePersonnel($clinic, $person){
+		$this->loadPersonnelModel($clinic, $person)->delete();
 
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('adminPersonnel'));
 	}
 
 	/**

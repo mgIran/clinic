@@ -72,7 +72,7 @@ return array(
 				'<action:(login)>' => 'users/public/login',
 				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded)>' => 'users/public/<action>',
 				'clinics/manage/<action:(updatePersonnel|removePersonnel)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
-				'clinics/manage/<action:(addPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
+				'clinics/manage/<action:(addPersonnel|addNewPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
 				'/help'=>'site/help',
 				'<module:\w+>/<id:\d+>'=>'<module>/manage/view',
 				'<module:\w+>/<controller:\w+>'=>'<module>/<controller>/index',

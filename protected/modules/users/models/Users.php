@@ -48,6 +48,9 @@ class Users extends CActiveRecord
     );
     public $first_name;
     public $last_name;
+    public $phone;
+    public $mobile;
+    public $national_code;
     public $statusFilter;
     public $repeatPassword;
     public $oldPassword;
@@ -79,10 +82,10 @@ class Users extends CActiveRecord
             array('role_id', 'length', 'max' => 10),
             array('status', 'length', 'max' => 8),
             array('create_date', 'length', 'max' => 20),
-            array('type', 'safe'),
+            array('type, first_name, last_name, phone, mobile, national_code', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('type, roleId, create_date, status, verification_token, change_password_request_count ,first_name ,last_name ,email ,statusFilter', 'safe', 'on' => 'search'),
+            array('type, roleId, create_date, status, verification_token, change_password_request_count, email ,statusFilter, first_name, last_name, phone, mobile, national_code', 'safe', 'on' => 'search'),
         );
     }
 
@@ -93,7 +96,7 @@ class Users extends CActiveRecord
     {
         $bCrypt = new bCrypt();
         $record = Users::model()->findByAttributes(array('email' => $this->email));
-        if (!$bCrypt->verify($this->$attribute, $record->password))
+        if(!$bCrypt->verify($this->$attribute, $record->password))
             $this->addError($attribute, 'کلمه عبور فعلی اشتباه است');
     }
 
@@ -115,7 +118,7 @@ class Users extends CActiveRecord
             'bookRate' => array(self::BELONGS_TO, 'BookRatings', 'id'),
             'sessions' => array(self::HAS_MANY, 'Sessions', 'user_id', 'on' => 'user_type = "user"'),
             'addresses' => array(self::HAS_MANY, 'ShopAddresses', 'user_id', 'on' => 'addresses.deleted = 0'),
-            'clinicPersonnels' => array(self::BELONGS_TO, 'ClinicPersonnels', 'id'),
+            'clinicPersonnels' => array(self::HAS_MANY, 'ClinicPersonnels', 'user_id'),
             'clinics' => array(self::MANY_MANY, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
         );
     }
@@ -183,5 +186,51 @@ class Users extends CActiveRecord
         return parent::model($className);
     }
 
-    
+    protected function afterValidate()
+    {
+        if($this->isNewRecord)
+            $this->password = $this->encrypt($this->password);
+        parent::afterValidate();
+    }
+
+    public function encrypt($value)
+    {
+        $enc = NEW bCrypt();
+        return $enc->hash($value);
+    }
+
+    public function afterSave()
+    {
+        parent::afterSave();
+        if($this->isNewRecord){
+            $model = new UserDetails;
+            $model->user_id = $this->id;
+            $model->first_name = $this->first_name;
+            $model->last_name = $this->last_name;
+            $model->phone = $this->phone;
+            $model->mobile = $this->mobile;
+            $model->national_code = $this->national_code;
+            if(!@$model->save())
+                $this->addErrors($model->errors);
+        }else{
+            $model = UserDetails::model()->findByPk($this->id);
+            $model->first_name = $this->first_name;
+            $model->last_name = $this->last_name;
+            $model->phone = $this->phone;
+            $model->mobile = $this->mobile;
+            $model->national_code = $this->national_code;
+            if(!@$model->save())
+                $this->addErrors($model->errors);
+        }
+        return true;
+    }
+
+    public function generatePassword(){
+        return substr(md5($this->email),0,8);
+    }
+
+    public function checkGeneratePassword(){
+        $bCrypt = new bCrypt();
+        return $bCrypt->verify($this->generatePassword(), $this->password);
+    }
 }
