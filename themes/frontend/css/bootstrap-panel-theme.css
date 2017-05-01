@@ -6,7 +6,7 @@ body {
     background: #fff;
     color: #555;
     font-family: 'IRANSans';
-    font-size: 14px;
+    font-size: 13px;
     overflow-x: hidden;
 }
 a,
@@ -651,7 +651,7 @@ a:active{
     vertical-align: middle;
 }
 .sidebar .list-group{
-    margin-top: 50px;
+    padding-top: 5px;
 }
 .sidebar .list-group-item{
     background: #f2f2f2;
@@ -996,7 +996,7 @@ a:active{
 .sidebar .list-group h5{
     color: #6382a9;
     padding: 15px 15px 10px;
-    margin: 0;
+    margin: 25px 0 0;
 }
 .login-form .alert-success{
     background: #96c459;
@@ -2066,4 +2066,27 @@ tfoot {
 .table > thead > tr > td,
 .table > thead > tr > th{
     line-height:25px;
+}
+.grid-view .pager{
+    margin: 50px auto 0;
+    display: block;
+    width: 400px;
+}
+ul.yiiPager a:link,
+ul.yiiPager a:visited{
+    padding: 10px 15px;
+}
+ul.yiiPager li.previous a{
+    margin-left: 15px;
+}
+ul.yiiPager li.next a{
+    margin-right: 15px;
+}
+#leave-clinic{
+    background: #e74e40;
+    color: #fff;
+    margin: 30px 20px 15px;
+    border-radius: 25px;
+    text-align: center;
+    padding: 10px 15px;
 }

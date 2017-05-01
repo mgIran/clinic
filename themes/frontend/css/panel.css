@@ -1,0 +1,470 @@
+body{
+    background-color: #fff;
+}
+header
+{
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 4px #efefef;
+}
+.add-multipliable-input,
+.remove-multipliable-input
+{
+    position: absolute;
+    left: 20px;
+    bottom: 7px;
+}
+.remove-multipliable-input
+{
+    left: 0;
+}
+.multipliable-input-container
+{
+    position: relative;
+}
+.multipliable-input
+{
+    width: 90%;
+    margin-bottom: 15px;
+}
+.table .thead
+{
+    font-weight: bold;
+    padding: 15px 0;
+    overflow: hidden;
+    border-bottom: 1px solid #c0c0c0;
+}
+.table .tr
+{
+    padding: 15px 0;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+}
+.table .tr:nth-child(2n)
+{
+    background-color: #fafafa;
+}
+.desc
+{
+    color: #777;
+    font-size: 12px;
+}
+
+.tab-content{
+    padding: 30px;
+}
+
+.block{
+    display: block;
+}
+.dashboard-container{
+    position: relative;
+}
+.developer-signup-link{
+    position: absolute;
+    left: 20px;
+    top: 0;
+}
+.developer-signup-container .steps{
+    display: block;
+    overflow: hidden;
+    clear: both;
+    padding: 0;
+    width: 100%;
+    margin: 50px auto;
+}
+.developer-signup-container .steps li{
+    position: relative;
+    list-style: none;
+    float: right;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    color: #999;
+}
+.developer-signup-container .steps li:first-child{
+    border-right: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+}
+.developer-signup-container .steps li:last-child{
+    border-left: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+.developer-signup-container .steps li .num{
+    background: #999;
+    border-radius: 2px;
+    padding: 5px 8px;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.developer-signup-container .steps li .arrow{
+    position: absolute;
+    width: 0;
+    height: 100%;
+    left: 22px;
+    top: 0;
+}
+.developer-signup-container .steps li .arrow>div {
+    width: 2px;
+    height: 100%;
+}
+
+.developer-signup-container .steps li .arrow>div:before {
+    content: " ";
+    display: block;
+    width: 1px;
+    height: 65%;
+    background: #aaa;
+    -webkit-transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
+    transform: rotate(30deg);
+    position: absolute;
+    top: -6px;
+    right: 12px;
+}
+.developer-signup-container .steps li .arrow>div:after {
+    content: " ";
+    display: block;
+    width: 1px;
+    height: 65%;
+    background: #aaa;
+    -webkit-transform: rotate(-30deg);
+    -moz-transform: rotate(-30deg);
+    -ms-transform: rotate(-30deg);
+    transform: rotate(-30deg);
+    position: absolute;
+    bottom: -6px;
+    right: 12px;
+}
+.developer-signup-container .steps li.active{
+    color: #77c159;
+}
+.developer-signup-container .steps li.active .num{
+    background: #77c159;
+}
+.developer-signup-container .step-content .text{
+    margin-bottom: 30px;
+}
+.update-developer-form .dropzone.single,
+.information-step .dropzone.single{
+    width: 100%;
+}
+.buy-form h4{
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+.buy-form h4:first-child{
+    margin-top: 0;
+}
+.buy-form .buy-label{
+    width: 70px;
+    display: inline-block;
+}
+.buy-form .buy-value{
+    margin-right: 15px;
+    color: #337ab7;
+    font-weight: bold;
+}
+.bookmarked-app{
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 30px;
+}
+.bookmarked-app a{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index:2;
+}
+.bookmarked-app .info{
+    padding:0;
+}
+.bookmarked-app .image img{
+    max-height: 100%;
+    width: 100%;
+}
+.bookmarked-app .info h5{
+    display: block;
+    position: relative;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#user-details-form{
+    position: relative;
+}
+#user-details-form .controls-row{
+    margin-top: 20px;
+}
+#UserDetails_monthly_settlement{
+    margin-top: 30px;
+}
+#settlement-button{
+    margin-top: 25px;
+}
+#user-details-form .panel-body{
+    padding-bottom: 50px;
+}
+#user-details-form hr{
+    margin-bottom: 50px;
+}
+.settlement-help a{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    line-height: 48px;
+    padding: 0 15px;
+}
+.settlement-help .panel-heading{
+    height: 50px;
+    position: relative;
+}
+#user-details-form .alert-danger{
+    position: absolute;
+    width: 25%;
+    left: 15px;
+    top: 23px;
+}
+#user-details-form h3,
+.settlement-history h3{
+    margin-bottom: 35px;
+}
+.report-sale .app-item:nth-child(n+3){
+    margin-top: 50px;
+}
+.report-sale .app-item input[type="radio"]{
+    float: right;
+    margin-top: 27px;
+    margin-left: 15px;
+}
+.report-sale .app-item img{
+    float: right;
+    max-width: 70px;
+    max-height:70px;
+    height:auto;
+    margin-left: 15px;
+}
+.report-canvas{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.chart-container{
+    margin-top: 50px;
+}
+input[type='radio'],
+input[type='checkbox']{
+    height: auto;
+    display: inline-block;
+    width: auto;
+}
+.reason-collapse{
+    background: #eee;
+    padding:15px;
+    text-align: right;
+    margin-top: 15px;
+}
+.rahbod{
+    padding-left: 20px;
+}
+.content{
+    margin-top: 0;
+    padding-top: 0;
+}
+.footer{
+    background: #f8f8f8;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+.side-bar{
+    background: #f5f5f5;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    bottom:70px;
+    width: 20%;
+    overflow: hidden;
+
+    -webkit-transition: all 500ms cubic-bezier(0.625, 0.000, 0.450, 1.000);
+    -moz-transition: all 500ms cubic-bezier(0.625, 0.000, 0.450, 1.000);
+    -o-transition: all 500ms cubic-bezier(0.625, 0.000, 0.450, 1.000);
+    transition: all 500ms cubic-bezier(0.625, 0.000, 0.450, 1.000); /* custom */
+
+    -webkit-transition-timing-function: cubic-bezier(0.625, 0.000, 0.450, 1.000);
+    -moz-transition-timing-function: cubic-bezier(0.625, 0.000, 0.450, 1.000);
+    -o-transition-timing-function: cubic-bezier(0.625, 0.000, 0.450, 1.000);
+    transition-timing-function: cubic-bezier(0.625, 0.000, 0.450, 1.000); /* custom */
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    -ms-transition-delay: 0.2s;
+    -o-transition-delay: 0.2s;
+    transition-delay: 0.2s;
+}
+.side-bar .scroll-container{
+    overflow: hidden;
+    position: relative;
+    height:100%;
+}
+.side-bar h5{
+    padding: 15px 15px;
+    margin-top: 50px;
+    margin-bottom: 0;
+    color: #999;
+}
+.side-bar ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.side-bar .developers-menu{
+    margin-bottom:  50px;
+}
+.side-bar li{
+    position: relative;
+    height:50px;
+    margin-bottom: 1px;
+}
+.side-bar li a{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height:100%;
+    padding: 10px 15px;
+    line-height: 30px;
+    color: #666;
+    background: #eee;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.side-bar li a:hover,
+.side-bar li a:focus,
+.side-bar li a:active{
+    background: #e0e0e0;
+}
+.side-bar li .icon{
+    background-size: 15px;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+}
+.side-bar .credit-icon{
+    background: url("../svg/credit.svg") no-repeat center;
+}
+.side-bar .dashboard-icon{
+    background: url("../svg/dashboard.svg") no-repeat center;
+}
+.side-bar .transaction-icon{
+    background: url("../svg/transaction.svg") no-repeat center;
+}
+.side-bar .cart-icon{
+    background: url("../svg/cart.svg") no-repeat center;
+}
+.side-bar .heart-icon{
+    background: url("../svg/heart.svg") no-repeat center;
+}
+.side-bar .support-icon{
+    background: url("../svg/support.svg") no-repeat center;
+}
+.side-bar .setting-icon{
+    background: url("../svg/setting.svg") no-repeat center;
+}
+.side-bar .phone-icon{
+    background: url("../svg/phone.svg") no-repeat center;
+}
+.side-bar .discount-icon{
+    background: url("../svg/discount.svg") no-repeat center;
+}
+.side-bar .user-icon{
+    background: url("../svg/user.svg") no-repeat center;
+}
+.side-bar .white-user-icon{
+    background: url("../svg/white-user.svg") no-repeat center;
+}
+.side-bar .chart-icon{
+    background: url("../svg/chart.svg") no-repeat center;
+}
+.side-bar .payment-icon{
+    background: url("../svg/payment.svg") no-repeat center;
+}
+.side-bar .books-icon{
+    background: url("../svg/books.svg") no-repeat center;
+}
+.content-bar{
+    padding: 50px calc(20% + 50px) 50px 50px;
+    height: calc(100vh - 160px);
+    overflow: auto;
+}
+.enamad-mobile{
+    display: none;
+}
+.side-bar-trigger{
+    width: 25%;
+    height:100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    background: url("../svg/more.svg") no-repeat calc(100% - 15px) center;
+    background-size: 20px;
+    float: right;
+    opacity: .7;
+}
+.logo-box h1,
+.logo-box h2{
+    opacity:0;
+    visibility: hidden;
+}
+.mobile-nav{
+    right: auto;
+    width: 25%;
+}
+.side-bar:not(.open) {
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -ms-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -ms-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
+}
+.side-bar.open {
+    right: 0;
+    visibility: visible;
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    -ms-transition-delay: 0.2s;
+    -o-transition-delay: 0.2s;
+    transition-delay: 0.2s;
+}
+.page-name{
+    margin-bottom: 50px;
+    margin-top: 0;
+    padding-right: 35px;
+    background: url("../svg/left-arrow.svg") no-repeat center right;
+    background-size: 18px;
+}
+.overflow-fix{
+    overflow: hidden;
+}
+.side-bar li.upgrade-link{
+    margin-top: 30px;
+}
+.side-bar li.upgrade-link a{
+    background: #d9534f;
+    color: #fff;
+}
