@@ -46,7 +46,8 @@ class Users extends CActiveRecord
         'blocked' => 'مسدود',
         'deleted' => 'حذف شده'
     );
-    public $fa_name;
+    public $first_name;
+    public $last_name;
     public $statusFilter;
     public $repeatPassword;
     public $oldPassword;
@@ -81,7 +82,7 @@ class Users extends CActiveRecord
             array('type', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('type, roleId, create_date, status, verification_token, change_password_request_count ,fa_name ,email ,statusFilter', 'safe', 'on' => 'search'),
+            array('type, roleId, create_date, status, verification_token, change_password_request_count ,first_name ,last_name ,email ,statusFilter', 'safe', 'on' => 'search'),
         );
     }
 
@@ -162,7 +163,8 @@ class Users extends CActiveRecord
         $criteria->compare('username', $this->username, true);
         $criteria->compare('status', $this->statusFilter, true);
         $criteria->compare('role_id', $this->role_id);
-        $criteria->addSearchCondition('userDetails.fa_name', $this->fa_name);
+        $criteria->addSearchCondition('userDetails.first_name', $this->first_name);
+        $criteria->addSearchCondition('userDetails.last_name', $this->last_name);
         $criteria->with = array('userDetails');
         $criteria->order = 'status ,t.id DESC';
         return new CActiveDataProvider($this, array(
@@ -181,130 +183,5 @@ class Users extends CActiveRecord
         return parent::model($className);
     }
 
-    protected function afterValidate()
-    {
-        $this->password = $this->encrypt($this->password);
-        return parent::afterValidate();
-    }
-
-    public function encrypt($value)
-    {
-        $enc = NEW bCrypt();
-        return $enc->hash($value);
-    }
-
-    public function afterSave()
-    {
-        parent::afterSave();
-        if ($this->isNewRecord) {
-            $model = new UserDetails;
-            $model->user_id = $this->id;
-            if($this->type == UserDetails::ACCOUNT_TYPE_REAL || $this->type == UserDetails::ACCOUNT_TYPE_LEGAL)
-                $model->type = $this->type;
-            $model->credit = 0;
-            $model->save();
-        }
-        return true;
-    }
-
-    public function getPublishers()
-    {
-        $criteria = new CDbCriteria;
-
-        $criteria->addCondition('role_id=2');
-        $criteria->addCondition('userDetails.fa_name!="" OR userDetails.fa_name IS NOT NULL');
-        $criteria->with = 'userDetails';
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
-    }
-
-    public function getUsersCount($role_id = null)
-    {
-        $criteria = new CDbCriteria();
-        if($role_id)
-            $criteria->compare('role_id',$role_id);
-        return $this->count($criteria);
-    }
-
-    public static function getTicketNewMessageCount()
-    {
-        Yii::import("tickets.models.*");
-        $criteria = new CDbCriteria();
-        $criteria->compare('user_id',Yii::app()->user->getId());
-        $criteria->with[] = 'messages';
-        $criteria->compare('messages.visit', 0);
-        $criteria->addCondition('messages.sender != "user"');
-        return Tickets::model()->count($criteria);
-    }
-
-    /**
-     * @return integer
-     */
-    public static function getCountBookmarkedBooks()
-    {
-        $criteria = new CDbCriteria();
-        $criteria->compare('user_id',Yii::app()->user->getId());
-        return UserBookBookmark::model()->count($criteria);
-    }
-    /**
-     * @return integer
-     */
-    public static function getCountLibraryBooks()
-    {
-        $criteria = new CDbCriteria();
-        $criteria->compare('user_id',Yii::app()->user->getId());
-        return Library::model()->count($criteria);
-    }
-
-    /**
-     * @return integer
-     */
-    public static function getTotalUserCredits()
-    {
-        return Yii::app()->db->createCommand()
-            ->select('SUM(credit) as totalCredit')
-            ->from('{{user_details}}')
-            ->queryScalar();
-    }
-
-
-    public function getDiscountCodes()
-    {
-        $discountCodesInSession = array();
-        if (Yii::app()->user->hasState('discount-codes')) {
-            $discountCodesInSession = Yii::app()->user->getState('discount-codes');
-            $discountCodesInSession = CJSON::decode(base64_decode($discountCodesInSession));
-        }
-        return $discountCodesInSession;
-    }
-
-    public function getDiscountIds()
-    {
-        $discountCodesInSession = array();
-        if (Yii::app()->user->hasState('discount-ids')) {
-            $discountCodesInSession = Yii::app()->user->getState('discount-ids');
-            $discountCodesInSession = CJSON::decode(base64_decode($discountCodesInSession));
-        }
-        return $discountCodesInSession;
-    }
-
-    public function clearDiscountCodesStates()
-    {
-        Yii::app()->user->setState('discount-codes', null);
-        Yii::app()->user->setState('discount-ids', null);
-    }
-
-    public function getSessionsCount($id=false){
-        if($id)
-            $this->id = $id;
-        return Yii::app()->db->createCommand()
-            ->select('COUNT(id)')
-            ->from('{{sessions}}')
-            ->where("user_type = 'user' AND user_id = {$this->id}")
-            ->queryScalar();
-    }
-    public function getFullName(){
-
-    }
+    
 }

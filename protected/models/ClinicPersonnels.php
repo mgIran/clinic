@@ -11,6 +11,7 @@
  * The followings are the available model relations:
  * @property Clinics $clinic
  * @property Users $user
+ * @property UserRoles $post_rel
  */
 class ClinicPersonnels extends CActiveRecord
 {
@@ -21,6 +22,11 @@ class ClinicPersonnels extends CActiveRecord
 	{
 		return '{{clinic_personnels}}';
 	}
+
+	public $email;
+	public $password;
+	public $role_id;
+	public $first_name;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -49,6 +55,7 @@ class ClinicPersonnels extends CActiveRecord
 		return array(
 			'clinic' => array(self::BELONGS_TO, 'Clinics', 'clinic_id'),
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'post_rel' => array(self::BELONGS_TO, 'UserRoles', 'post'),
 		);
 	}
 
@@ -100,5 +107,9 @@ class ClinicPersonnels extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getValidPosts(){
+		return CHtml::listData(UserRoles::model()->findAll('role != "user"'),'id', 'name');
 	}
 }

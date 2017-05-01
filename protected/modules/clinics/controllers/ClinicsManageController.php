@@ -12,11 +12,8 @@ class ClinicsManageController extends Controller
 	{
 		return array(
 			'backend' => array(
-				'create',
-				'update',
-				'admin',
-				'delete',
-				'upload'
+				'create', 'update', 'admin', 'delete', 'upload',
+				'adminPersonnel', 'addPersonnel', 'removePersonnel', 'updatePersonnel'
 			)
 		);
 	}
@@ -143,5 +140,69 @@ class ClinicsManageController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionAdminPersonnel($clinic){
+		$model = new ClinicPersonnels();
+		$model->unsetAttributes();
+		if(isset($_GET['ClinicPersonnels']))
+			$model->attributes = $_GET['ClinicPersonnels'];
+		$model->clinic_id = $clinic;
+		$this->render('admin_personnel',array(
+			'model' => $model
+		));
+	}
+
+	public function actionAddPersonnel($clinic){
+		$model = new ClinicPersonnels();
+		$model->clinic_id = $clinic;
+		if(isset($_POST['ClinicPersonnels'])){
+			$model->attributes=$_POST['ClinicPersonnels'];
+			if($model->save()){
+				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+				$this->redirect(array('adminPersonnel', 'id' => $model->clinic_id));
+			}else
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+		}
+
+		$this->render('add_personnel',array(
+			'model' => $model
+		));
+	}
+
+	public function actionUpdatePersonnel($clinic, $person){
+		$model = $this->loadPersonnelModel($clinic, $person);
+
+		if(isset($_POST['ClinicPersonnels'])){
+			$model->attributes=$_POST['ClinicPersonnels'];
+			if($model->save()){
+				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+				$this->redirect(array('adminPersonnel', 'id' => $model->clinic_id));
+			}else
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+		}
+
+		$this->render('update_personnel',array(
+			'model' => $model
+		));
+	}
+	public function actionRemovePersonnel(){
+
+	}
+
+	/**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer $clinic the Clinic ID of the model to be loaded
+	 * @param integer $person the User ID of the model to be loaded
+	 * @return ClinicPersonnels the loaded model
+	 * @throws CHttpException
+	 */
+	public function loadPersonnelModel($clinic, $person)
+	{
+		$model=ClinicPersonnels::model()->findByAttributes(array('clinic_id' => $clinic, 'user_id' => $person));
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 }
