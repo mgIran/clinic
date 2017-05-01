@@ -27,7 +27,12 @@
     $cs->registerCssFile($baseUrl.'/css/responsive-panel-theme.css?3.8');
 
     $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js', CClientScript::POS_END);
+    $cs->registerScriptFile($baseUrl.'/js/jquery.mousewheel.min.js', CClientScript::POS_END);
+    $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js', CClientScript::POS_END);
     $cs->registerScriptFile($baseUrl.'/js/jquery.script.js?3.8', CClientScript::POS_END);
+    $cs->registerScript('sidebar-scroll', '
+        $(".sidebar").niceScroll({cursorcolor: "#8b8b8b", autohidemode:false, cursorwidth:7});
+    ');
     ?>
 </head>
 <body>
@@ -66,11 +71,27 @@
                     <h5>پزشک</h5>
                 <?php endif;?>
                 <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
-                <a title="خروج از بیمارستان / درمانگاه / مطب" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="list-group-item" id="leave-clinic">خروج از بیمارستان / درمانگاه / مطب</a>
+                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
+                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
+                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
+                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
+                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
             <?php endif;?>
         </div>
     </div>
     <div class="content">
+        <div class="top-bar">
+            <?php if(isset(Yii::app()->user->clinic)):?>
+                <div class="pull-right">
+                    <h5><?php echo Yii::app()->user->clinic->clinic_name;?></h5>
+                    <a title="خروج از بیمارستان / درمانگاه / مطب" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="btn btn-danger btn-sm">خروج از بیمارستان / درمانگاه / مطب</a>
+                </div>
+            <?php endif;?>
+            <div class="icons">
+                <a href="<?php echo $this->createUrl('/users/public/setting');?>" title="تنظیمات"><i class="setting-icon"></i></a>
+                <a href="<?php echo $this->createUrl('/users/public/logout');?>" title="خروج"><i class="logout-icon"></i></a>
+            </div>
+        </div>
         <?php echo $content;?>
         <?php $this->renderPartial('//partial-views/panel-footer');?>
     </div>

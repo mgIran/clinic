@@ -1,27 +1,29 @@
 $(document).ready(function() {
-    $('#from-date').persianDatepicker({
-        'format': 'DD MMMM YYYY',
-        'minDate': 1491975045000,
-        'altField': '#from-date_altField',
-        'altFormat': 'X',
-        'onShow': function () {
-            $('.datepicker-plot-area').width($('#from-date').parent().width());
-        },
-        'dayPicker': {
-            'onSelect': function () {
-                alert(1);
+    if($('#from-date').length != 0)
+        $('#from-date').persianDatepicker({
+            'format': 'DD MMMM YYYY',
+            'minDate': 1491975045000,
+            'altField': '#from-date_altField',
+            'altFormat': 'X',
+            'onShow': function () {
+                $('.datepicker-plot-area').width($('#from-date').parent().width());
+            },
+            'dayPicker': {
+                'onSelect': function () {
+                    alert(1);
+                }
             }
-        }
-    });
-    $('#to-date').persianDatepicker({
-        'format': 'DD MMMM YYYY',
-        'minDate': 1491975045000,
-        'altField': '#to-date_altField',
-        'altFormat': 'X',
-        'onShow': function () {
-            $('.datepicker-plot-area').width($('#to-date').parent().width())
-        }
-    });
+        });
+    if($('#to-date').length != 0)
+        $('#to-date').persianDatepicker({
+            'format': 'DD MMMM YYYY',
+            'minDate': 1491975045000,
+            'altField': '#to-date_altField',
+            'altFormat': 'X',
+            'onShow': function () {
+                $('.datepicker-plot-area').width($('#to-date').parent().width())
+            }
+        });
 
     var counterRun = false;
     $(window).scroll(function(){
