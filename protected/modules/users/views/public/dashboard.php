@@ -3,43 +3,45 @@
 /* @var $clinics CArrayDataProvider */
 ?>
 <div class="transparent-form">
-    <h3>لیست درمانگاه ها</h3>
-    <p class="description">درمانگاه هایی که در آنها عضو هستید.</p>
-    <?php $this->renderPartial('//partial-views/_flashMessage');?>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>عنوان</th>
-            <th>استان</th>
-            <th>شهر</th>
-            <th>آدرس</th>
-            <th></th>
-        </tr>
-        </thead>
-            <?php if(!$clinics->totalItemCount):?>
-                <tbody>
-                <tr>
-                    <td colspan="5" class="text-center">نتیجه ای یافت نشد.</td>
-                </tr>
-                </tbody>
-            <?php else:?>
-                <?php $this->widget('zii.widgets.CListView', array(
-                    'dataProvider'=>$clinics,
-                    'itemView'=>'_clinics_list',
-                    'itemsTagName'=>'tbody',
-                    'template'=>'{items}'
-                ));?>
-            <?php endif;?>
-    </table>
+    <h3>لیست بیمارستان ها / درمانگاه ها / مطب ها</h3>
+    <p class="description">لیست بیمارستان، درمانگاه یا مطب هایی که در آنها عضو هستید.</p>
+
     <?php $this->widget('zii.widgets.grid.CGridView', array(
         'id'=>'expertises-grid',
         'dataProvider'=>$clinics,
         'itemsCssClass'=>'table',
+        'template'=>'{items} {pager}',
         'columns'=>array(
-            'clinic_name',
+            array(
+                'name'=>'clinic_name',
+                'header'=>Clinics::model()->getAttributeLabel('clinic_name')
+            ),
+            array(
+                'name'=>'town_id',
+                'value'=>'$data->town->name',
+                'header'=>Clinics::model()->getAttributeLabel('town_id')
+            ),
+            array(
+                'name'=>'place_id',
+                'value'=>'$data->place->name',
+                'header'=>Clinics::model()->getAttributeLabel('place_id')
+            ),
+            array(
+                'name'=>'address',
+                'header'=>Clinics::model()->getAttributeLabel('address')
+            ),
             array(
                 'class'=>'CButtonColumn',
-                'template'=>'{update} {delete}'
+                'template'=>'{enter}',
+                'buttons'=>array(
+                    'enter'=>array(
+                        'label'=>'ورود به بیمارستان / درمانگاه / مطب',
+                        'url'=>'CHtml::normalizeUrl(array("/clinics/panel/enter", "id"=>$data->id))',
+                        'options'=>array(
+                            'class'=>'btn btn-info btn-sm'
+                        ),
+                    )
+                ),
             ),
         ),
     )); ?>

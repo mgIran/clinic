@@ -48,13 +48,26 @@
             <div class="profile-info">
                 <h4><?= $this->userDetails->getShowName(); ?></h4>
                 <small><?= $this->userDetails->user->email; ?></small>
-                <span><?= $this->userDetails->roleLabels[Yii::app()->user->roles] ?></span>
+                <?php if(isset(Yii::app()->user->clinic)):?>
+                    <span><?= $this->userDetails->roleLabels[Yii::app()->user->roles]; ?></span>
+                <?php endif;?>
             </div>
         </div>
         <div class="list-group">
-            <a data-toggle="tooltip" data-placement="left" title="داشبورد" href="<?php echo Yii::app()->createUrl('/dashboard');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='dashboard')?' active':'';?>">داشبورد</a>
-            <a data-toggle="tooltip" data-placement="left" title="پپرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
-            <a data-toggle="tooltip" data-placement="left" title="تنظیمات" href="<?php echo Yii::app()->createUrl('/users/public/setting');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/setting')?' active':'';?>">تنظیمات</a>
+            <h5>کاربری</h5>
+            <?php if(!isset(Yii::app()->user->clinic)):?>
+                <a title="داشبورد" href="<?php echo Yii::app()->createUrl('/dashboard');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='dashboard')?' active':'';?>">داشبورد</a>
+            <?php endif;?>
+            <a title="تنظیمات" href="<?php echo Yii::app()->createUrl('/users/public/setting');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/setting')?' active':'';?>">تنظیمات</a>
+            <?php if(isset(Yii::app()->user->clinic)):?>
+                <?php if(Yii::app()->user->roles == 'clinicAdmin'):?>
+                    <h5>اپراتور</h5>
+                <?php elseif(Yii::app()->user->roles == 'doctor'):?>
+                    <h5>پزشک</h5>
+                <?php endif;?>
+                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
+                <a title="خروج از بیمارستان / درمانگاه / مطب" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="list-group-item" id="leave-clinic">خروج از بیمارستان / درمانگاه / مطب</a>
+            <?php endif;?>
         </div>
     </div>
     <div class="content">

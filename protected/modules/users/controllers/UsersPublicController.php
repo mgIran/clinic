@@ -56,15 +56,14 @@ class UsersPublicController extends Controller
         Yii::app()->theme = 'frontend';
         $this->layout = '//layouts/panel';
 
+        if(isset(Yii::app()->user->clinic))
+            $this->redirect(array('/clinics/panel'));
+
         /* @var $user Users */
         $user = Users::model()->findByPk(Yii::app()->user->id);
         $criteria = new CDbCriteria();
         $criteria->select = 'clinics_clinics.post as post, clinics.*';
-        $clinics = new CArrayDataProvider($user->clinics($criteria), array(
-            'pagination'=>array(
-                'pageSize'=>1
-            )
-        ));
+        $clinics = new CArrayDataProvider($user->clinics($criteria));
 
         $this->render('dashboard', array(
             'clinics' => $clinics,
