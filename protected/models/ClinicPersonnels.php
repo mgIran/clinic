@@ -8,6 +8,8 @@
  * @property string $user_id
  * @property integer $post
  * @property integer $expertiseID
+ * @property string $doctor_name
+ * @property string $clinic_name
  *
  * The followings are the available model relations:
  * @property Clinics $clinic
@@ -29,6 +31,8 @@ class ClinicPersonnels extends CActiveRecord
 	public $role_id;
 	public $first_name;
 	public $expertiseID;
+    public $doctor_name;
+    public $clinic_name;
 	public $last_name;
 	public $phone;
 	public $mobile;
@@ -54,6 +58,7 @@ class ClinicPersonnels extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('clinic_id, user_id, post', 'safe', 'on' => 'search'),
+			array('doctor_name, clinic_name, expertiseID', 'safe', 'on'=>'getDoctorsByExp'),
 		);
 	}
 
@@ -124,20 +129,24 @@ class ClinicPersonnels extends CActiveRecord
 	 * @return CActiveDataProvider
 	 */
 	public function getDoctorsByExp()
-	{
-		$criteria = new CDbCriteria;
+    {
+        $criteria = new CDbCriteria;
 
-		$criteria->together = true;
-		$criteria->alias = 'clinic_personnels';
-		$criteria->with = array('user', 'user.expertises');
+        $criteria->together = true;
+        $criteria->alias = 'clinic_personnels';
+        $criteria->with = array('clinic', 'user', 'user.expertises', 'user.userDetails');
+        $criteria->order = 'clinic_personnels.user_id DESC, clinic_personnels.clinic_id DESC';
 
-		$criteria->compare('clinic_personnels.post', 3);
-		$criteria->compare('expertises.id', $this->expertiseID);
+        $criteria->compare('clinic_personnels.post', 3);
+        $criteria->compare('expertises.id', $this->expertiseID);
+        $criteria->compare('userDetails.first_name', $this->doctor_name, true);
+        $criteria->compare('userDetails.last_name', $this->doctor_name, true, 'OR');
+        $criteria->compare('clinic.clinic_name', $this->clinic_name, true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
 
 	/**
 	 * Returns the static model of the specified AR class.

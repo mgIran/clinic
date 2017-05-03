@@ -17,7 +17,6 @@ class SiteController extends Controller
                 'help',
                 'terms',
                 'privacy',
-                'search',
             ),
             'backend' => array(
                 'transactions'
@@ -54,22 +53,6 @@ class SiteController extends Controller
         $this->layout = "public";
 
         $this->render('index');
-    }
-
-    public function actionSearch()
-    {
-        Yii::app()->theme = 'frontend';
-        $this->layout = 'public';
-
-        $clinicPersonnel = new ClinicPersonnels('getDoctorsByExp');
-        $clinicPersonnel->unsetAttributes();
-        if(isset($_GET['ClinicPersonnels']))
-            $clinicPersonnel->attributes = $_GET['ClinicPersonnels'];
-        $clinicPersonnel->expertiseID = Yii::app()->request->getQuery('exp');
-
-        $this->render('search', array(
-            'doctors' => $clinicPersonnel,
-        ));
     }
 
     /**

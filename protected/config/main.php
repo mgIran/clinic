@@ -74,6 +74,7 @@ return array(
 				'clinics/manage/<action:(updatePersonnel|removePersonnel)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
 				'clinics/manage/<action:(addPersonnel|addNewPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
 				'/help'=>'site/help',
+				'search/<id:\d+>'=>'reservation/search',
 				'<module:\w+>/<id:\d+>'=>'<module>/manage/view',
 				'<module:\w+>/<controller:\w+>'=>'<module>/<controller>/index',
 				'<controller:\w+>/<action:\w+>/<id:\d+>/<title:(.*)>'=>'<controller>/<action>',

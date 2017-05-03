@@ -694,36 +694,63 @@ in D:\Important\Xamppp\htdocs\clinic\index.php (11)
 in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
 in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
 in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:37:04 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:37:09 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:39:06 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:40:41 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:41:18 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:41:30 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:41:49 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:42:01 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:42:12 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 17:43:10 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (244)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
-2017/05/03 18:33:12 [warning] [application] Failed to set unsafe attribute "post" of "Users".
-in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (248)
-in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 18:27:10 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:10 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:20 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:20 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:25 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:25 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:36 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:27:36 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:28:06 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:28:06 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:28:14 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:28:14 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:29:12 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (68)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:29:12 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (68)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:29:36 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (68)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:29:36 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (68)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:29:42 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:29:42 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:30:02 [warning] [application] Failed to set unsafe attribute "doctor_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/03 18:30:02 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
+in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
+in E:\Projects\wamp\www\clinic\index.php (11)
