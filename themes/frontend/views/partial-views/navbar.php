@@ -10,11 +10,27 @@
         </div>
         <div class="collapse navbar-collapse" id="mobile-navbar">
             <ul class="nav navbar-nav">
-                <li><a href="#">صفحه اصلی</a></li>
+                <li><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">صفحه اصلی</a></li>
                 <li><a href="#">درباره ما</a></li>
                 <li><a href="#">تماس با ما</a></li>
-                <li><a href="<?php echo Yii::app()->createUrl('/login');?>">ورود</a></li>
-                <li><a href="#">ثبت نام</a></li>
+                <?php
+                if(Yii::app()->user->isGuest):
+                ?>
+                    <li><a href="<?php echo Yii::app()->createUrl('/login');?>">ورود</a></li>
+                    <li><a href="#">ثبت نام</a></li>
+                <?php
+                elseif(Yii::app()->user->type == 'admin'):
+                ?>
+                    <li><a href="<?php echo Yii::app()->createUrl('/admins/dashboard');?>">پنل مدیریت</a></li>
+                    <li><a class="text-danger" href="<?= Yii::app()->createUrl('/logout')?>">خروج</a></li>
+                <?php
+                elseif(Yii::app()->user->type == 'user'):
+                ?>
+                    <li><a href="<?php echo Yii::app()->createUrl('/dashboard');?>">داشبورد</a></li>
+                    <li><a class="text-danger" href="<?= Yii::app()->createUrl('/logout')?>">خروج</a></li>
+                <?php
+                endif;
+                ?>
             </ul>
             <ul class="navbar-socials hidden-xs hidden-sm">
                 <li><a href="#"><i class="facebook-icon"></i></a></li>
