@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-04-30 20:21:57
+Date: 2017-05-03 18:57:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -144,8 +144,9 @@ CREATE TABLE `ym_clinic_personnels` (
 -- ----------------------------
 -- Records of ym_clinic_personnels
 -- ----------------------------
-INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '2');
+INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '43', '3');
+INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '3');
 
 -- ----------------------------
 -- Table structure for ym_counter_save
@@ -160,8 +161,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '5');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457874');
+INSERT INTO `ym_counter_save` VALUES ('counter', '8');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457877');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -179,7 +180,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493567472');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493821591');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -197,6 +198,9 @@ CREATE TABLE `ym_doctor_expertises` (
 -- ----------------------------
 -- Records of ym_doctor_expertises
 -- ----------------------------
+INSERT INTO `ym_doctor_expertises` VALUES ('43', '1');
+INSERT INTO `ym_doctor_expertises` VALUES ('45', '1');
+INSERT INTO `ym_doctor_expertises` VALUES ('45', '2');
 
 -- ----------------------------
 -- Table structure for ym_doctor_leaves
@@ -243,12 +247,15 @@ CREATE TABLE `ym_expertises` (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'توضیح کوتاه',
   `icon` varchar(255) DEFAULT NULL COMMENT 'آیکون',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_expertises
 -- ----------------------------
-INSERT INTO `ym_expertises` VALUES ('1', 'فوق تخصص ریه', 'ریه و سیستم تنفسی و...', '9sIjE1493187888.svg');
+INSERT INTO `ym_expertises` VALUES ('1', 'قلب و عروق', null, 'heart');
+INSERT INTO `ym_expertises` VALUES ('2', 'ریه', null, 'lungs');
+INSERT INTO `ym_expertises` VALUES ('3', 'دندان', null, 'tooth');
+INSERT INTO `ym_expertises` VALUES ('4', 'مغز و اعصاب', null, 'brain');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -886,7 +893,7 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'c3ce9873dc87fb827a4bed95c3656f82', '3', 'site');
+INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site');
 INSERT INTO `ym_users` VALUES ('45', '', '$2a$12$92HG95rnUS5MYLFvDjn2cOU4O4p64mpH9QnxFYzVnk9CjQIPrcTBC', 'yusef.mobasheri@gmail.com', '2', '1469083948', 'active', '72ca2204ef7d713a27204d6dfeb615a4', '1', 'site');
 
 -- ----------------------------
@@ -911,8 +918,8 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null);
-INSERT INTO `ym_user_details` VALUES ('45', 'یوسف مبشری', 'yusef', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null);
+INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', 'amKd41493797323.jpg', '09123456789');
+INSERT INTO `ym_user_details` VALUES ('45', 'یوسف', 'مبشری', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null);
 
 -- ----------------------------
 -- Table structure for ym_user_notifications

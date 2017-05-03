@@ -25,37 +25,41 @@ $(document).ready(function() {
             }
         });
 
-    $('body').on('click', '.anchor-link', function() {
-        var target = $($(this).attr('href')).offset().top;
+    if($('.anchor-link').length != 0) {
+        $('body').on('click', '.anchor-link', function () {
+            var target = $($(this).attr('href')).offset().top;
 
-        $('html, body').animate({
-            scrollTop: target - 50
-        }, 800);
-        return false;
-    });
+            $('html, body').animate({
+                scrollTop: target - 50
+            }, 800);
+            return false;
+        });
+    }
 
     var counterRun = false;
     $(window).scroll(function(){
-        if($(window).scrollTop() > ($('.counter-up').offset().top-600) && !counterRun){
-            counterRun=true;
-            $('.counter-up').each(function () {
-                var $this = $(this),
-                    countTo = $this.attr('data-count');
+        if($('.counter-up').length != 0) {
+            if ($(window).scrollTop() > ($('.counter-up').offset().top - 600) && !counterRun) {
+                counterRun = true;
+                $('.counter-up').each(function () {
+                    var $this = $(this),
+                        countTo = $this.attr('data-count');
 
-                $({countNum: $this.text()}).animate({
-                        countNum: countTo
-                    },
-                    {
-                        duration: 3000,
-                        easing: 'linear',
-                        step: function () {
-                            $this.text(toPersianDigit(Math.floor(this.countNum)));
+                    $({countNum: $this.text()}).animate({
+                            countNum: countTo
                         },
-                        complete: function () {
-                            $this.text(toPersianDigit(this.countNum));
-                        }
-                    });
-            });
+                        {
+                            duration: 3000,
+                            easing: 'linear',
+                            step: function () {
+                                $this.text(toPersianDigit(Math.floor(this.countNum)));
+                            },
+                            complete: function () {
+                                $this.text(toPersianDigit(this.countNum));
+                            }
+                        });
+                });
+            }
         }
     });
 });
