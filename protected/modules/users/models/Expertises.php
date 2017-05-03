@@ -10,7 +10,7 @@
  * @property string $icon
  *
  * The followings are the available model relations:
- * @property Users[] $ymUsers
+ * @property Users[] $users
  */
 class Expertises extends CActiveRecord
 {
@@ -47,7 +47,7 @@ class Expertises extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'Users' => array(self::MANY_MANY, 'Users', '{{doctor_expertises}}(expertise_id, doctor_id)'),
+			'users' => array(self::MANY_MANY, 'Users', '{{doctor_expertises}}(expertise_id, doctor_id)'),
 		);
 	}
 

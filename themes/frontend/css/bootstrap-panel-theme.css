@@ -957,6 +957,7 @@ a:active{
     min-width: 150px;
     padding: 10px 15px;
     border:none;
+    border-radius: 20px;
     -webkit-transition: all 0.4s ease 0s;
     -moz-transition: all 0.4s ease 0s;
     -ms-transition: all 0.4s ease 0s;
@@ -973,7 +974,8 @@ a:active{
     padding: 10px 15px;
     border-color:#e7ebf1;
     color: #333;
-    min-width: 120px;
+    min-width: 150px;
+    border-radius: 20px;
     -webkit-transition: all 0.4s ease 0s;
     -moz-transition: all 0.4s ease 0s;
     -ms-transition: all 0.4s ease 0s;
@@ -1136,7 +1138,6 @@ a:active{
 }
 .page-error .btn{
     position: relative;
-    padding: 13px 15px;
 }
 .page-error .buttons{
     margin-bottom: 50px;
@@ -2140,4 +2141,7 @@ ul.yiiPager li.previous a{
 }
 ul.yiiPager li.next a{
     margin-right: 15px;
+}
+.content .middle-box{
+    min-height:calc(100vh - 287px);
 }

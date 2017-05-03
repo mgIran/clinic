@@ -17,6 +17,7 @@ class SiteController extends Controller
                 'help',
                 'terms',
                 'privacy',
+                'search',
             ),
             'backend' => array(
                 'transactions'
@@ -49,9 +50,26 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        Yii::app()->theme="frontend";
-        $this->layout="public";
+        Yii::app()->theme = "frontend";
+        $this->layout = "public";
+
         $this->render('index');
+    }
+
+    public function actionSearch()
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = 'public';
+
+        $clinicPersonnel = new ClinicPersonnels('getDoctorsByExp');
+        $clinicPersonnel->unsetAttributes();
+        if(isset($_GET['ClinicPersonnels']))
+            $clinicPersonnel->attributes = $_GET['ClinicPersonnels'];
+        $clinicPersonnel->expertiseID = Yii::app()->request->getQuery('exp');
+
+        $this->render('search', array(
+            'doctors' => $clinicPersonnel,
+        ));
     }
 
     /**
@@ -117,15 +135,6 @@ class SiteController extends Controller
         Yii::app()->theme = 'frontend';
         $this->layout = '//layouts/index';
         $model = Pages::model()->findByPk(6);
-        $this->render('//site/pages/page', array('model' => $model));
-    }
-
-    public function actionPublishers()
-    {
-        Yii::import('pages.models.*');
-        Yii::app()->theme = 'frontend';
-        $this->layout = '//layouts/index';
-        $model = Pages::model()->findByPk(9);
         $this->render('//site/pages/page', array('model' => $model));
     }
 

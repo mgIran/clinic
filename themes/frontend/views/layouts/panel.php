@@ -21,6 +21,7 @@
 
     $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
     $cs->registerCssFile($baseUrl.'/css/bootstrap-rtl.min.css');
+    $cs->registerCssFile($baseUrl.'/css/font-awesome.css');
     $cs->registerCssFile($baseUrl.'/css/bootstrap-theme.css?3.8');
     $cs->registerCssFile($baseUrl.'/css/bootstrap-panel-theme.css?3.8');
     $cs->registerCssFile($baseUrl.'/css/responsive-theme.css?3.8');
@@ -45,7 +46,7 @@
             <div class="profile-image">
                 <img src="<?php
                 if(Yii::app()->user->auth_mode == 'site') {
-                    echo (Yii::app()->user->avatar == '') ? Yii::app()->theme->baseUrl . '/svg/default-user.svg' : Yii::app()->baseUrl . '/uploads/users/avatar/' . Yii::app()->user->avatar;
+                    echo (Yii::app()->user->avatar == '') ? Yii::app()->theme->baseUrl . '/svg/default-user.svg' : Yii::app()->baseUrl . '/uploads/users/' . Yii::app()->user->avatar;
                 } else
                     echo Yii::app()->user->avatar;
                 ?>" alt="<?= $this->userDetails->getShowName(); ?>">
@@ -63,6 +64,7 @@
             <?php if(!isset(Yii::app()->user->clinic)):?>
                 <a title="داشبورد" href="<?php echo Yii::app()->createUrl('/dashboard');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='dashboard')?' active':'';?>">داشبورد</a>
             <?php endif;?>
+            <a title="پروفایل" href="<?php echo Yii::app()->createUrl('/users/public/profile');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/profile')?' active':'';?>">پروفایل</a>
             <a title="تنظیمات" href="<?php echo Yii::app()->createUrl('/users/public/setting');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/setting')?' active':'';?>">تنظیمات</a>
             <?php if(isset(Yii::app()->user->clinic)):?>
                 <?php if(Yii::app()->user->roles == 'clinicAdmin'):?>
@@ -70,11 +72,6 @@
                 <?php elseif(Yii::app()->user->roles == 'doctor'):?>
                     <h5>پزشک</h5>
                 <?php endif;?>
-                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
-                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
-                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
-                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
-                <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
                 <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
             <?php endif;?>
         </div>
@@ -92,7 +89,9 @@
                 <a href="<?php echo $this->createUrl('/users/public/logout');?>" title="خروج"><i class="logout-icon"></i></a>
             </div>
         </div>
-        <?php echo $content;?>
+        <div class="middle-box">
+            <?php echo $content;?>
+        </div>
         <?php $this->renderPartial('//partial-views/panel-footer');?>
     </div>
 </div>

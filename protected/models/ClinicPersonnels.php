@@ -7,6 +7,7 @@
  * @property string $clinic_id
  * @property string $user_id
  * @property integer $post
+ * @property integer $expertiseID
  *
  * The followings are the available model relations:
  * @property Clinics $clinic
@@ -27,6 +28,7 @@ class ClinicPersonnels extends CActiveRecord
 	public $password;
 	public $role_id;
 	public $first_name;
+	public $expertiseID;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -92,6 +94,27 @@ class ClinicPersonnels extends CActiveRecord
 		$criteria->compare('clinic_id',$this->clinic_id,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('post',$this->post,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * @return CActiveDataProvider
+     */
+	public function getDoctorsByExp()
+	{
+		$criteria=new CDbCriteria;
+
+		$criteria->together=true;
+		$criteria->alias='clinic_personnels';
+		$criteria->with=array('user', 'user.expertises');
+
+		$criteria->compare('clinic_personnels.post', 3);
+		$criteria->compare('expertises.id', $this->expertiseID);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -19,16 +19,12 @@
  * @property string $newPassword
  *
  * The followings are the available model relations:
- * @property ShopAddresses[] $addresses
- * @property BookBuys[] $bookBuys
- * @property Books[] $books
- * @property Books[] $bookmarkedBooks
  * @property UserDetails $userDetails
- * @property UserDevIdRequests $userDevIdRequests
  * @property UserTransactions[] $transactions
  * @property UserRoles $role
  * @property ClinicPersonnels $clinicPersonnels
  * @property Clinics[] $clinics
+ * @property Expertises[] $expertises
  */
 class Users extends CActiveRecord
 {
@@ -105,18 +101,14 @@ class Users extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'bookBuys' => array(self::HAS_MANY, 'BookBuys', 'user_id'),
-            'books' => array(self::HAS_MANY, 'Books', 'publisher_id'),
             'userDetails' => array(self::HAS_ONE, 'UserDetails', 'user_id'),
-            'userDevIdRequests' => array(self::HAS_ONE, 'UserDevIdRequests', 'user_id'),
             'transactions' => array(self::HAS_MANY, 'UserTransactions', 'user_id'),
             'role' => array(self::BELONGS_TO, 'UserRoles', 'role_id'),
-            'bookmarkedBooks' => array(self::MANY_MANY, 'Books', '{{user_book_bookmark}}(user_id, book_id)'),
-            'bookRate' => array(self::BELONGS_TO, 'BookRatings', 'id'),
             'sessions' => array(self::HAS_MANY, 'Sessions', 'user_id', 'on' => 'user_type = "user"'),
             'addresses' => array(self::HAS_MANY, 'ShopAddresses', 'user_id', 'on' => 'addresses.deleted = 0'),
             'clinicPersonnels' => array(self::BELONGS_TO, 'ClinicPersonnels', 'id'),
             'clinics' => array(self::MANY_MANY, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
+            'expertises' => array(self::MANY_MANY, 'Expertises', '{{doctor_expertises}}(doctor_id, expertise_id)'),
         );
     }
 
@@ -182,6 +174,4 @@ class Users extends CActiveRecord
     {
         return parent::model($className);
     }
-
-    
 }

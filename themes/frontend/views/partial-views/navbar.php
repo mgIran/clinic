@@ -10,11 +10,15 @@
         </div>
         <div class="collapse navbar-collapse" id="mobile-navbar">
             <ul class="nav navbar-nav">
-                <li><a href="#">صفحه اصلی</a></li>
-                <li><a href="#">درباره ما</a></li>
-                <li><a href="#">تماس با ما</a></li>
-                <li><a href="<?php echo Yii::app()->createUrl('/login');?>">ورود</a></li>
-                <li><a href="#">ثبت نام</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('/site');?>">صفحه اصلی</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('/about');?>">درباره ما</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('/contact');?>">تماس با ما</a></li>
+                <?php if(Yii::app()->user->isGuest):?>
+                    <li><a href="<?php echo Yii::app()->createUrl('/login');?>">ورود</a></li>
+                    <li><a href="<?php echo Yii::app()->createUrl('/register');?>">ثبت نام</a></li>
+                <?php else:?>
+                    <li><a href="<?php echo Yii::app()->createUrl('/dashboard');?>">پنل کاربری</a></li>
+                <?php endif;?>
             </ul>
             <ul class="navbar-socials hidden-xs hidden-sm">
                 <li><a href="#"><i class="facebook-icon"></i></a></li>

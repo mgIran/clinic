@@ -101,7 +101,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'contracts'); ?>
         <div style="display: inline-block;vertical-align: top;">
-            <?php $model->setIsNewRecord(false); $this->widget('application.extensions.dynamicField.dynamicField', array(
+            <?php $this->widget('application.extensions.dynamicField.dynamicField', array(
                 'id'=>'dynamic-field',
                 'model'=>$model,
                 'attributeName'=>'contracts',

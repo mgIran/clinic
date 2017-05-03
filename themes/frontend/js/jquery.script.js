@@ -25,6 +25,15 @@ $(document).ready(function() {
             }
         });
 
+    $('body').on('click', '.anchor-link', function() {
+        var target = $($(this).attr('href')).offset().top;
+
+        $('html, body').animate({
+            scrollTop: target - 50
+        }, 800);
+        return false;
+    });
+
     var counterRun = false;
     $(window).scroll(function(){
         if($(window).scrollTop() > ($('.counter-up').offset().top-600) && !counterRun){

@@ -15,7 +15,7 @@
     </div>
     <div class="copyright">
         <div class="container">
-            <div class="pull-right">تمامی حقوق متعلق به سایت «پزشک یار» است.</div>
+            <div class="pull-right ltr"><?php $this->renderPartial('//partial-views/_copyright');?></div>
             <div class="pull-left">
                 <a href="https://t.me/rahbod" target="_blank" title="Rahbod">
                     <img src="<?php echo Yii::app()->theme->baseUrl.'/svg/rahbod.svg';?>" alt="Rahbod">

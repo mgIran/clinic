@@ -36,11 +36,14 @@ class UserDetails extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_id', 'required'),
+			array('first_name, last_name, mobile', 'required', 'on' => 'update'),
 			array('user_id, national_code, zip_code', 'length', 'max'=>10),
 			array('first_name, last_name', 'length', 'max'=>50),
-			array('phone, mobile', 'length', 'max'=>11),
+			array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
+			array('phone', 'length', 'max'=>11),
 			array('address', 'length', 'max'=>1000),
 			array('avatar', 'length', 'max'=>255),
+			array('phone, mobile', 'numerical', 'integerOnly' => true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, first_name, last_name, national_code, phone, zip_code, address, avatar, mobile', 'safe', 'on'=>'search'),
@@ -71,7 +74,7 @@ class UserDetails extends CActiveRecord
 			'national_code' => 'کد ملی',
 			'phone' => 'تلفن',
 			'zip_code' => 'کد پستی',
-			'address' => 'نشانی دقیق پستی',
+			'address' => 'آدرس',
 			'avatar' => 'آواتار',
 			'mobile' => 'موبایل',
 		);
@@ -138,4 +141,12 @@ class UserDetails extends CActiveRecord
         else
             return $this->user->email;
     }
+
+	public function getAvatar()
+	{
+		if($this->avatar)
+            return Yii::app()->baseUrl.'/uploads/users/'.$this->avatar;
+        else
+            return Yii::app()->theme->baseUrl.'/svg/default-user.svg';
+	}
 }

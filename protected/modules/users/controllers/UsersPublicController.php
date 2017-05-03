@@ -25,6 +25,9 @@ class UsersPublicController extends Controller
                 'sessions',
                 'removeSession',
                 'ResendVerification',
+                'profile',
+                'upload',
+                'deleteUpload',
             )
         );
     }
@@ -36,6 +39,27 @@ class UsersPublicController extends Controller
     {
         return array(
             'checkAccess + dashboard, logout, setting, notifications, bookmarked, downloaded, transactions, library, sessions, removeSession',
+        );
+    }
+
+    public function actions()
+    {
+        return array(
+            'upload' => array(
+                'class' => 'ext.dropZoneUploader.actions.AjaxUploadAction',
+                'attribute' => 'avatar',
+                'rename' => 'random',
+                'validateOptions' => array(
+                    'acceptedTypes' => array('jpg', 'jpeg', 'png')
+                )
+            ),
+            'deleteUpload' => array(
+                'class' => 'ext.dropZoneUploader.actions.AjaxDeleteUploadedAction',
+                'modelName' => 'UserDetails',
+                'attribute' => 'avatar',
+                'uploadDir' => '/uploads/users',
+                'storedMode' => 'field'
+            ),
         );
     }
 
@@ -96,6 +120,67 @@ class UsersPublicController extends Controller
 
         $this->render('setting', array(
             'model' => $model,
+        ));
+    }
+
+    /**
+     * Change profile data
+     */
+    public function actionProfile()
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = '//layouts/panel';
+
+        $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+        $tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/temp/');
+        $avatarDIR = Yii::getPathOfAlias("webroot") . '/uploads/users/';
+        $avatarUrl = Yii::app()->createAbsoluteUrl('/uploads/users');
+
+        /* @var $model UserDetails */
+        $model = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
+
+        $this->performAjaxValidation($model);
+
+        $avatar = array();
+        if (!is_null($model->avatar))
+            $avatar = array(
+                'name' => $model->avatar,
+                'src' => $avatarUrl . '/' . $model->avatar,
+                'size' => filesize($avatarDIR . $model->avatar),
+                'serverName' => $model->avatar
+            );
+
+        if (isset($_POST['UserDetails'])) {
+            unset($_POST['UserDetails']['user_id']);
+
+            $avatarFlag = false;
+            if (isset($_POST['UserDetails']['avatar']) && file_exists($tmpDIR . $_POST['UserDetails']['avatar']) && $_POST['UserDetails']['avatar'] != $model->avatar) {
+                $file = $_POST['UserDetails']['avatar'];
+                $avatar = array(array(
+                    'name' => $file,
+                    'src' => $tmpUrl . '/' . $file,
+                    'size' => filesize($tmpDIR . $file),
+                    'serverName' => $file
+                ));
+                $avatarFlag = true;
+            }
+
+            $model->attributes = $_POST['UserDetails'];
+            if ($model->save()) {
+                if ($avatarFlag) {
+                    @rename($tmpDIR . $model->avatar, $avatarDIR . $model->avatar);
+                    Yii::app()->user->setState('avatar', $model->avatar);
+                }
+
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            } else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
+        $this->render('profile', array(
+            'model' => $model,
+            'avatar' => $avatar,
         ));
     }
 
@@ -166,42 +251,21 @@ class UsersPublicController extends Controller
                         $message .= '</div>';
                         $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">اگر شخص دیگری غیر از شما این درخواست را صادر نموده است، یا شما کلمه عبور خود را به یاد آورده‌اید و دیگر نیازی به تغییر آن ندارید، کلمه عبور قبلی/موجود شما همچنان فعال می‌باشد و می توانید از طریق <a href="' . ((strpos($_SERVER['SERVER_PROTOCOL'], 'https')) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/login">این صفحه</a> وارد حساب کاربری خود شوید.</div>';
                         $result = Mailer::mail($model->email, 'درخواست تغییر کلمه عبور در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
-                        if ($result)
-                            echo CJSON::encode(array(
-                                'hasError' => false,
-                                'message' => 'لینک تغییر کلمه عبور به ' . $model->email . ' ارسال شد.'
-                            ));
-                        else
-                            echo CJSON::encode(array(
-                                'hasError' => true,
-                                'message' => 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.'
-                            ));
+                        if ($result) {
+                            Yii::app()->user->setFlash('success', 'لینک تغییر کلمه عبور به ' . $model->email . ' ارسال شد.');
+                            $this->refresh();
+                        } else
+                            Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
                     } else
-                        echo CJSON::encode(array(
-                            'hasError' => true,
-                            'message' => 'بیش از 3 بار نمی توانید درخواست تغییر کلمه عبور بدهید.'
-                        ));
+                        Yii::app()->user->setFlash('failed', 'بیش از 3 بار نمی توانید درخواست تغییر کلمه عبور بدهید.');
                 } elseif ($model->status == 'pending')
-                    echo CJSON::encode(array(
-                        'hasError' => true,
-                        'message' => 'این حساب کاربری هنوز فعال نشده است.'
-                    ));
+                    Yii::app()->user->setFlash('failed', 'این حساب کاربری هنوز فعال نشده است.');
                 elseif ($model->status == 'blocked')
-                    echo CJSON::encode(array(
-                        'hasError' => true,
-                        'message' => 'این حساب کاربری مسدود می باشد.'
-                    ));
+                    Yii::app()->user->setFlash('failed', 'این حساب کاربری مسدود می باشد.');
                 elseif ($model->status == 'deleted')
-                    echo CJSON::encode(array(
-                        'hasError' => true,
-                        'message' => 'این حساب کاربری حذف شده است.'
-                    ));
+                    Yii::app()->user->setFlash('failed', 'این حساب کاربری حذف شده است.');
             } else
-                echo CJSON::encode(array(
-                    'hasError' => true,
-                    'message' => 'پست الکترونیکی وارد شده اشتباه است.'
-                ));
-            Yii::app()->end();
+                Yii::app()->user->setFlash('failed', 'پست الکترونیکی وارد شده اشتباه است.');
         }
 
         $this->render('forget_password');
@@ -355,7 +419,7 @@ class UsersPublicController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param Books $model the model to be validated
+     * @param Users $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {

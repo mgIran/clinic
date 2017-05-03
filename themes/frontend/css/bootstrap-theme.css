@@ -283,8 +283,6 @@ a:active{
 }
 .reservation-box{
     margin-top: 100px;
-    height:550px;
-    color: #fff;
 }
 .reservation-box .content{
     background: #18b29e;
@@ -310,7 +308,6 @@ a:active{
 .reservation-box h2 small{
     display: block;
     margin-top: 15px;
-    color: #fff;
     font-weight: lighter;
     font-size: 13px;
 }
@@ -624,7 +621,7 @@ input[type="text"].date-input{
     width: 80px;
 }
 .reservation-steps .steps{
-    margin: 70px -15px;
+    margin: 0 -15px 70px;
     padding: 0;
     overflow: hidden;
 }
@@ -731,6 +728,14 @@ input[type="text"].date-input{
 }
 .table-container{
     margin-top: 100px;
+}
+.table-container img{
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    box-shadow: 0 0 5px #ccc;
 }
 .table-container input[type="submit"]{
     width: 100px;
@@ -856,4 +861,51 @@ input[type="text"].date-input{
 }
 .btn-medium{
     width: 150px;
+}
+.expertise-items{
+    text-align: center;
+    margin-top: 100px;
+}
+.expertise-items .row{
+    margin-bottom: 70px;
+}
+.expertise-items span{
+    border:4px solid #00a0dc;
+    display: inline-block;
+    padding: 15px;
+    border-radius: 50%;
+}
+.expertise-items img,
+.expertise-items svg{
+    width: 80px;
+    height:80px;
+    display: inline-block;
+    vertical-align: middle;
+    fill: #ed7262;
+}
+.expertise-items h3{
+    font-size: 18px;
+    color: #a0a0a0;
+}
+.expertise-items a,
+.expertise-items a span,
+.expertise-items svg{
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.reservation-box:hover .expertise-items a:hover span,
+.reservation-box:hover .expertise-items a:focus span,
+.reservation-box:hover .expertise-items a:active span{
+    background: #00a0dc;
+}
+.reservation-box:hover .expertise-items a:hover svg,
+.reservation-box:hover .expertise-items a:focus svg,
+.reservation-box:hover .expertise-items a:active svg{
+    fill: #fff;
+}
+.ltr{
+    direction: ltr;
 }
