@@ -31,11 +31,14 @@
     $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js', CClientScript::POS_END);
     $cs->registerScriptFile($baseUrl.'/js/jquery.script.js?3.8', CClientScript::POS_END);
     $cs->registerScript('sidebar-scroll', '
-        $(".sidebar").niceScroll({cursorcolor: "#8b8b8b", autohidemode:true, cursorwidth:7,railalign:"left"});
+        $(".sidebar").niceScroll({cursorcolor: "#8b8b8b",
+            cursorborder: "none",
+            autohidemode:true, cursorwidth:5, railalign:"left"
+        });
     ');
     ?>
 </head>
-<body>
+<body style="overflow: hidden;">
 <div class="overlay fade"></div>
 <div class="panel-page">
     <div class="sidebar">
