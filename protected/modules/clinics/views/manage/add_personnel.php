@@ -20,8 +20,8 @@ $this->menu=array(
 );
 ?>
 
-<h1>افزودن پرسنل از کاربران</h1>
-
+<h3>افزودن پرسنل از کاربران</h3>
+<p class="description">جهت افزودن پرسنل از بین کاربران موجود در سایت، از فرم زیر اقدام کنید.</p>
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'clinic-personnel-form',
@@ -34,21 +34,21 @@ $this->menu=array(
 
 <?= $this->renderPartial('//partial-views/_flashMessage'); ?>
 
-<div class="form-group">
-    <?php echo $form->labelEx($model,'user_id'); ?>
-    <?php echo $form->dropDownList($model, 'user_id', $validUsers,array(
-            'class' => 'selectpicker',
-            'data-live-search' => true,
-            'prompt' => 'کاربر موردنظر را انتخاب کنید'
-        )); ?>
-    <?php echo $form->error($model,'user_id'); ?>
-</div>
+    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <?php echo $form->labelEx($model,'user_id'); ?>
+        <?php echo $form->dropDownList($model, 'user_id', $validUsers,array(
+                'class' => 'selectpicker',
+                'data-live-search' => true,
+                'prompt' => 'کاربر موردنظر را انتخاب کنید'
+            )); ?>
+        <?php echo $form->error($model,'user_id'); ?>
+    </div>
 
-<div class="form-group">
-    <?php echo $form->labelEx($model,'post'); ?>
-    <?php echo $form->dropDownList($model,'post', $model->getValidPosts()); ?>
-    <?php echo $form->error($model,'post'); ?>
-</div>
+    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <?php echo $form->labelEx($model,'post'); ?>
+        <?php echo $form->dropDownList($model,'post', $model->getValidPosts(),array('class' => 'selectpicker')); ?>
+        <?php echo $form->error($model,'post'); ?>
+    </div>
 
 <div class="form-group buttons">
     <?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class'=>'btn btn-success')); ?>

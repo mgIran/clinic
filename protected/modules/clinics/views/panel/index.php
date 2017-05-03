@@ -8,7 +8,7 @@
     <p class="description">کاربرانی که در درمانگاه شما ثبت شده اند.</p>
     <?php $this->renderPartial('//partial-views/_flashMessage');?>
     <div class="buttons">
-        <a class="btn btn-success" href="<?= $this->createUrl('manage/addPersonnel/'.$clinic->id) ?>"> افزودن شخص جدید</a>
+        <a class="btn btn-success" href="<?= $this->createUrl('manage/addPersonnel') ?>"> افزودن شخص جدید</a>
     </div>
     <?php
     $this->widget('zii.widgets.grid.CGridView', array(
@@ -30,10 +30,10 @@
                 'template'=>'{update} {delete}',
                 'buttons' => array(
                     'update' => array(
-                        'url' => 'Yii::app()->controller->createUrl("manage/updatePersonnel/".$data->clinic_id."/".$data->user_id)'
+                        'url' => 'Yii::app()->controller->createUrl("manage/updatePersonnel/".$data->user_id)'
                     ),
                     'delete' => array(
-                        'url' => 'Yii::app()->controller->createUrl("manage/removePersonnel/".$data->clinic_id."/".$data->user_id)'
+                        'url' => 'Yii::app()->controller->createUrl("manage/removePersonnel/".$data->user_id)'
                     )
                 )
             ),

@@ -2164,8 +2164,30 @@ ul.yiiPager li.next a{
 }
 .form{
     display:block;
-    padding-top: 30px;
 }
 .form .buttons{
     padding-top: 15px;
+}
+
+.bootstrap-select{
+    width: 100% !important;
+}
+.bootstrap-select .btn{
+    border-radius: 0;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #999;
+    background-color: transparent;
+    outline: 0 none !important;
+}
+.btn-group.open .dropdown-toggle,
+.bootstrap-select .btn:focus,
+.bootstrap-select .btn:active {
+    background-color: transparent;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+form .form-group[class*="col-"]{
+    float: none !important;
 }
