@@ -4,6 +4,7 @@
 
 $this->breadcrumbs=array(
     'مطب ها' => array('admin'),
+    $model->clinic->clinic_name => array('view','id' => $model->clinic_id),
     'مدیریت پرسنل',
 );
 

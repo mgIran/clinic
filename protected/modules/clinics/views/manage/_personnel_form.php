@@ -14,23 +14,22 @@
             'validateOnSubmit' => true
         ),
     )); ?>
-    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="<?= Yii::app()->user->type == 'user'?"col-lg-6 col-md-6 col-sm-6 col-xs-12":'' ?>">
         <?= $this->renderPartial('//partial-views/_flashMessage'); ?>
     </div>
-
     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
     <?php
     if(!$model->isNewRecord):
         ?>
-        <div class="alert alert-warning">
-            <strong><?php echo $form->labelEx($model,'password', array('style' => 'width: 50px')); ?>:</strong>&nbsp;&nbsp;
+        <div class="alert alert-warning message">
+            <strong>کلمه عبور:</strong>&nbsp;&nbsp;
             <span style="font-size: 18px; font-weight: 500"><?= $model->user->useGeneratedPassword()?$model->user->generatePassword():"کلمه عبور توسط کاربر تغییر یافته"; ?></span>
         </div>
         <?php
     endif;
     ?>
     </div>
-
+    <div class="clearfix"></div>
     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <?php echo $form->labelEx($model,'email'); ?>
         <?php echo $form->textField($model,'email',array('class' => 'ltr text-right')); ?>

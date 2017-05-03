@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'مطب ها'=>array('admin'),
-	$model->clinic_name,
+	$model->clinic_name => array('view','id' => $model->id),
 	'ویرایش',
 );
 

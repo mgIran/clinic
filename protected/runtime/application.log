@@ -724,3 +724,6 @@ in D:\Important\Xamppp\htdocs\clinic\index.php (11)
 2017/05/03 17:43:10 [warning] [application] Failed to set unsafe attribute "post" of "Users".
 in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (244)
 in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 18:33:12 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (248)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)

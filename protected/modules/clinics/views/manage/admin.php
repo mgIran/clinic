@@ -34,13 +34,13 @@ $this->menu=array(
 		'address',
 		array(
 			'class'=>'CButtonColumn',
-            'template'=>'{addPersonnel} {update} {delete}',
+            'template'=>'{addPersonnel} {view} {update} {delete}',
 			'buttons' =>array(
 				'addPersonnel'=>array(
 					'imageUrl' => Yii::app()->theme->baseUrl."/img/new-user.svg",
 					'options' => array('class' => 'add-person'),
-					'url'=>'Yii::app()->controller->createUrl("manage/addPersonnel/".$data->id)',
-					'label'=>'افزودن پرسنل'
+					'url'=>'Yii::app()->controller->createUrl("manage/adminPersonnel/".$data->id)',
+					'label'=>'لیست پرسنل'
 				)
 			)
 		),

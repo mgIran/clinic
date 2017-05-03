@@ -12,7 +12,7 @@ class ClinicsManageController extends Controller
 	{
 		return array(
 			'backend' => array(
-				'create', 'update', 'admin', 'delete', 'upload',
+				'view', 'create', 'update', 'admin', 'delete', 'upload',
 				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
 			)
 		);
@@ -29,6 +29,13 @@ class ClinicsManageController extends Controller
 		);
 	}
 
+	public function actionView($id)
+	{
+		$this->render('view',array(
+			'model' => $this->loadModel($id)
+		));
+	}
+	
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
