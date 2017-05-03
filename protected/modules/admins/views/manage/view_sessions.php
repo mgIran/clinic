@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 ?>
 
 <h3>نمایش دستگاه های متصل</h3>
-<? $this->renderPartial('//layouts/_flashMessage') ?>
+<? $this->renderPartial('//partial-views/_flashMessage') ?>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

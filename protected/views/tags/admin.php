@@ -10,7 +10,7 @@ $this->menu=array(
 	array('label'=>'افزودن برچسب', 'url'=>array('create')),
 );
 ?>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <h1>مدیریت برچسب ها</h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

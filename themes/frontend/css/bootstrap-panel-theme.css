@@ -957,6 +957,7 @@ a:active{
     min-width: 150px;
     padding: 10px 15px;
     border:none;
+    border-radius: 20px;
     -webkit-transition: all 0.4s ease 0s;
     -moz-transition: all 0.4s ease 0s;
     -ms-transition: all 0.4s ease 0s;
@@ -966,6 +967,23 @@ a:active{
 .btn-info:hover,
 .btn-info:focus,
 .btn-info:active{
+    background: #179f8b;
+}
+.btn-primary{
+    background: #18b29e;
+    min-width: 150px;
+    padding: 10px 15px;
+    border:none;
+    border-radius: 20px;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active{
     background: #179f8b;
 }
 .btn-default{
@@ -2140,4 +2158,11 @@ ul.yiiPager li.previous a{
 }
 ul.yiiPager li.next a{
     margin-right: 15px;
+}
+.form{
+    display:block;
+    padding-top: 30px;
+}
+.form .buttons{
+    padding-top: 15px;
 }

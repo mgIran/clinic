@@ -460,3 +460,237 @@ in D:\Important\Xamppp\htdocs\clinic\index.php (11)
 2017/05/01 18:14:05 [warning] [application] Failed to set unsafe attribute "post" of "Users".
 in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (162)
 in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 10:33:14 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (189)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 11:38:05 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (190)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 11:40:41 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (190)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 11:44:49 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 11:45:03 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 11:55:29 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (191)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:34 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:34 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:35 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:35 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:41 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:41 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:43 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:43 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:45 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:45 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:45 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:26:45 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:05 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:05 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:06 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:06 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:07 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:07 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:31 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:31 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:32 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:32 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:34 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:34 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:34 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:34 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:37 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:37 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:38 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:38 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:39 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:39 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:41 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:41 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:42 [warning] [application] Failed to set unsafe attribute "oldPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:27:42 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:33:47 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:33:48 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:45 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:46 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:48 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:49 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:53 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:54 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:34:55 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:36:09 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:36:10 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:36:11 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:36:29 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:36:30 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:36:31 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:37:42 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:37:53 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/03 12:37:53 [warning] [application] Failed to set unsafe attribute "newPassword" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\users\controllers\UsersPublicController.php (85)
+in D:\Important\Xamppp\htdocs\clinic\protected\components\AuthController.php (108)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)

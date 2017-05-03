@@ -15,7 +15,7 @@ class UsersPublicController extends Controller
                 'notifications',
                 'verify',
                 'forgetPassword',
-                'changePassword',
+                'recoverPassword',
                 'authCallback',
                 'bookmarked',
                 'downloaded',
@@ -67,6 +67,7 @@ class UsersPublicController extends Controller
 
         $this->render('dashboard', array(
             'clinics' => $clinics,
+            'user' => $user,
         ));
     }
 
@@ -78,16 +79,15 @@ class UsersPublicController extends Controller
         Yii::app()->theme = 'frontend';
         $this->layout = '//layouts/panel';
         $model = Users::model()->findByPk(Yii::app()->user->getId());
-        $model->setScenario('update');
-
-        $this->performAjaxValidation($model);
+        $model->setScenario('change_password');
 
         if (isset($_POST['Users'])) {
             $model->attributes = $_POST['Users'];
             if ($model->validate()) {
                 $model->password = $_POST['Users']['newPassword'];
-                if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $model->password = $model->encrypt($model->password);
+                if ($model->save(false)) {
+                    Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
                     $this->redirect($this->createUrl('/dashboard'));
                 } else
                     Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
@@ -162,10 +162,10 @@ class UsersPublicController extends Controller
                         $model->updateByPk($model->id, array('verification_token' => $token, 'change_password_request_count' => $count + 1));
                         $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>بنا به درخواست شما جهت تغییر کلمه عبور لینک زیر خدمتتان ارسال گردیده است.</div>';
                         $message .= '<div style="text-align: right;font-size: 9pt;">';
-                        $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/changePassword/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/changePassword/token/' . $token . '</a>';
+                        $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/recoverPassword/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/recoverPassword/token/' . $token . '</a>';
                         $message .= '</div>';
                         $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">اگر شخص دیگری غیر از شما این درخواست را صادر نموده است، یا شما کلمه عبور خود را به یاد آورده‌اید و دیگر نیازی به تغییر آن ندارید، کلمه عبور قبلی/موجود شما همچنان فعال می‌باشد و می توانید از طریق <a href="' . ((strpos($_SERVER['SERVER_PROTOCOL'], 'https')) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/login">این صفحه</a> وارد حساب کاربری خود شوید.</div>';
-                        $result = Mailer::mail($model->email, 'درخواست تغییر کلمه عبور در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
+                        $result = Mailer::mail($model->email, 'درخواست تغییر کلمه عبور در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail'],Yii::app()->params['SMTP']);
                         if ($result)
                             echo CJSON::encode(array(
                                 'hasError' => false,
@@ -210,8 +210,11 @@ class UsersPublicController extends Controller
     /**
      * Change password
      */
-    public function actionChangePassword()
+    public function actionRecoverPassword()
     {
+        Yii::app()->theme = 'frontend';
+        $this->layout = '//layouts/public';
+
         if (!Yii::app()->user->isGuest and Yii::app()->user->type != 'admin')
             $this->redirect($this->createAbsoluteUrl('//'));
         else if (!Yii::app()->user->isGuest and Yii::app()->user->type == 'admin')
@@ -225,23 +228,25 @@ class UsersPublicController extends Controller
         elseif ($model->change_password_request_count == 0)
             $this->redirect($this->createAbsoluteUrl('//'));
 
-        $model->setScenario('change_password');
+        $model->setScenario('recover_password');
+
         $this->performAjaxValidation($model);
 
         if ($model->status == 'active') {
-            Yii::app()->theme = 'frontend';
-            $this->layout = '//layouts/login';
 
             if (isset($_POST['Users'])) {
                 $model->password = $_POST['Users']['password'];
                 $model->repeatPassword = $_POST['Users']['repeatPassword'];
-                $model->verification_token = null;
-                $model->change_password_request_count = 0;
-                if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
-                    $this->redirect($this->createUrl('/login'));
-                } else
-                    Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                if($model->validate()){
+                    $model->verification_token = null;
+                    $model->change_password_request_count = 0;
+                    $model->password = $model->encrypt($model->password);
+                    if($model->save(false)){
+                        Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
+                        $this->redirect($this->createUrl('/login'));
+                    }else
+                        Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                }
             }
 
             $this->render('change_password', array(

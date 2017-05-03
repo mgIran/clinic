@@ -14,15 +14,10 @@
 
         <?php $form=$this->beginWidget('CActiveForm', array(
             'id'=>'users-form',
+            'focus'=>array($model,'oldPassword'),
             'action' => Yii::app()->createUrl('/users/public/setting'),
-            // Please note: When you enable ajax validation, make sure the corresponding
-            // controller action is handling ajax validation correctly.
-            // There is a call to performAjaxValidation() commented in generated controller code.
-            // See class documentation of CActiveForm for details on this.
-            'enableAjaxValidation'=>true,
+            'enableAjaxValidation'=>false,
         )); ?>
-
-        <?php echo $form->errorSummary($model); ?>
 
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

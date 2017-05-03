@@ -67,22 +67,29 @@ class Users extends CActiveRecord
         // will receive user inputs.
         return array(
             array('email, password', 'required', 'on' => 'insert,create'),
+            array('email', 'required', 'on' => 'update'),
             array('role_id', 'default', 'value' => 1),
             array('email', 'required', 'on' => 'email, OAuthInsert'),
-            array('email', 'unique', 'on' => 'insert,create,OAuthInsert'),
+            array('email', 'unique', 'on' => 'insert, create, OAuthInsert, update'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
-            array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'update'),
-            array('password', 'required', 'on' => 'change_password'),
-            array('repeatPassword', 'compare', 'compareAttribute' => 'password', 'on' => 'change_password'),
-            array('email', 'filter', 'filter' => 'trim', 'on' => 'create'),
-            array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create'),
-            array('oldPassword', 'oldPass', 'on' => 'update'),
+            array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
+            array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update'),
             array('email', 'length', 'max' => 255),
             array('role_id', 'length', 'max' => 10),
             array('status', 'length', 'max' => 8),
             array('create_date', 'length', 'max' => 20),
             array('type, first_name, last_name, phone, mobile, national_code', 'safe'),
+
+            // change password rules
+            array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'change_password'),
+            array('repeatPassword', 'compare', 'compareAttribute' => 'newPassword', 'on' => 'change_password', 'message' => 'کلمه های عبور همخوانی ندارند'),
+            array('oldPassword', 'oldPass', 'on' => 'change_password'),
+
+            // recover password rules
+            array('password', 'required', 'on' => 'recover_password'),
+            array('repeatPassword', 'compare', 'compareAttribute' => 'password', 'on' => 'recover_password', 'message' => 'کلمه های عبور همخوانی ندارند'),
+
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('type, roleId, create_date, status, verification_token, change_password_request_count, email ,statusFilter, first_name, last_name, phone, mobile, national_code', 'safe', 'on' => 'search'),
@@ -212,7 +219,7 @@ class Users extends CActiveRecord
             $model->national_code = $this->national_code;
             if(!@$model->save())
                 $this->addErrors($model->errors);
-        }else{
+        }elseif($this->scenario == 'update'){
             $model = UserDetails::model()->findByPk($this->id);
             $model->first_name = $this->first_name;
             $model->last_name = $this->last_name;
@@ -229,7 +236,7 @@ class Users extends CActiveRecord
         return substr(md5($this->email),0,8);
     }
 
-    public function checkGeneratePassword(){
+    public function useGeneratedPassword(){
         $bCrypt = new bCrypt();
         return $bCrypt->verify($this->generatePassword(), $this->password);
     }

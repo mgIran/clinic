@@ -16,7 +16,7 @@ $this->menu = array(
 <h3>نمایش دستگاه های متصل
     "<?php echo $model->user->userDetails->fa_name && !empty($model->user->userDetails->fa_name)?$model->user->userDetails->fa_name:$model->user->email; ?>
     "</h3>
-<? $this->renderPartial('//layouts/_flashMessage') ?>
+<? $this->renderPartial('//partial-views/_flashMessage') ?>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

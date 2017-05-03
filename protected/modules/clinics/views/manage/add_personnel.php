@@ -21,6 +21,8 @@ $this->menu=array(
 ?>
 
 <h1>افزودن پرسنل از کاربران</h1>
+
+<div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'clinic-personnel-form',
     'enableAjaxValidation'=>false,
@@ -30,9 +32,9 @@ $this->menu=array(
     ),
 )); ?>
 
-<?= $this->renderPartial('//layouts/_flashMessage'); ?>
+<?= $this->renderPartial('//partial-views/_flashMessage'); ?>
 
-<div class="row">
+<div class="form-group">
     <?php echo $form->labelEx($model,'user_id'); ?>
     <?php echo $form->dropDownList($model, 'user_id', $validUsers,array(
             'class' => 'selectpicker',
@@ -42,15 +44,16 @@ $this->menu=array(
     <?php echo $form->error($model,'user_id'); ?>
 </div>
 
-<div class="row">
+<div class="form-group">
     <?php echo $form->labelEx($model,'post'); ?>
     <?php echo $form->dropDownList($model,'post', $model->getValidPosts()); ?>
     <?php echo $form->error($model,'post'); ?>
 </div>
 
-<div class="row buttons">
+<div class="form-group buttons">
     <?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class'=>'btn btn-success')); ?>
     <?php echo CHtml::link('ایجاد پرسنل جدید', array('manage/addNewPersonnel/'.$model->clinic_id), array('class'=>'btn btn-primary')); ?>
 </div>
 
 <?php $this->endWidget(); ?>
+</div>

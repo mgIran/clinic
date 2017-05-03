@@ -18,7 +18,7 @@ Yii::app()->clientScript->registerScript("generate-code", "
 
 <div class="form">
 	<?php
-	$this->renderPartial('//layouts/_flashMessage');
+	$this->renderPartial('//partial-views/_flashMessage');
 	?>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'user-bons-form',

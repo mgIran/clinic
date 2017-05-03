@@ -62,7 +62,7 @@ else
 ?>
 
 <h1>نمایش اطلاعات <?php echo $model->userDetails->fa_name && !empty($model->userDetails->fa_name)?$model->userDetails->fa_name:$model->email; ?></h1>
-<? $this->renderPartial('//layouts/_flashMessage') ?>
+<? $this->renderPartial('//partial-views/_flashMessage') ?>
 <?php if($model->userDetails->type == 'real'):?>
 	<?php $this->widget('zii.widgets.CDetailView', array(
 		'data'=>$model,

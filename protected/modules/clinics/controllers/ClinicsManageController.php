@@ -155,6 +155,10 @@ class ClinicsManageController extends Controller
 
 	public function actionAddPersonnel($clinic)
 	{
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+		}
 		$model = new ClinicPersonnels();
 		$model->clinic_id = $clinic;
 		if(isset($_POST['ClinicPersonnels'])){
@@ -162,7 +166,8 @@ class ClinicsManageController extends Controller
 			$model->post = $_POST['ClinicPersonnels']['post'];
 			if($model->save()){
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-				$this->redirect(array('manage/adminPersonnel/'.$model->clinic_id));
+				$this->redirect(Yii::app()->user->type == 'user'?array('/clinics/panel/'):
+                    array('manage/adminPersonnel/'.$model->clinic_id));
 			}else
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
@@ -174,16 +179,36 @@ class ClinicsManageController extends Controller
 
 	public function actionAddNewPersonnel($clinic)
 	{
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+		}
 		$model = new ClinicPersonnels('add_personnel');
 		$model->clinic_id = $clinic;
 		if(isset($_POST['ClinicPersonnels'])){
+            $model->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel = new Users();
 			$userModel->attributes = $_POST['ClinicPersonnels'];
 			$userModel->role_id = $_POST['ClinicPersonnels']['post'];
-			$userModel->status = 'active';
+			$userModel->status = 'pending';
 			$userModel->create_date = time();
 			$userModel->password = $userModel->generatePassword();
 			if($userModel->save()){
+
+                $token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
+                $userModel->updateByPk($userModel->id, array('verification_token' => $token));
+                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت '.Yii::app()->name.' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
+                $message .= '<strong>نام کاربری: </strong>'.$userModel->email.'<br>';
+                $message .= '<strong>کلمه عبور: </strong>'.$userModel->generatePassword().'<br>';
+                $message .= 'به دلایل امنیتی لطفا در اسرع وقت از طریق داشبورد حساب کاربری خود نسبت به تغییر کلمه عبور اقدام فرمایید.<br>';
+                $message .= 'برای فعال کردن حساب کاربری خود در ' . Yii::app()->name . ' بر روی لینک زیر کلیک کنید:';
+                $message .= '</div>';
+                $message .= '<div style="text-align: right;font-size: 9pt;">';
+                $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '</a>';
+                $message .= '</div>';
+                $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
+                @Mailer::mail($model->email, 'ایجاد حساب کاربری', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                
 				$model->scenario = 'insert';
 				$model->post = $_POST['ClinicPersonnels']['post'];
 				$model->user_id = $userModel->id;
@@ -204,6 +229,10 @@ class ClinicsManageController extends Controller
 	}
 
 	public function actionUpdatePersonnel($clinic, $person){
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+		}
 		$model = $this->loadPersonnelModel($clinic, $person);
 		$model->scenario = 'update_personnel';
 		$model->loadPropertyValues();
@@ -211,7 +240,7 @@ class ClinicsManageController extends Controller
 			$model->post=$_POST['ClinicPersonnels']['post'];
 			$model->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel = Users::model()->findByPk($model->user_id);
-			$userModel->scenario = '';
+			$userModel->scenario = 'update';
 			$userModel->attributes=$_POST['ClinicPersonnels'];
 			if($userModel->save())
 			{

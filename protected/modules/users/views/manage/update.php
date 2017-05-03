@@ -11,7 +11,7 @@ $this->menu=array(
 	array('label'=>'لیست کاربران', 'url'=>array('admin')),
 );
 ?>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <h1>تغییر وضعیت کاربر <?= $model->email ?></h1>
 
 <div class="form">

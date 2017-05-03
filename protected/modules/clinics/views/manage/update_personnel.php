@@ -15,6 +15,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>ویرایش پرسنل <?= $model->user->userDetails->getShowName() ?></h1>
+<h1>ویرایش پرسنل "<?= $model->user->userDetails->getShowName() ?>"</h1>
 
 <?php $this->renderPartial('_personnel_form', array('model' => $model));

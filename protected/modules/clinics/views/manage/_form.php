@@ -16,7 +16,7 @@
 	'enableAjaxValidation'=>true,
 )); ?>
 
-    <?= $this->renderPartial('//layouts/_flashMessage'); ?>
+    <?= $this->renderPartial('//partial-views/_flashMessage'); ?>
 
 	<p class="note">فیلد های <span class="required">*</span>دار اجباری هستند.</p>
 

@@ -28,7 +28,7 @@ $this->menu=array(
         array(
             'header' => 'کلمه عبور',
             'value' => function($data){
-                return $data->user->checkGeneratePassword()?$data->user->generatePassword():"کلمه عبور توسط کاربر تغییر یافته";
+                return $data->user->useGeneratedPassword()?$data->user->generatePassword():"کلمه عبور توسط کاربر تغییر یافته";
             }
         ),
         array(

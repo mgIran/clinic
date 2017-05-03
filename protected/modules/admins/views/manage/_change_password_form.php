@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 );
 ?>
 <h1>تغییر کلمه عبور</h1>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

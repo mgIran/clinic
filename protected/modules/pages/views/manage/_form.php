@@ -15,7 +15,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<? $this->renderPartial('//layouts/_flashMessage'); ?>
+	<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 
     <?
     if($this->categorySlug == 'free' || $this->categorySlug == 'document'):
