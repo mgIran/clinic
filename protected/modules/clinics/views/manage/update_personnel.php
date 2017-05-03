@@ -15,6 +15,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>ویرایش پرسنل "<?= $model->user->userDetails->getShowName() ?>"</h1>
-
+<h3>ویرایش پرسنل "<?= $model->user->userDetails->getShowName() ?>"</h3>
+    <p class="description">جهت ویرایش پرسنل فرم زیر را پر کنید.</p>
 <?php $this->renderPartial('_personnel_form', array('model' => $model));

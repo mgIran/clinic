@@ -14,6 +14,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>افزودن پرسنل</h1>
-
+<h3>افزودن پرسنل</h3>
+    <p class="description">جهت افزودن پرسنل جدید فرم زیر را پر کنید.</p>
 <?php $this->renderPartial('_personnel_form', array('model' => $model));

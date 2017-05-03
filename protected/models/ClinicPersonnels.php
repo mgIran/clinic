@@ -49,15 +49,15 @@ class ClinicPersonnels extends CActiveRecord
 			array('email, role_id, first_name, last_name, national_code, clinic_id, user_id, post', 'required', 'on' => 'add_personnel'),
 			array('email, first_name, last_name, national_code, clinic_id, user_id, post', 'required', 'on' => 'update_personnel'),
 			array('clinic_id, user_id, post', 'required'),
-			array('clinic_id, user_id', 'length', 'max'=>10),
+			array('clinic_id, user_id', 'length', 'max' => 10),
 			array('email', 'email', 'on' => 'add_personnel, update_personnel'),
-			array('phone, mobile', 'length', 'max'=>11, 'on' => 'add_personnel, update_personnel'),
-			array('first_name, last_name', 'length', 'max'=>50, 'on' => 'add_personnel, update_personnel'),
-			array('national_code', 'length', 'is'=>10, 'on' => 'add_personnel, update_personnel'),
-			array('post', 'length', 'max'=>1),
+			array('phone, mobile', 'length', 'max' => 11, 'on' => 'add_personnel, update_personnel'),
+			array('first_name, last_name', 'length', 'max' => 50, 'on' => 'add_personnel, update_personnel'),
+			array('national_code', 'length', 'is' => 10, 'on' => 'add_personnel, update_personnel'),
+			array('post', 'length', 'max' => 1),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('clinic_id, user_id, post', 'safe', 'on'=>'search'),
+			array('clinic_id, user_id, post', 'safe', 'on' => 'search'),
 			array('doctor_name, clinic_name, expertiseID', 'safe', 'on'=>'getDoctorsByExp'),
 		);
 	}
@@ -112,22 +112,22 @@ class ClinicPersonnels extends CActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('clinic_id',$this->clinic_id,true);
-		$criteria->compare('user_id',$this->user_id,true);
-		$criteria->compare('post',$this->post,true);
+		$criteria->compare('clinic_id', $this->clinic_id, true);
+		$criteria->compare('user_id', $this->user_id, true);
+		$criteria->compare('post', $this->post, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     *
-     * @return CActiveDataProvider
-     */
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * @return CActiveDataProvider
+	 */
 	public function getDoctorsByExp()
     {
         $criteria = new CDbCriteria;
@@ -154,24 +154,36 @@ class ClinicPersonnels extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return ClinicPersonnels the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
-	public function getValidPosts(){
-		return CHtml::listData(UserRoles::model()->findAll('role != "user"'),'id', 'name');
+	public function getValidPosts()
+	{
+		return CHtml::listData(UserRoles::model()->findAll('role != "user"'), 'id', 'name');
 	}
 
 	/**
 	 * @param array $values
 	 */
-	public function loadPropertyValues($values = array()){
-		$this->email = isset($values['email']) && !empty($values['email'])?$values['email']:$this->user->email;
-		$this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:$this->user->userDetails->first_name;
-		$this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:$this->user->userDetails->last_name;
-		$this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:$this->user->userDetails->phone;
-		$this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:$this->user->userDetails->mobile;
-		$this->national_code = isset($values['national_code']) && !empty($values['national_code'])?$values['national_code']:$this->user->userDetails->national_code;
+	public function loadPropertyValues($values = array())
+	{
+		if(isset($values)){
+			$this->email = isset($values['email']) && !empty($values['email'])?$values['email']:null;
+			$this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:null;
+			$this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:null;
+			$this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:null;
+			$this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:null;
+			$this->national_code = isset($values['national_code']) && !empty($values['national_code'])?$values['national_code']:null;
+		}
+		if($this->user){
+			$this->email = isset($values['email']) && !empty($values['email'])?$values['email']:$this->user->email;
+			$this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:$this->user->userDetails->first_name;
+			$this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:$this->user->userDetails->last_name;
+			$this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:$this->user->userDetails->phone;
+			$this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:$this->user->userDetails->mobile;
+			$this->national_code = isset($values['national_code']) && !empty($values['national_code'])?$values['national_code']:$this->user->userDetails->national_code;
+		}
 	}
 }

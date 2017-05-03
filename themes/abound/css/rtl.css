@@ -130,7 +130,6 @@ label{
 }
 .form{
     display: block;
-    overflow: hidden;
 }
 .attrOpts{
     display: inline-block;
