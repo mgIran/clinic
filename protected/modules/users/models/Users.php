@@ -44,6 +44,9 @@ class Users extends CActiveRecord
     );
     public $first_name;
     public $last_name;
+    public $phone;
+    public $mobile;
+    public $national_code;
     public $statusFilter;
     public $repeatPassword;
     public $oldPassword;
@@ -60,25 +63,32 @@ class Users extends CActiveRecord
         // will receive user inputs.
         return array(
             array('email, password', 'required', 'on' => 'insert,create'),
+            array('email', 'required', 'on' => 'update'),
             array('role_id', 'default', 'value' => 1),
             array('email', 'required', 'on' => 'email, OAuthInsert'),
-            array('email', 'unique', 'on' => 'insert,create,OAuthInsert'),
+            array('email', 'unique', 'on' => 'insert, create, OAuthInsert, update'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
-            array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'update'),
-            array('password', 'required', 'on' => 'change_password'),
-            array('repeatPassword', 'compare', 'compareAttribute' => 'password', 'on' => 'change_password'),
-            array('email', 'filter', 'filter' => 'trim', 'on' => 'create'),
-            array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create'),
-            array('oldPassword', 'oldPass', 'on' => 'update'),
+            array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
+            array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update'),
             array('email', 'length', 'max' => 255),
             array('role_id', 'length', 'max' => 10),
             array('status', 'length', 'max' => 8),
             array('create_date', 'length', 'max' => 20),
-            array('type', 'safe'),
+            array('type, first_name, last_name, phone, mobile, national_code', 'safe'),
+
+            // change password rules
+            array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'change_password'),
+            array('repeatPassword', 'compare', 'compareAttribute' => 'newPassword', 'on' => 'change_password', 'message' => 'کلمه های عبور همخوانی ندارند'),
+            array('oldPassword', 'oldPass', 'on' => 'change_password'),
+
+            // recover password rules
+            array('password', 'required', 'on' => 'recover_password'),
+            array('repeatPassword', 'compare', 'compareAttribute' => 'password', 'on' => 'recover_password', 'message' => 'کلمه های عبور همخوانی ندارند'),
+
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('type, roleId, create_date, status, verification_token, change_password_request_count ,first_name ,last_name ,email ,statusFilter', 'safe', 'on' => 'search'),
+            array('type, roleId, create_date, status, verification_token, change_password_request_count, email ,statusFilter, first_name, last_name, phone, mobile, national_code', 'safe', 'on' => 'search'),
         );
     }
 
@@ -89,7 +99,7 @@ class Users extends CActiveRecord
     {
         $bCrypt = new bCrypt();
         $record = Users::model()->findByAttributes(array('email' => $this->email));
-        if (!$bCrypt->verify($this->$attribute, $record->password))
+        if(!$bCrypt->verify($this->$attribute, $record->password))
             $this->addError($attribute, 'کلمه عبور فعلی اشتباه است');
     }
 
@@ -106,7 +116,7 @@ class Users extends CActiveRecord
             'role' => array(self::BELONGS_TO, 'UserRoles', 'role_id'),
             'sessions' => array(self::HAS_MANY, 'Sessions', 'user_id', 'on' => 'user_type = "user"'),
             'addresses' => array(self::HAS_MANY, 'ShopAddresses', 'user_id', 'on' => 'addresses.deleted = 0'),
-            'clinicPersonnels' => array(self::BELONGS_TO, 'ClinicPersonnels', 'id'),
+            'clinicPersonnels' => array(self::HAS_MANY, 'ClinicPersonnels', 'user_id'),
             'clinics' => array(self::MANY_MANY, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
             'expertises' => array(self::MANY_MANY, 'Expertises', '{{doctor_expertises}}(doctor_id, expertise_id)'),
         );
@@ -173,5 +183,53 @@ class Users extends CActiveRecord
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
+    }
+
+    protected function afterValidate()
+    {
+        if($this->isNewRecord)
+            $this->password = $this->encrypt($this->password);
+        parent::afterValidate();
+    }
+
+    public function encrypt($value)
+    {
+        $enc = NEW bCrypt();
+        return $enc->hash($value);
+    }
+
+    public function afterSave()
+    {
+        parent::afterSave();
+        if($this->isNewRecord){
+            $model = new UserDetails;
+            $model->user_id = $this->id;
+            $model->first_name = $this->first_name;
+            $model->last_name = $this->last_name;
+            $model->phone = $this->phone;
+            $model->mobile = $this->mobile;
+            $model->national_code = $this->national_code;
+            if(!@$model->save())
+                $this->addErrors($model->errors);
+        }elseif($this->scenario == 'update'){
+            $model = UserDetails::model()->findByPk($this->id);
+            $model->first_name = $this->first_name;
+            $model->last_name = $this->last_name;
+            $model->phone = $this->phone;
+            $model->mobile = $this->mobile;
+            $model->national_code = $this->national_code;
+            if(!@$model->save())
+                $this->addErrors($model->errors);
+        }
+        return true;
+    }
+
+    public function generatePassword(){
+        return substr(md5($this->email),0,8);
+    }
+
+    public function useGeneratedPassword(){
+        $bCrypt = new bCrypt();
+        return $bCrypt->verify($this->generatePassword(), $this->password);
     }
 }

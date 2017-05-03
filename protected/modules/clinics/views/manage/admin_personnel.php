@@ -8,7 +8,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-    array('label'=>'افزودن پرسنل', 'url'=>array('manage/addPersonnel/'.$model->clinic_id)),
+    array('label'=>'لیست مطب ها', 'url'=>array('admin')),
+    array('label'=>'افزودن پرسنل از بین کاربران', 'url'=>array('manage/addPersonnel/'.$model->clinic_id)),
+    array('label'=>'ایجاد پرسنل جدید', 'url'=>array('manage/addNewPersonnel/'.$model->clinic_id)),
 );
 ?>
 
@@ -24,11 +26,20 @@ $this->menu=array(
         'user.userDetails.last_name',
         'post_rel.name',
         array(
+            'header' => 'کلمه عبور',
+            'value' => function($data){
+                return $data->user->useGeneratedPassword()?$data->user->generatePassword():"کلمه عبور توسط کاربر تغییر یافته";
+            }
+        ),
+        array(
             'class'=>'CButtonColumn',
             'template'=>'{update} {delete}',
             'buttons' => array(
                 'update' => array(
                     'url' => 'Yii::app()->controller->createUrl("manage/updatePersonnel/".$data->clinic_id."/".$data->user_id)'
+                ),
+                'delete' => array(
+                    'url' => 'Yii::app()->controller->createUrl("manage/removePersonnel/".$data->clinic_id."/".$data->user_id)'
                 )
             )
         ),

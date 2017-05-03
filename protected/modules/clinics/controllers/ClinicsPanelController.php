@@ -31,19 +31,25 @@ class ClinicsPanelController extends Controller
         );
     }
 
-    public function actionIndex()
+    /**
+     * @param ClinicPersonnels $clinic
+     */
+    public function actionIndex($clinic = null)
     {
         Yii::app()->theme = 'frontend';
 
+        $clinic = Yii::app()->user->getState('clinic');
 
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('clinic_id = :clinic_id');
-        $criteria->params = array(
-            ':clinic_id' => Users::model()->findByPk(Yii::app()->user->id)
-        );
-        $personalDataProvider = new CActiveDataProvider('ClinicPersonnels');
+        $personnel = new ClinicPersonnels();
+        $personnel->unsetAttributes();
+        if(isset($_GET['ClinicPersonnels']))
+            $personnel->attributes = $_GET['ClinicPersonnels'];
+        $personnel->clinic_id = $clinic->id;
 
-        $this->render('index', array());
+        $this->render('index', array(
+            'clinic' => $clinic,
+            'personnel' => $personnel,
+        ));
     }
 
     public function actionEnter($id)

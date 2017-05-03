@@ -1,9 +1,13 @@
 <?php
+/* @var $this UsersPublicController */
 /* @var $model Users */
 /* @var $form CActiveForm */
 ?>
 <div class="inner-page">
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-0">
+        <?php
+        $this->renderPartial('//partial-views/_flashMessage');
+        ?>
         <h4 class="title">ورود به حساب کاربری</h4>
         <div class="login-form">
             <?php $this->renderPartial('//partial-views/_flashMessage', array('prefix' => 'login-')); ?>

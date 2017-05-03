@@ -1,7 +1,20 @@
 <?php
 /* @var $this UsersPublicController */
 /* @var $clinics CArrayDataProvider */
+/* @var $user Users */
 ?>
+<?php
+if($user->useGeneratedPassword()):
+?>
+    <div class="alert alert-warning">
+        بنا به دلایل امنیتی کلمه عبور فعلی شما نیاز به تغییر دارد، لطفا برای تغییر از
+        <a href="<?= Yii::app()->createUrl('/users/public/setting') ?>">اینجا</a>
+        اقدام فرمایید.
+    </div>
+<?php
+endif;
+?>
+<?php $this->renderPartial('//partial-views/_flashMessage'); ?>
 <div class="transparent-form">
     <h3>لیست بیمارستان ها / درمانگاه ها / مطب ها</h3>
     <p class="description">لیست بیمارستان، درمانگاه یا مطب هایی که در آنها عضو هستید.</p>

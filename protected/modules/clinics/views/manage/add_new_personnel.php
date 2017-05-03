@@ -11,10 +11,9 @@ $this->breadcrumbs=array(
 $this->menu=array(
     array('label'=>'لیست مطب ها', 'url'=>array('admin')),
     array('label'=>'لیست پرسنل این مطب', 'url'=>array('manage/adminPersonnel/'.$model->clinic_id)),
-    array('label'=>'افزودن پرسنل', 'url'=>array('manage/addPersonnel/'.$model->clinic_id)), 
 );
 ?>
 
-<h1>ویرایش پرسنل "<?= $model->user->userDetails->getShowName() ?>"</h1>
+<h1>افزودن پرسنل</h1>
 
 <?php $this->renderPartial('_personnel_form', array('model' => $model));

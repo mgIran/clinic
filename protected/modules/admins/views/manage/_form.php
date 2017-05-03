@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 Yii::app()->clientScript->registerScript('resetForm','document.getElementById("admins-form").reset();');
 ?>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

@@ -72,7 +72,7 @@ return array(
 				'<action:(login)>' => 'users/public/login',
 				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded)>' => 'users/public/<action>',
 				'clinics/manage/<action:(updatePersonnel|removePersonnel)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
-				'clinics/manage/<action:(addPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
+				'clinics/manage/<action:(addPersonnel|addNewPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
 				'/help'=>'site/help',
 				'<module:\w+>/<id:\d+>'=>'<module>/manage/view',
 				'<module:\w+>/<controller:\w+>'=>'<module>/<controller>/index',
@@ -146,13 +146,13 @@ return array(
 			'Password' => '!@ketabic1395',
 		),
 		'mailTheme'=>
-			'<div style="border: 1px solid #dadada; border-radius: 4px;display: block;overflow: hidden;" ><h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #364760;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">کتابیک<span style="font-size: 14px;color:#f0f0f0"> - مرجع خرید و فروش و کتابخوانی آنلاین</span></h2>
+			'<div style="border: 1px solid #dadada; border-radius: 4px;display: block;overflow: hidden;" ><h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #18b29e;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">پزشک یار<span style="font-size: 14px;color:#f0f0f0"> - رزرو اینترنتی پزشک</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">
                 <div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;padding:15px;">{MessageBody}</div>
              </div>
              <div style="font-size: 8pt;color: #bbb;text-align: right;font-family: tahoma;padding: 15px;">
-                <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/about">درباره</a> | <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/help">راهنما</a>
-                <span style="float: left;"> همهٔ حقوق برای کتابیک محفوظ است. ©‏ {CurrentYear} </span>
+                <a href="' .((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/about">درباره</a> | <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/help">راهنما</a>
+                <span style="float: left;"> همهٔ حقوق برای پزشک یار محفوظ است. ©‏ {CurrentYear} </span>
              </div></div>',
 	),
 );

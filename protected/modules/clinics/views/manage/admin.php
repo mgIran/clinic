@@ -34,7 +34,25 @@ $this->menu=array(
 		'address',
 		array(
 			'class'=>'CButtonColumn',
-            'template'=>'{update} {delete}'
+            'template'=>'{addPersonnel} {update} {delete}',
+			'buttons' =>array(
+				'addPersonnel'=>array(
+					'imageUrl' => Yii::app()->theme->baseUrl."/img/new-user.svg",
+					'options' => array('class' => 'add-person'),
+					'url'=>'Yii::app()->controller->createUrl("manage/addPersonnel/".$data->id)',
+					'label'=>'افزودن پرسنل'
+				)
+			)
 		),
 	),
 )); ?>
+<style>
+	.add-person img{
+		display: block;
+		overflow: hidden;
+		width: 100%;
+	}
+	.add-person{
+		display:inline-block; width:15px; height: 15px;vertical-align: middle;
+	}
+</style>

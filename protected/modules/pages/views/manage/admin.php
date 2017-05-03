@@ -22,7 +22,7 @@ if($this->categorySlug == 'free')
 ?>
 
 <h1>مدیریت <?= $this->categoryName ?></h1>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'pages-grid',

@@ -13,7 +13,7 @@ Yii::app()->clientScript->registerScript('resetForm','document.getElementById("a
 	'enableAjaxValidation'=>true,
 
 )); ?>
-    <?php $this->renderPartial('//layouts/_flashMessage');?>
+    <?php $this->renderPartial('//partial-views/_flashMessage');?>
 	<p class="note">فیلد های دارای <span class="required">*</span> الزامی هستند .</p>
 
 	<?php echo $form->errorSummary($model); ?>

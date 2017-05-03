@@ -110,7 +110,7 @@ if($role == 2){
     );
 }
 ?>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <h1>مدیریت <?= $role==1?'کاربران':'ناشران' ?></h1>
 
 <?php

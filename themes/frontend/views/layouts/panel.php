@@ -32,13 +32,15 @@
     $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js', CClientScript::POS_END);
     $cs->registerScriptFile($baseUrl.'/js/jquery.script.js?3.8', CClientScript::POS_END);
     $cs->registerScript('sidebar-scroll', '
-        $(".sidebar").niceScroll({cursorcolor: "#8b8b8b", autohidemode:false, cursorwidth:7});
+        $(".sidebar").niceScroll({cursorcolor: "#8b8b8b",
+            cursorborder: "none",
+            autohidemode:true, cursorwidth:5, railalign:"left"
+        });
     ');
     ?>
 </head>
-<body>
+<body style="overflow: hidden;">
 <div class="overlay fade"></div>
-<?php //$this->renderPartial('//partial-views/navbar');?>
 <div class="panel-page">
     <div class="sidebar">
         <a class="navbar-brand hidden-lg hidden-md hidden-sm" href="<?php echo Yii::app()->createUrl('//'); ?>"><img src="<?php echo Yii::app()->theme->baseUrl.'/svg/logo-white.svg'?>" alt="<?php echo Yii::app()->name;?>"><h1>کتـــــابیـــــک</h1></a>
@@ -80,8 +82,8 @@
         <div class="top-bar">
             <?php if(isset(Yii::app()->user->clinic)):?>
                 <div class="pull-right">
-                    <h5><?php echo Yii::app()->user->clinic->clinic_name;?></h5>
-                    <a title="خروج از بیمارستان / درمانگاه / مطب" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="btn btn-danger btn-sm">خروج از بیمارستان / درمانگاه / مطب</a>
+                    <a href="<?= $this->createUrl('/clinics/panel') ?>"><h5><?php echo Yii::app()->user->clinic->clinic_name;?></h5></a>
+                    <a title="خروج از <?= "\"s\""; ?>" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="btn btn-danger btn-sm">خروج از <?= CHtml::encode('"'.Yii::app()->user->clinic->clinic_name.'"'); ?></a>
                 </div>
             <?php endif;?>
             <div class="icons">

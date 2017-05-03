@@ -13,7 +13,7 @@ class ClinicsManageController extends Controller
 		return array(
 			'backend' => array(
 				'create', 'update', 'admin', 'delete', 'upload',
-				'adminPersonnel', 'addPersonnel', 'removePersonnel', 'updatePersonnel'
+				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
 			)
 		);
 	}
@@ -153,41 +153,116 @@ class ClinicsManageController extends Controller
 		));
 	}
 
-	public function actionAddPersonnel($clinic){
+	public function actionAddPersonnel($clinic)
+	{
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+		}
 		$model = new ClinicPersonnels();
 		$model->clinic_id = $clinic;
 		if(isset($_POST['ClinicPersonnels'])){
-			$model->attributes=$_POST['ClinicPersonnels'];
+			$model->user_id = $_POST['ClinicPersonnels']['user_id'];
+			$model->post = $_POST['ClinicPersonnels']['post'];
 			if($model->save()){
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-				$this->redirect(array('adminPersonnel', 'id' => $model->clinic_id));
+				$this->redirect(Yii::app()->user->type == 'user'?array('/clinics/panel/'):
+                    array('manage/adminPersonnel/'.$model->clinic_id));
 			}else
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
 
-		$this->render('add_personnel',array(
+		$this->render('add_personnel', array(
+			'model' => $model
+		));
+	}
+
+	public function actionAddNewPersonnel($clinic)
+	{
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+		}
+		$model = new ClinicPersonnels('add_personnel');
+		$model->clinic_id = $clinic;
+		if(isset($_POST['ClinicPersonnels'])){
+            $model->loadPropertyValues($_POST['ClinicPersonnels']);
+			$userModel = new Users();
+			$userModel->attributes = $_POST['ClinicPersonnels'];
+			$userModel->role_id = $_POST['ClinicPersonnels']['post'];
+			$userModel->status = 'pending';
+			$userModel->create_date = time();
+			$userModel->password = $userModel->generatePassword();
+			if($userModel->save()){
+
+                $token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
+                $userModel->updateByPk($userModel->id, array('verification_token' => $token));
+                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت '.Yii::app()->name.' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
+                $message .= '<strong>نام کاربری: </strong>'.$userModel->email.'<br>';
+                $message .= '<strong>کلمه عبور: </strong>'.$userModel->generatePassword().'<br>';
+                $message .= 'به دلایل امنیتی لطفا در اسرع وقت از طریق داشبورد حساب کاربری خود نسبت به تغییر کلمه عبور اقدام فرمایید.<br>';
+                $message .= 'برای فعال کردن حساب کاربری خود در ' . Yii::app()->name . ' بر روی لینک زیر کلیک کنید:';
+                $message .= '</div>';
+                $message .= '<div style="text-align: right;font-size: 9pt;">';
+                $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '</a>';
+                $message .= '</div>';
+                $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
+                @Mailer::mail($model->email, 'ایجاد حساب کاربری', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                
+				$model->scenario = 'insert';
+				$model->post = $_POST['ClinicPersonnels']['post'];
+				$model->user_id = $userModel->id;
+				if($model->save()){
+					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد. <span style="font-weight: 500;font-size: 18px">کلمه عبور کاربر: '.$userModel->generatePassword().'</span>');
+					$this->redirect(array('manage/updatePersonnel/'.$model->clinic_id.'/'.$model->user_id));
+				}else
+					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}else{
+				$model->addErrors($userModel->errors);
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}
+		}
+
+		$this->render('add_new_personnel', array(
 			'model' => $model
 		));
 	}
 
 	public function actionUpdatePersonnel($clinic, $person){
-		$model = $this->loadPersonnelModel($clinic, $person);
-
-		if(isset($_POST['ClinicPersonnels'])){
-			$model->attributes=$_POST['ClinicPersonnels'];
-			if($model->save()){
-				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-				$this->redirect(array('adminPersonnel', 'id' => $model->clinic_id));
-			}else
-				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
 		}
-
+		$model = $this->loadPersonnelModel($clinic, $person);
+		$model->scenario = 'update_personnel';
+		$model->loadPropertyValues();
+		if(isset($_POST['ClinicPersonnels'])){
+			$model->post=$_POST['ClinicPersonnels']['post'];
+			$model->loadPropertyValues($_POST['ClinicPersonnels']);
+			$userModel = Users::model()->findByPk($model->user_id);
+			$userModel->scenario = 'update';
+			$userModel->attributes=$_POST['ClinicPersonnels'];
+			if($userModel->save())
+			{
+				if($model->save()){
+					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+					$this->redirect(array('manage/adminPersonnel/'.$model->clinic_id));
+				}else
+					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}else{
+				$model->addErrors($userModel->errors);
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+			}
+		}
 		$this->render('update_personnel',array(
 			'model' => $model
 		));
 	}
-	public function actionRemovePersonnel(){
+	public function actionRemovePersonnel($clinic, $person){
+		$this->loadPersonnelModel($clinic, $person)->delete();
 
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('adminPersonnel'));
 	}
 
 	/**

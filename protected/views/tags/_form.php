@@ -3,7 +3,7 @@
 /* @var $model ClassTags */
 /* @var $form CActiveForm */
 ?>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

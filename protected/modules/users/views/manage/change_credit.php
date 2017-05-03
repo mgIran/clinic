@@ -18,7 +18,7 @@ $this->menu=array(
 
 <h1>تغییر اعتبار کاربر "<?= $model->fa_name ?>"</h1>
 
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
+<? $this->renderPartial('//partial-views/_flashMessage'); ?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

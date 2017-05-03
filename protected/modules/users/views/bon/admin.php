@@ -13,7 +13,7 @@ $this->menu=array(
 
 <h1>مدیریت بن های خرید</h1>
 <?php
-$this->renderPartial('//layouts/_flashMessage');
+$this->renderPartial('//partial-views/_flashMessage');
 ?>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'user-bons-grid',
