@@ -71,6 +71,13 @@
         <?php echo $form->dropDownList($model,'post', $model->getValidPosts(),array('class' => 'selectpicker')); ?>
         <?php echo $form->error($model,'post'); ?>
     </div>
+    
+    <div id="expertises" class="form-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+        <?php echo $form->labelEx($model,'expertise'); ?>
+        <div class="clearfix"></div>
+        <?php echo $form->checkBoxList($model,'expertise', $model->getExpertises(),array('separator' => '', 'template'=> '<div class="checkbox-group">{input} {label}</div>')); ?>
+        <?php echo $form->error($model,'expertise'); ?>
+    </div>
 
     <div class="clearfix"></div>
     <div class="form-group buttons">
@@ -80,3 +87,17 @@
     <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<?
+Yii::app()->clientScript->registerScript('hide-exps','
+    if($("#ClinicPersonnels_post").val() == 3)
+        $("#expertises").show();
+    else
+        $("#expertises").hide();
+    $("body").on("change", "#ClinicPersonnels_post", function(){
+        if($("#ClinicPersonnels_post").val() == 3)
+            $("#expertises").show();
+        else
+            $("#expertises").hide();
+    });
+');

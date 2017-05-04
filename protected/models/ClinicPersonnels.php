@@ -31,12 +31,14 @@ class ClinicPersonnels extends CActiveRecord
 	public $role_id;
 	public $first_name;
 	public $expertiseID;
-    public $doctor_name;
-    public $clinic_name;
+	public $doctor_name;
+	public $clinic_name;
 	public $last_name;
 	public $phone;
 	public $mobile;
 	public $national_code;
+
+	public $expertise;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -55,10 +57,11 @@ class ClinicPersonnels extends CActiveRecord
 			array('first_name, last_name', 'length', 'max' => 50, 'on' => 'add_personnel, update_personnel'),
 			array('national_code', 'length', 'is' => 10, 'on' => 'add_personnel, update_personnel'),
 			array('post', 'length', 'max' => 1),
+			array('expertise', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('clinic_id, user_id, post', 'safe', 'on' => 'search'),
-			array('doctor_name, clinic_name, expertiseID', 'safe', 'on'=>'getDoctorsByExp'),
+			array('doctor_name, clinic_name, expertiseID', 'safe', 'on' => 'getDoctorsByExp'),
 		);
 	}
 
@@ -93,6 +96,7 @@ class ClinicPersonnels extends CActiveRecord
 			'phone' => 'تلفن ثابت',
 			'mobile' => 'موبایل',
 			'national_code' => 'کد ملی',
+			'expertise' => 'تخصص ها',
 		);
 	}
 
@@ -116,7 +120,10 @@ class ClinicPersonnels extends CActiveRecord
 
 		$criteria->compare('clinic_id', $this->clinic_id, true);
 		$criteria->compare('user_id', $this->user_id, true);
-		$criteria->compare('post', $this->post, true);
+		if(is_array($this->post))
+			$criteria->addInCondition('post', $this->post);
+		else
+			$criteria->compare('post', $this->post);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
@@ -129,24 +136,24 @@ class ClinicPersonnels extends CActiveRecord
 	 * @return CActiveDataProvider
 	 */
 	public function getDoctorsByExp()
-    {
-        $criteria = new CDbCriteria;
+	{
+		$criteria = new CDbCriteria;
 
-        $criteria->together = true;
-        $criteria->alias = 'clinic_personnels';
-        $criteria->with = array('clinic', 'user', 'user.expertises', 'user.userDetails');
-        $criteria->order = 'clinic_personnels.user_id DESC, clinic_personnels.clinic_id DESC';
+		$criteria->together = true;
+		$criteria->alias = 'clinic_personnels';
+		$criteria->with = array('clinic', 'user', 'user.expertises', 'user.userDetails');
+		$criteria->order = 'clinic_personnels.user_id DESC, clinic_personnels.clinic_id DESC';
 
-        $criteria->compare('clinic_personnels.post', 3);
-        $criteria->compare('expertises.id', $this->expertiseID);
-        $criteria->compare('userDetails.first_name', $this->doctor_name, true);
-        $criteria->compare('userDetails.last_name', $this->doctor_name, true, 'OR');
-        $criteria->compare('clinic.clinic_name', $this->clinic_name, true);
+		$criteria->compare('clinic_personnels.post', 3);
+		$criteria->compare('expertises.id', $this->expertiseID);
+		$criteria->compare('userDetails.first_name', $this->doctor_name, true);
+		$criteria->compare('userDetails.last_name', $this->doctor_name, true, 'OR');
+		$criteria->compare('clinic.clinic_name', $this->clinic_name, true);
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
-    }
+		return new CActiveDataProvider($this, array(
+			'criteria' => $criteria,
+		));
+	}
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -161,7 +168,12 @@ class ClinicPersonnels extends CActiveRecord
 
 	public function getValidPosts()
 	{
-		return CHtml::listData(UserRoles::model()->findAll('role != "user"'), 'id', 'name');
+		return CHtml::listData(UserRoles::model()->findAll('role != "user" AND role != "clinicAdmin"'), 'id', 'name');
+	}
+
+	public function getExpertises()
+	{
+		return CHtml::listData(Expertises::model()->findAll(), 'id', 'title');
 	}
 
 	/**
@@ -169,21 +181,40 @@ class ClinicPersonnels extends CActiveRecord
 	 */
 	public function loadPropertyValues($values = array())
 	{
-		if(isset($values)){
+		if(isset($values) && $values){
 			$this->email = isset($values['email']) && !empty($values['email'])?$values['email']:null;
 			$this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:null;
 			$this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:null;
 			$this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:null;
 			$this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:null;
 			$this->national_code = isset($values['national_code']) && !empty($values['national_code'])?$values['national_code']:null;
+			$this->expertise = isset($values['expertise']) && !empty($values['expertise'])?$values['expertise']:null;
 		}
-		if($this->user){
-			$this->email = isset($values['email']) && !empty($values['email'])?$values['email']:$this->user->email;
-			$this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:$this->user->userDetails->first_name;
-			$this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:$this->user->userDetails->last_name;
-			$this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:$this->user->userDetails->phone;
-			$this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:$this->user->userDetails->mobile;
-			$this->national_code = isset($values['national_code']) && !empty($values['national_code'])?$values['national_code']:$this->user->userDetails->national_code;
+		elseif($this->user){
+			$this->email = $this->user->email;
+			$this->first_name = $this->user->userDetails->first_name;
+			$this->last_name = $this->user->userDetails->last_name;
+			$this->phone = $this->user->userDetails->phone;
+			$this->mobile = $this->user->userDetails->mobile;
+			$this->national_code = $this->user->userDetails->national_code;
+			$this->expertise = $this->user->expertises?CHtml::listData($this->user->expertises, 'id', 'id'):array();
 		}
+	}
+	
+	public function afterSave()
+	{
+		if($this->post == 3 && $this->expertise){
+			if(!$this->isNewRecord)
+				DoctorExpertises::model()->deleteAll('doctor_id = :doctor_id',array(':doctor_id' => $this->user_id));
+			foreach($this->expertise as $item){
+				$model= new DoctorExpertises();
+				$model->doctor_id = $this->user_id;
+				$model->expertise_id = $item;
+				if(!$model->save())
+					$this->addErrors($model->errors);
+			}
+		}elseif($this->post != 3)
+				DoctorExpertises::model()->deleteAll('doctor_id = :doctor_id',array(':doctor_id' => $this->user_id));
+		parent::afterSave();
 	}
 }

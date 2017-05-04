@@ -2187,7 +2187,14 @@ ul.yiiPager li.next a{
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
+    outline: 0 none !important;
 }
 form .form-group[class*="col-"]{
     float: none !important;
+}
+
+.checkbox-group{
+    display: inline-block;
+    float: right;
+    margin-left: 30px;
 }

@@ -5,7 +5,10 @@
 ?>
 <div class="transparent-form">
     <h3>لیست پرسنل</h3>
-    <p class="description">کاربرانی که در درمانگاه شما ثبت شده اند.</p>
+    <p class="description">لیست <?php
+        if(Yii::app()->user->roles == 'clinicAdmin') echo 'پرسنلی';
+        elseif(Yii::app()->user->roles == 'doctor') echo 'منشی های';
+        ?> که در درمانگاه شما ثبت شده اند.</p>
     <?php $this->renderPartial('//partial-views/_flashMessage');?>
     <div class="buttons">
         <a class="btn btn-success" href="<?= $this->createUrl('manage/addPersonnel') ?>"> افزودن شخص جدید</a>
