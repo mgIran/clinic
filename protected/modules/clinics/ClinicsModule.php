@@ -4,6 +4,7 @@ class ClinicsModule extends CWebModule
 {
 	public $controllerMap = array(
 		'manage' => 'clinics.controllers.ClinicsManageController',
+		'doctor' => 'clinics.controllers.ClinicsDoctorController',
 		'panel' => 'clinics.controllers.ClinicsPanelController',
 	);
 

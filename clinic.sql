@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-05-04 11:43:16
+Date: 2017-05-04 12:06:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -146,7 +146,7 @@ CREATE TABLE `ym_clinic_personnels` (
 -- ----------------------------
 INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '43', '3');
-INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '2');
+INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '4');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '46', '4');
 
 -- ----------------------------
@@ -181,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493881949');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493883070');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -228,12 +228,15 @@ CREATE TABLE `ym_doctor_leaves` (
 -- ----------------------------
 DROP TABLE IF EXISTS `ym_doctor_schedules`;
 CREATE TABLE `ym_doctor_schedules` (
+  `clinic_id` int(10) unsigned NOT NULL,
   `doctor_id` int(10) unsigned NOT NULL COMMENT 'دکتر',
   `week_day` decimal(1,0) unsigned NOT NULL COMMENT 'روز هفته',
   `visit_count` decimal(3,0) unsigned DEFAULT NULL COMMENT 'تعداد ویزیت',
   `entry_time` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'زمان مراجعه',
   `exit_time` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'زمان خروج',
-  PRIMARY KEY (`doctor_id`,`week_day`),
+  PRIMARY KEY (`doctor_id`,`week_day`,`clinic_id`),
+  KEY `clinic_id` (`clinic_id`),
+  CONSTRAINT `ym_doctor_schedules_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_doctor_schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
