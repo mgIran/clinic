@@ -45,6 +45,12 @@ class ClinicsPanelController extends Controller
         if(isset($_GET['ClinicPersonnels']))
             $personnel->attributes = $_GET['ClinicPersonnels'];
         $personnel->clinic_id = $clinic->id;
+        if(Yii::app()->user->roles == 'clinicAdmin'){
+            $personnel->post = [4,3];
+        }
+        elseif(Yii::app()->user->roles == 'doctor'){
+            $personnel->post = 4;
+        }
 
         $this->render('index', array(
             'clinic' => $clinic,

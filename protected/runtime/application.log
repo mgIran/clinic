@@ -754,3 +754,57 @@ in E:\Projects\wamp\www\clinic\index.php (11)
 2017/05/03 18:30:02 [warning] [application] Failed to set unsafe attribute "clinic_name" of "ClinicPersonnels".
 in E:\Projects\wamp\www\clinic\protected\controllers\SiteController.php (67)
 in E:\Projects\wamp\www\clinic\index.php (11)
+2017/05/04 10:01:08 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 10:04:48 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 10:14:09 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (198)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 10:18:42 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 10:30:57 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (256)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 10:30:57 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (256)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:02:11 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:02:11 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:04:19 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:04:19 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:05:01 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:05:01 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:05:20 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:05:20 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:05:31 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:05:31 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:17:49 [warning] [application] Failed to set unsafe attribute "post" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/04 11:17:49 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)

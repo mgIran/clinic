@@ -13,7 +13,6 @@
 
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'users-form',
-        'focus'=>array($model,'oldPassword'),
         'action' => Yii::app()->createUrl('/users/public/setting'),
         'enableAjaxValidation'=>false,
     )); ?>

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50617
+Source Server         : local
+Source Server Version : 50616
 Source Host           : localhost:3306
 Source Database       : clinic
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-05-03 18:57:37
+Date: 2017-05-04 11:43:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -146,7 +146,8 @@ CREATE TABLE `ym_clinic_personnels` (
 -- ----------------------------
 INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '43', '3');
-INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '3');
+INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '2');
+INSERT INTO `ym_clinic_personnels` VALUES ('2', '46', '4');
 
 -- ----------------------------
 -- Table structure for ym_counter_save
@@ -161,8 +162,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '8');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457877');
+INSERT INTO `ym_counter_save` VALUES ('counter', '9');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457878');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -180,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493821591');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493881949');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -200,7 +201,10 @@ CREATE TABLE `ym_doctor_expertises` (
 -- ----------------------------
 INSERT INTO `ym_doctor_expertises` VALUES ('43', '1');
 INSERT INTO `ym_doctor_expertises` VALUES ('45', '1');
+INSERT INTO `ym_doctor_expertises` VALUES ('43', '2');
 INSERT INTO `ym_doctor_expertises` VALUES ('45', '2');
+INSERT INTO `ym_doctor_expertises` VALUES ('43', '3');
+INSERT INTO `ym_doctor_expertises` VALUES ('43', '4');
 
 -- ----------------------------
 -- Table structure for ym_doctor_leaves
@@ -888,13 +892,14 @@ CREATE TABLE `ym_users` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`) USING BTREE,
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
 INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site');
 INSERT INTO `ym_users` VALUES ('45', '', '$2a$12$92HG95rnUS5MYLFvDjn2cOU4O4p64mpH9QnxFYzVnk9CjQIPrcTBC', 'yusef.mobasheri@gmail.com', '2', '1469083948', 'active', '72ca2204ef7d713a27204d6dfeb615a4', '1', 'site');
+INSERT INTO `ym_users` VALUES ('46', '', '$2a$12$.PR0pJ.0HU8zf1FqdCYeDeOlFHjLsZYyxzH/nzV/UnC5tEBeKenBK', 'zahra@gmail.com', '4', '1493876649', 'pending', 'd4cf45c2df97a2b6b3eb16017ca8804f', '0', 'site');
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -910,6 +915,7 @@ CREATE TABLE `ym_user_details` (
   `address` varchar(1000) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نشانی دقیق پستی',
   `avatar` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT 'آواتار',
   `mobile` varchar(11) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'موبایل',
+  `doctor_resume` mediumtext COLLATE utf8_persian_ci,
   PRIMARY KEY (`user_id`),
   KEY `user_id` (`user_id`) USING BTREE,
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -918,8 +924,9 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', 'amKd41493797323.jpg', '09123456789');
-INSERT INTO `ym_user_details` VALUES ('45', 'یوسف', 'مبشری', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null);
+INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', 'amKd41493797323.jpg', '09123456789', null);
+INSERT INTO `ym_user_details` VALUES ('45', 'یوسف', 'مبشری', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null, null);
+INSERT INTO `ym_user_details` VALUES ('46', 'زهرا', 'مرفاوی', '1651131684', '02539586646', null, null, null, '09192561166', null);
 
 -- ----------------------------
 -- Table structure for ym_user_notifications
