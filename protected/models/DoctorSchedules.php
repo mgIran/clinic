@@ -4,6 +4,7 @@
  * This is the model class for table "{{doctor_schedules}}".
  *
  * The followings are the available columns in table '{{doctor_schedules}}':
+ * @property string $clinic_id
  * @property string $doctor_id
  * @property string $week_day
  * @property string $visit_count
@@ -11,6 +12,7 @@
  * @property string $exit_time
  *
  * The followings are the available model relations:
+ * @property Clinics $clinic
  * @property Users $doctor
  */
 class DoctorSchedules extends CActiveRecord
@@ -31,14 +33,14 @@ class DoctorSchedules extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('doctor_id, week_day', 'required'),
-			array('doctor_id', 'length', 'max'=>10),
+			array('clinic_id, doctor_id, week_day', 'required'),
+			array('clinic_id, doctor_id', 'length', 'max'=>10),
 			array('week_day', 'length', 'max'=>1),
 			array('visit_count', 'length', 'max'=>3),
 			array('entry_time, exit_time', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('doctor_id, week_day, visit_count, entry_time, exit_time', 'safe', 'on'=>'search'),
+			array('clinic_id, doctor_id, week_day, visit_count, entry_time, exit_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,6 +52,7 @@ class DoctorSchedules extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'clinic' => array(self::BELONGS_TO, 'Clinics', 'clinic_id'),
 			'doctor' => array(self::BELONGS_TO, 'Users', 'doctor_id'),
 		);
 	}
@@ -60,6 +63,7 @@ class DoctorSchedules extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'clinic_id' => 'Clinic',
 			'doctor_id' => 'دکتر',
 			'week_day' => 'روز هفته',
 			'visit_count' => 'تعداد ویزیت',
@@ -86,6 +90,7 @@ class DoctorSchedules extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('clinic_id',$this->clinic_id,true);
 		$criteria->compare('doctor_id',$this->doctor_id,true);
 		$criteria->compare('week_day',$this->week_day,true);
 		$criteria->compare('visit_count',$this->visit_count,true);
