@@ -772,7 +772,7 @@ input[type="text"].date-input{
     margin-top: 100px;
 }
 .form-container .row{
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 .form-container input[type="submit"]{
     width: 150px;
@@ -787,7 +787,9 @@ input[type="text"].date-input{
 }
 .form-container .desc{
     color: #8b8b8b;
-    line-height:44px;
+    display: block;
+    margin-bottom: 20px;
+    text-align: justify;
 }
 .patient-info{
     margin-top: 100px;
@@ -960,4 +962,8 @@ input[type="text"].date-input{
 }
 .profile .info hr{
     margin: 50px 0;
+}
+.form-container form.info-form{
+    width: 400px;
+    margin: 0 auto;
 }

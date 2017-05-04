@@ -29,6 +29,7 @@ class UsersPublicController extends Controller
                 'upload',
                 'deleteUpload',
                 'viewProfile',
+                'getUserByCode',
             )
         );
     }
@@ -40,6 +41,7 @@ class UsersPublicController extends Controller
     {
         return array(
             'checkAccess + dashboard, logout, setting, notifications, bookmarked, downloaded, transactions, library, sessions, removeSession',
+            'ajaxOnly + getUserByCode'
         );
     }
 
@@ -207,6 +209,12 @@ class UsersPublicController extends Controller
         $this->render('view-profile', array(
             'model' => $model,
         ));
+    }
+
+    public function actionGetUserByCode()
+    {
+        $nationalCode=$_POST['code'];
+        $model=Users::model()->find('national_code = :code', array(':code'=>$nationalCode));
     }
 
     /**

@@ -49,11 +49,7 @@ class ReservationController extends Controller
                 'clinicID' => $_POST['Reservation']['clinic_id'],
             ));
 
-            if (Yii::app()->user->isGuest or Yii::app()->user->type == 'admin') {
-                Yii::app()->user->returnUrl = 'reservation/info';
-                $this->redirect(array('/login'));
-            } else
-                $this->redirect('info');
+            $this->redirect('info');
         }
     }
 
