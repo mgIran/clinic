@@ -737,11 +737,14 @@ input[type="text"].date-input{
     margin-left: 15px;
     box-shadow: 0 0 5px #ccc;
 }
-.table-container input[type="submit"]{
+.table-container input[type="submit"],
+.table-container a.btn-danger{
     width: 100px;
     opacity:.7;
+    margin-left: 15px;
 }
-.table-container input[type="submit"]:hover{
+.table-container input[type="submit"]:hover,
+.table-container .btn-danger:hover{
     opacity:1;
 }
 .table > tbody > tr > td,
@@ -908,4 +911,50 @@ input[type="text"].date-input{
 }
 .ltr{
     direction: ltr;
+}
+.profile .info img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #aaa;
+    float: right;
+    margin-left: 30px;
+}
+.profile .info .text{
+    overflow: hidden;
+}
+.profile .info h1{
+    font-size: 30px;
+    font-weight: bolder;
+    padding-top: 15px;
+    margin: 0 0 20px;
+}
+.profile .info small{
+    color: #8b8b8b;
+}
+.profile .info small span{
+    margin-left: 30px;
+}
+.profile .info h4{
+    margin: 50px 0 20px;
+}
+.profile .info .clinic-items{
+    margin-top: 50px;
+}
+.profile .info .clinic-items h4{
+    margin-top: 0;
+}
+.profile .info .clinic-item{
+    padding: 10px 15px;
+}
+.profile .info .clinic-item:nth-child(2n){
+    background: #F5F5F5;
+}
+.profile .info .clinic-item label{
+    width: 130px;
+    float: right;
+}
+.profile .info .clinic-item span{
+    overflow: hidden;
+    display: block;
 }

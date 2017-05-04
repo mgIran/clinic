@@ -137,7 +137,8 @@ class ClinicPersonnels extends CActiveRecord
         $criteria->with = array('clinic', 'user', 'user.expertises', 'user.userDetails');
         $criteria->order = 'clinic_personnels.user_id DESC, clinic_personnels.clinic_id DESC';
 
-        $criteria->compare('clinic_personnels.post', 3);
+        $criteria->compare('clinic_personnels.post', 2);
+        $criteria->compare('clinic_personnels.post', 3, false, 'OR');
         $criteria->compare('expertises.id', $this->expertiseID);
         $criteria->compare('userDetails.first_name', $this->doctor_name, true);
         $criteria->compare('userDetails.last_name', $this->doctor_name, true, 'OR');
