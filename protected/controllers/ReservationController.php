@@ -43,8 +43,25 @@ class ReservationController extends Controller
 
     public function actionSelectDoctor()
     {
-        if(isset($_POST['Reservation'])){
+        if (isset($_POST['Reservation'])) {
+            Yii::app()->user->setState('reservation', array(
+                'doctorID' => $_POST['Reservation']['doctor_id'],
+                'clinicID' => $_POST['Reservation']['clinic_id'],
+            ));
 
+            if (Yii::app()->user->isGuest or Yii::app()->user->type == 'admin') {
+                Yii::app()->user->returnUrl = 'reservation/info';
+                $this->redirect(array('/login'));
+            } else
+                $this->redirect('info');
         }
+    }
+
+    public function actionInfo()
+    {
+        Yii::app()->theme='frontend';
+        $this->layout='public';
+
+        $this->render('info');
     }
 }

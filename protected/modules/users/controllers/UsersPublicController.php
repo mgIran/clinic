@@ -28,6 +28,7 @@ class UsersPublicController extends Controller
                 'profile',
                 'upload',
                 'deleteUpload',
+                'viewProfile',
             )
         );
     }
@@ -181,6 +182,28 @@ class UsersPublicController extends Controller
         $this->render('profile', array(
             'model' => $model,
             'avatar' => $avatar,
+        ));
+    }
+
+    /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionViewProfile($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = '//layouts/public';
+
+        $model = Users::model()->findByPk($id);
+        if ($clinicID = Yii::app()->request->getQuery('clinic')) {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('clinics.id = :id');
+            $criteria->params[':id'] = $clinicID;
+            $model->clinic = $model->clinics($criteria)[0];
+        }
+
+        $this->render('view-profile', array(
+            'model' => $model,
         ));
     }
 

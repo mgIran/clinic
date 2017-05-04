@@ -24,11 +24,14 @@
  * @property UserRoles $role
  * @property ClinicPersonnels $clinicPersonnels
  * @property Clinics[] $clinics
+ * @property Clinics $clinic
  * @property Expertises[] $expertises
  * @property DoctorSchedules[] $doctorSchedules
  */
 class Users extends CActiveRecord
 {
+    public $clinic;
+
     /**
      * @return string the associated database table name
      */

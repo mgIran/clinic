@@ -64,6 +64,7 @@
                             $html .= CHtml::submitButton('رزرو نوبت', array('class' => 'btn-green btn-sm'));
                             $html .= CHtml::hiddenField('Reservation[doctor_id]', $data->user_id);
                             $html .= CHtml::hiddenField('Reservation[clinic_id]', $data->clinic_id);
+                            $html .= CHtml::link('پروفایل دکتر', Yii::app()->createUrl('/users/' . $data->user_id . '/clinic/' . $data->clinic_id), array('class' => 'btn btn-danger btn-sm', 'target' => '_blank'));
                             $html .= CHtml::endForm();
                             return $html;
                         },

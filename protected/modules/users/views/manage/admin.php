@@ -12,6 +12,9 @@ $this->menu=array(
     array('label'=>'افزودن', 'url'=>array($role==1?'create':'/publishers/panel/create')),
 );
 $buttons = array(
+    'view' => array(
+        'url' => 'Yii::app()->createUrl("/users/manage/view",array("id" => $data->id))'
+    ),
     'session' => array(
         'label' => 'دستگاه های متصل',
         'options' => array(
@@ -25,8 +28,8 @@ $columns = array(
     'email',
     array(
         'header' => 'نام کامل',
-        'value' => '$data->userDetails->fa_name',
-        'filter' => CHtml::activeTextField($model,'fa_name')
+        'value' => '$data->userDetails->first_name',
+        'filter' => CHtml::activeTextField($model,'first_name')
     ),
     array(
         'header' => 'وضعیت',
@@ -57,6 +60,9 @@ if($role == 2){
     $buttons = array(
         'update' => array(
             'url' => 'Yii::app()->createUrl("/publishers/panel/update",array("id" => $data->id))'
+        ),
+        'view' => array(
+            'url' => 'Yii::app()->createUrl("/users/manage/view",array("id" => $data->id))'
         ),
         'session' => array(
             'label' => 'دستگاه های متصل',
