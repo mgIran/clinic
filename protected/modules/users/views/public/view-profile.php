@@ -55,10 +55,15 @@ $purifier=new CHtmlPurifier();
                         <?php endif;?>
                     </div>
                 <?php endif;?>
-                <div class="resume">
-                    <h4>رزومه</h4>
-                    
-                </div>
+                <?php if($model->clinic and $model->userDetails->doctor_resume):?>
+                    <hr>
+                <?php endif;?>
+                <?php if($model->userDetails->doctor_resume):?>
+                    <div class="resume">
+                        <h4>رزومه</h4>
+                        <?php echo $purifier->purify($model->userDetails->doctor_resume);?>
+                    </div>
+                <?php endif;?>
             </div>
         </div>
     </div>

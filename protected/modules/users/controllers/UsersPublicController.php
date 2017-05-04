@@ -199,7 +199,9 @@ class UsersPublicController extends Controller
             $criteria = new CDbCriteria();
             $criteria->addCondition('clinics.id = :id');
             $criteria->params[':id'] = $clinicID;
-            $model->clinic = $model->clinics($criteria)[0];
+            $model->clinic = $model->clinics($criteria);
+            if ($model->clinic)
+                $model->clinic = $model->clinic[0];
         }
 
         $this->render('view-profile', array(
