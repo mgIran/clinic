@@ -13,6 +13,7 @@
  * @property string $address
  * @property string $avatar
  * @property string $mobile
+ * @property string $doctor_resume
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -44,6 +45,7 @@ class UserDetails extends CActiveRecord
 			array('address', 'length', 'max'=>1000),
 			array('avatar', 'length', 'max'=>255),
 			array('phone, mobile', 'numerical', 'integerOnly' => true),
+			array('doctor_resume', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, first_name, last_name, national_code, phone, zip_code, address, avatar, mobile', 'safe', 'on'=>'search'),
@@ -77,6 +79,7 @@ class UserDetails extends CActiveRecord
 			'address' => 'آدرس',
 			'avatar' => 'آواتار',
 			'mobile' => 'موبایل',
+			'doctor_resume' => 'رزومه پزشکی',
 		);
 	}
 

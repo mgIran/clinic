@@ -65,6 +65,18 @@
             <?php echo $form->error($model,'address'); ?>
         </div>
     </div>
+    <?php
+    if($model->user->role_id == 3 || $model->user->role_id == 2):
+    ?>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <?php echo $form->textArea($model,'doctor_resume',array('placeholder'=>$model->getAttributeLabel('doctor_resume'))); ?>
+            <?php echo $form->error($model,'doctor_resume'); ?>
+        </div>
+    </div>
+    <?
+    endif;
+    ?>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
