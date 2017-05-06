@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-05-04 12:06:28
+Date: 2017-05-06 18:36:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -146,7 +146,7 @@ CREATE TABLE `ym_clinic_personnels` (
 -- ----------------------------
 INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '43', '3');
-INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '4');
+INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '46', '4');
 
 -- ----------------------------
@@ -162,11 +162,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '9');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457878');
+INSERT INTO `ym_counter_save` VALUES ('counter', '10');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457880');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -181,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1493883070');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494079102');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -231,18 +231,24 @@ CREATE TABLE `ym_doctor_schedules` (
   `clinic_id` int(10) unsigned NOT NULL,
   `doctor_id` int(10) unsigned NOT NULL COMMENT 'دکتر',
   `week_day` decimal(1,0) unsigned NOT NULL COMMENT 'روز هفته',
-  `visit_count` decimal(3,0) unsigned DEFAULT NULL COMMENT 'تعداد ویزیت',
-  `entry_time` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'زمان مراجعه',
-  `exit_time` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'زمان خروج',
+  `entry_time_am` decimal(2,0) unsigned DEFAULT NULL COMMENT 'زمان ورود نوبت صبح',
+  `exit_time_am` decimal(2,0) unsigned DEFAULT NULL COMMENT 'زمان خروج نوبت صبح',
+  `visit_count_am` decimal(3,0) unsigned DEFAULT NULL COMMENT 'تعداد ویزیت نوبت صبح',
+  `entry_time_pm` decimal(2,0) unsigned DEFAULT NULL COMMENT 'زمان ورود نوبت بعدازظهر',
+  `exit_time_pm` decimal(2,0) unsigned DEFAULT NULL COMMENT 'زمان خروج نوبت بعدازظهر',
+  `visit_count_pm` decimal(3,0) unsigned DEFAULT NULL COMMENT 'تعداد ویزیت نوبت بعدازظهر',
   PRIMARY KEY (`doctor_id`,`week_day`,`clinic_id`),
   KEY `clinic_id` (`clinic_id`),
-  CONSTRAINT `ym_doctor_schedules_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `ym_doctor_schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `ym_doctor_schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `ym_doctor_schedules_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_doctor_schedules
 -- ----------------------------
+INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '1', '8', '12', '50', '16', '21', '50');
+INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '3', '8', '12', '50', '16', '21', '50');
+INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '4', '8', '12', '50', '16', '21', '50');
 
 -- ----------------------------
 -- Table structure for ym_expertises
@@ -982,7 +988,7 @@ CREATE TABLE `ym_user_role_permissions` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_user_role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_user_role_permissions
@@ -1009,6 +1015,7 @@ INSERT INTO `ym_user_role_permissions` VALUES ('213', '1', 'tickets', 'TicketsMa
 INSERT INTO `ym_user_role_permissions` VALUES ('214', '1', 'tickets', 'TicketsMessagesController', 'delete,create');
 INSERT INTO `ym_user_role_permissions` VALUES ('215', '1', 'users', 'UsersCreditController', 'buy,bill,captcha,verify');
 INSERT INTO `ym_user_role_permissions` VALUES ('216', '1', 'users', 'UsersPublicController', 'dashboard,logout,setting,notifications,changePassword,bookmarked,downloaded,transactions,library,sessions,removeSession');
+INSERT INTO `ym_user_role_permissions` VALUES ('217', '3', 'clinics', 'ClinicsDoctorController', 'index,schedules');
 
 -- ----------------------------
 -- Table structure for ym_user_transactions

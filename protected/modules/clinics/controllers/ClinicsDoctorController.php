@@ -60,11 +60,9 @@ class ClinicsDoctorController extends Controller
     public function actionSchedules()
     {
         Yii::app()->theme = 'frontend';
-        $model = new DoctorSchedules('search');
-        $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['DoctorSchedules']))
-            $model->attributes = $_GET['DoctorSchedules'];
-
+        $user = Users::model()->findByPk(Yii::app()->user->getId());
+        $model = $user->doctorSchedules;
+//var_dump($model);exit;
         $this->render('schedules', array(
             'model' => $model,
         ));
