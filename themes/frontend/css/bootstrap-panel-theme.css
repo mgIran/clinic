@@ -2198,3 +2198,8 @@ form .form-group[class*="col-"]{
     float: right;
     margin-left: 30px;
 }
+
+.table-schedules *{
+    text-align: center !important;
+    vertical-align: middle;
+}
