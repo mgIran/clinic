@@ -72,12 +72,12 @@ class ClinicsDoctorController extends Controller
             $flag = true;
             $errors = [];
             foreach($_POST['DoctorSchedules'] as $key => $values){
+                $row = DoctorSchedules::model()->findByAttributes(array(
+                    'clinic_id' => $clinicID,
+                    'doctor_id' => $userID,
+                    'week_day' => $key
+                ));
                 if(isset($values['week_day']) && $values['week_day'] == $key){
-                    $row = DoctorSchedules::model()->findByAttributes(array(
-                        'clinic_id' => $clinicID,
-                        'doctor_id' => $userID,
-                        'week_day' => $key
-                    ));
                     if($row === null){
                         $row = new DoctorSchedules();
                         $row->clinic_id = $clinicID;
@@ -90,7 +90,8 @@ class ClinicsDoctorController extends Controller
                         $errors = CMap::mergeArray($errors, $row->errors);
                     }
 
-                }
+                }elseif($row !== null)
+                    $row->delete();
             }
             if($flag){
                 Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
