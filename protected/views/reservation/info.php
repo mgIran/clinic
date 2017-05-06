@@ -16,54 +16,44 @@
     </div>
 
     <div class="form-container">
-        <div class="container">
-            <form>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="کد ملی">
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="dropdown">
-                            <button class="dropdown-toggle" type="button" data-toggle="dropdown">نوع بیمه<i class="gray-arrow-icon"></i></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">آزاد</a></li>
-                                <li><a href="#">تامین اجتماعی</a></li>
-                                <li><a href="#">خدمات درمانی</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="نام و نام خانوادگی">
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="نام پدر">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="تلفن همراه">
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="پست الکترونیکی">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <textarea placeholder="توضیحات"></textarea>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="کد امنیتی">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <small class="desc">در پایان فرایند رزرو نوبت، سیستم برای شما کد رهگیری در نظر می گیرد. لطفا هنگام مراجعه به درمانگاه، کد رهگیری را همراه داشته باشید.</small>
-                        <input type="submit" class="btn-red pull-left" value="ثبت">
-                    </div>
-                </div>
-            </form>
-        </div>
+        <?php echo CHtml::beginForm('', 'post', array('class'=>'info-form'));?>
+            <div class="row">
+                <?php echo CHtml::textField('PatientInfo[national_code]', '', array('placeholder'=>'کد ملی *', 'maxlength'=>10));?>
+            </div>
+            <div class="row">
+                <?php echo CHtml::textField('PatientInfo[name]', '', array('placeholder'=>'نام و نام خانوادگی'));?>
+            </div>
+            <div class="row">
+                <?php echo CHtml::textField('PatientInfo[mobile]', '', array('placeholder'=>'تلفن همراه *', 'maxlength'=>11));?>
+            </div>
+            <div class="row">
+                <?php echo CHtml::textField('PatientInfo[email]', '', array('placeholder'=>'پست الکترونیکی'));?>
+            </div>
+            <div class="row">
+                <input type="text" placeholder="کد امنیتی گوگل">
+            </div>
+            <div class="row">
+                <small class="desc">در پایان فرایند رزرو نوبت، سیستم برای شما کد رهگیری در نظر می گیرد. لطفا هنگام مراجعه به درمانگاه، کد رهگیری را همراه داشته باشید.</small>
+                <?php echo CHtml::submitButton('ثبت', array('class'=>'btn-red pull-left'));?>
+            </div>
+        <?php echo CHtml::endForm();?>
     </div>
 </div>
+<?php Yii::app()->clientScript->registerScript('load-user-info', "
+    $('#PatientInfo_national_code').focusout(function(){
+        if($(this).val() != ''){
+            $.ajax({
+                url: '".$this->createUrl('/users/public/getUserByCode')."',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {code: $(this).val()},
+                success:function(data){
+                    console.log(data);
+                },
+                error:function(){
+                    alert('در برقراری ارتباط با سرور خطایی رخ داده است.');
+                }
+            });
+        }
+    });
+");?>
