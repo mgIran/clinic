@@ -38,8 +38,8 @@ class DoctorSchedules extends CActiveRecord
 		7 => 'جمعه'
 	);
 
-	public static $AM = array(5,6,7,8,9,10,11,12);
-	public static $PM = array(12,13,14,15,16,17,18,19,20,21,22,23,24);
+	public static $AM = array(5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 11 => 11, 12 => 12);
+	public static $PM = array(12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17, 18 => 18, 19 => 19, 20 => 20, 21 => 21, 22 => 22, 23 => 23, 24 => 24);
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -50,13 +50,13 @@ class DoctorSchedules extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('clinic_id, doctor_id, week_day', 'required'),
-			array('clinic_id, doctor_id', 'length', 'max'=>10),
-			array('week_day', 'length', 'max'=>1),
-			array('entry_time_am, exit_time_am, entry_time_pm, exit_time_pm', 'length', 'max'=>2),
-			array('visit_count_am, visit_count_pm', 'length', 'max'=>3),
+			array('clinic_id, doctor_id', 'length', 'max' => 10),
+			array('week_day', 'length', 'max' => 1),
+			array('entry_time_am, exit_time_am, entry_time_pm, exit_time_pm', 'length', 'max' => 2),
+			array('visit_count_am, visit_count_pm', 'length', 'max' => 3),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('clinic_id, doctor_id, week_day, entry_time_am, exit_time_am, visit_count_am, entry_time_pm, exit_time_pm, visit_count_pm', 'safe', 'on'=>'search'),
+			array('clinic_id, doctor_id, week_day, entry_time_am, exit_time_am, visit_count_am, entry_time_pm, exit_time_pm, visit_count_pm', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -107,20 +107,20 @@ class DoctorSchedules extends CActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('clinic_id',$this->clinic_id,true);
-		$criteria->compare('doctor_id',$this->doctor_id,true);
-		$criteria->compare('week_day',$this->week_day,true);
-		$criteria->compare('entry_time_am',$this->entry_time_am,true);
-		$criteria->compare('exit_time_am',$this->exit_time_am,true);
-		$criteria->compare('visit_count_am',$this->visit_count_am,true);
-		$criteria->compare('entry_time_pm',$this->entry_time_pm,true);
-		$criteria->compare('exit_time_pm',$this->exit_time_pm,true);
-		$criteria->compare('visit_count_pm',$this->visit_count_pm,true);
+		$criteria->compare('clinic_id', $this->clinic_id, true);
+		$criteria->compare('doctor_id', $this->doctor_id, true);
+		$criteria->compare('week_day', $this->week_day, true);
+		$criteria->compare('entry_time_am', $this->entry_time_am, true);
+		$criteria->compare('exit_time_am', $this->exit_time_am, true);
+		$criteria->compare('visit_count_am', $this->visit_count_am, true);
+		$criteria->compare('entry_time_pm', $this->entry_time_pm, true);
+		$criteria->compare('exit_time_pm', $this->exit_time_pm, true);
+		$criteria->compare('visit_count_pm', $this->visit_count_pm, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
@@ -130,7 +130,7 @@ class DoctorSchedules extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return DoctorSchedules the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}

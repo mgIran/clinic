@@ -60,9 +60,45 @@ class ClinicsDoctorController extends Controller
     public function actionSchedules()
     {
         Yii::app()->theme = 'frontend';
-        $user = Users::model()->findByPk(Yii::app()->user->getId());
-        $model = $user->doctorSchedules;
-//var_dump($model);exit;
+        $userID = Yii::app()->user->getId();
+        $clinicID = Yii::app()->user->clinic->id;
+        $user = Users::model()->findByPk($userID);
+        $model = $user->doctorSchedules(array('clinic_id' => $clinicID));
+        $temp = [];
+        foreach($model as $item)
+            $temp[$item->week_day] = $item;
+        $model = $temp;
+        if(isset($_POST['DoctorSchedules'])){
+            $flag = true;
+            $errors = [];
+            foreach($_POST['DoctorSchedules'] as $key => $values){
+                if(isset($values['week_day']) && $values['week_day'] == $key){
+                    $row = DoctorSchedules::model()->findByAttributes(array(
+                        'clinic_id' => $clinicID,
+                        'doctor_id' => $userID,
+                        'week_day' => $key
+                    ));
+                    if($row === null){
+                        $row = new DoctorSchedules();
+                        $row->clinic_id = $clinicID;
+                        $row->doctor_id = $userID;
+                        $row->week_day = $key;
+                    }
+                    $row->attributes = $values;
+                    if(!$row->save()){
+                        $flag = false;
+                        $errors = CMap::mergeArray($errors, $row->errors);
+                    }
+
+                }
+            }
+            if($flag){
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            }else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
         $this->render('schedules', array(
             'model' => $model,
         ));

@@ -2203,3 +2203,38 @@ form .form-group[class*="col-"]{
     text-align: center !important;
     vertical-align: middle;
 }
+
+.table-schedules tr > td:first-of-type{
+    text-align: right !important;
+}
+.table-schedules tr{
+    position: relative;
+}
+.table-schedules tr input[type="checkbox"]{
+    z-index: 102;
+    cursor: pointer;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+}
+.table-schedules tr input[type="checkbox"]+label{
+    z-index: 101;
+}
+.table-schedules tr input[type="text"],
+.table-schedules tr input[type="password"],
+.table-schedules tr textarea{
+    color: #333 !important;
+}
+tr.disable .row-overlay{
+    visibility: visible;
+}
+.row-overlay{
+    visibility: hidden;
+    position: absolute;
+    z-index:100;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+}
