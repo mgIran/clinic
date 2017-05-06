@@ -213,8 +213,21 @@ class UsersPublicController extends Controller
 
     public function actionGetUserByCode()
     {
-        $nationalCode=$_POST['code'];
-        $model=Users::model()->find('national_code = :code', array(':code'=>$nationalCode));
+        $nationalCode = $_POST['code'];
+        /* @var $model Users */
+        $model = Users::model()->find('national_code = :code', array(':code' => $nationalCode));
+
+        if ($model)
+            echo CJSON::encode(array(
+                'status' => true,
+                'name' => $model->userDetails->getShowName(),
+                'mobile' => $model->userDetails->mobile,
+                'email' => $model->email,
+            ));
+        else
+            echo CJSON::encode(array(
+                'status' => false
+            ));
     }
 
     /**

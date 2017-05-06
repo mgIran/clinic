@@ -97,7 +97,7 @@ else
 			),
 			array(
 				'name'=>'کد ملی',
-				'value'=>$model->userDetails->national_code,
+				'value'=>$model->national_code,
 			),
 			array(
 				'name'=>'کد پستی',

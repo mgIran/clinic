@@ -967,3 +967,7 @@ input[type="text"].date-input{
     width: 400px;
     margin: 0 auto;
 }
+.errorMessage{
+    font-size: 11px;
+    color: #d9534f;
+}
