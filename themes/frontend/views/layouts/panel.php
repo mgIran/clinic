@@ -72,7 +72,7 @@
             <?php if(isset(Yii::app()->user->clinic)):?>
                 <div class="pull-right">
                     <a href="<?= $this->createUrl('/clinics/panel') ?>"><h5><?php echo Yii::app()->user->clinic->clinic_name;?></h5></a>
-                    <a title="خروج از <?= "\"s\""; ?>" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="btn btn-danger btn-sm">خروج از <?= CHtml::encode('"'.Yii::app()->user->clinic->clinic_name.'"'); ?></a>
+                    <a title="خروج از <?= CHtml::encode('"'.Yii::app()->user->clinic->clinic_name.'"'); ?>" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="btn btn-danger btn-sm">خروج از <?= CHtml::encode('"'.Yii::app()->user->clinic->clinic_name.'"'); ?></a>
                 </div>
             <?php endif;?>
             <div class="icons">

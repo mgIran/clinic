@@ -808,3 +808,18 @@ in D:\Important\Xamppp\htdocs\clinic\index.php (11)
 2017/05/04 11:17:49 [warning] [application] Failed to set unsafe attribute "expertise" of "Users".
 in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsManageController.php (255)
 in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/06 21:15:01 [warning] [application] Failed to set unsafe attribute "weekday" of "DoctorSchedules".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsDoctorController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/06 21:15:01 [warning] [application] Failed to set unsafe attribute "weekday" of "DoctorSchedules".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsDoctorController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/06 21:15:02 [warning] [application] Failed to set unsafe attribute "weekday" of "DoctorSchedules".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsDoctorController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/06 21:15:02 [warning] [application] Failed to set unsafe attribute "weekday" of "DoctorSchedules".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsDoctorController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
+2017/05/06 21:16:50 [warning] [application] Failed to set unsafe attribute "weekday" of "DoctorSchedules".
+in D:\Important\Xamppp\htdocs\clinic\protected\modules\clinics\controllers\ClinicsDoctorController.php (86)
+in D:\Important\Xamppp\htdocs\clinic\index.php (11)
