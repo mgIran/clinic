@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $('.selectpicker').selectpicker();
+    if($('.selectpicker').length != 0)
+        $('.selectpicker').selectpicker();
     if($('#from-date').length != 0)
         $('#from-date').persianDatepicker({
             'format': 'DD MMMM YYYY',

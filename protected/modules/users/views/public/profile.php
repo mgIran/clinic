@@ -37,12 +37,6 @@
     </div>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <?php echo $form->textField($model,'national_code',array('placeholder'=>$model->getAttributeLabel('national_code'),'class'=>'form-control','maxlength'=>10)); ?>
-            <?php echo $form->error($model,'national_code'); ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <?php echo $form->textField($model,'phone',array('placeholder'=>$model->getAttributeLabel('phone'),'class'=>'form-control','maxlength'=>11)); ?>
             <?php echo $form->error($model,'phone'); ?>
         </div>

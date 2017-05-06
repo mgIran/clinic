@@ -7,7 +7,6 @@
  * @property string $user_id
  * @property string $first_name
  * @property string $last_name
- * @property string $national_code
  * @property string $phone
  * @property string $zip_code
  * @property string $address
@@ -38,7 +37,7 @@ class UserDetails extends CActiveRecord
 		return array(
 			array('user_id', 'required'),
 			array('first_name, last_name, mobile', 'required', 'on' => 'update'),
-			array('user_id, national_code, zip_code', 'length', 'max'=>10),
+			array('user_id, zip_code', 'length', 'max'=>10),
 			array('first_name, last_name', 'length', 'max'=>50),
 			array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
 			array('phone', 'length', 'max'=>11),
@@ -48,7 +47,7 @@ class UserDetails extends CActiveRecord
 			array('doctor_resume', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, first_name, last_name, national_code, phone, zip_code, address, avatar, mobile', 'safe', 'on'=>'search'),
+			array('user_id, first_name, last_name, phone, zip_code, address, avatar, mobile', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,7 +72,6 @@ class UserDetails extends CActiveRecord
 			'user_id' => 'کاربر',
 			'first_name' => 'نام',
 			'last_name' => 'نام خانوادگی',
-			'national_code' => 'کد ملی',
 			'phone' => 'تلفن',
 			'zip_code' => 'کد پستی',
 			'address' => 'آدرس',
@@ -104,7 +102,6 @@ class UserDetails extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('first_name',$this->first_name,true);
 		$criteria->compare('last_name',$this->last_name,true);
-		$criteria->compare('national_code',$this->national_code,true);
 		$criteria->compare('phone',$this->phone,true);
 		$criteria->compare('zip_code',$this->zip_code,true);
 		$criteria->compare('address',$this->address,true);

@@ -17,6 +17,7 @@
  * @property string $repeatPassword
  * @property string $oldPassword
  * @property string $newPassword
+ * @property string $national_code
  *
  * The followings are the available model relations:
  * @property UserDetails $userDetails
@@ -50,7 +51,6 @@ class Users extends CActiveRecord
     public $last_name;
     public $phone;
     public $mobile;
-    public $national_code;
     public $statusFilter;
     public $repeatPassword;
     public $oldPassword;
@@ -76,7 +76,7 @@ class Users extends CActiveRecord
             array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
             array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update'),
             array('email', 'length', 'max' => 255),
-            array('role_id', 'length', 'max' => 10),
+            array('role_id, national_code', 'length', 'max' => 10),
             array('status', 'length', 'max' => 8),
             array('create_date', 'length', 'max' => 20),
             array('type, first_name, last_name, phone, mobile, national_code', 'safe'),
@@ -146,6 +146,7 @@ class Users extends CActiveRecord
             'verification_token' => 'Verification Token',
             'change_password_request_count' => 'تعداد درخواست تغییر کلمه عبور',
             'type' => 'نوع کاربری',
+            'national_code' => 'کد ملی',
         );
     }
 
@@ -170,6 +171,7 @@ class Users extends CActiveRecord
         $criteria->compare('username', $this->username, true);
         $criteria->compare('status', $this->statusFilter, true);
         $criteria->compare('role_id', $this->role_id);
+        $criteria->compare('national_code',$this->national_code,true);
         $criteria->addSearchCondition('userDetails.first_name', $this->first_name);
         $criteria->addSearchCondition('userDetails.last_name', $this->last_name);
         $criteria->with = array('userDetails');

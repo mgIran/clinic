@@ -19,6 +19,7 @@
         <?php echo CHtml::beginForm('', 'post', array('class'=>'info-form'));?>
             <div class="row">
                 <?php echo CHtml::textField('PatientInfo[national_code]', '', array('placeholder'=>'کد ملی *', 'maxlength'=>10));?>
+                <span class="errorMessage" id="national-code-error"></span>
             </div>
             <div class="row">
                 <?php echo CHtml::textField('PatientInfo[name]', '', array('placeholder'=>'نام و نام خانوادگی'));?>
@@ -42,18 +43,33 @@
 <?php Yii::app()->clientScript->registerScript('load-user-info', "
     $('#PatientInfo_national_code').focusout(function(){
         if($(this).val() != ''){
-            $.ajax({
-                url: '".$this->createUrl('/users/public/getUserByCode')."',
-                type: 'POST',
-                dataType: 'JSON',
-                data: {code: $(this).val()},
-                success:function(data){
-                    console.log(data);
-                },
-                error:function(){
-                    alert('در برقراری ارتباط با سرور خطایی رخ داده است.');
+            if($(this).val().length < 10)
+                $('#national-code-error').text('کد ملی باید 10 رقم باشد.').removeClass('hidden');
+            else{
+                var pattern = new RegExp(/\\D/);
+                if(pattern.test($(this).val()))
+                    $('#national-code-error').text('کد ملی باید عددی باشد.').removeClass('hidden');
+                else{
+                    $('#national-code-error').text('').addClass('hidden');
+                    $.ajax({
+                        url: '".$this->createUrl('/users/public/getUserByCode')."',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {code: $(this).val()},
+                        success:function(data){
+                            if(data.status){
+                                $('#PatientInfo_name').val(data.name).prop('disabled', true);
+                                $('#PatientInfo_mobile').val(data.mobile).prop('disabled', true);
+                                $('#PatientInfo_email').val(data.email).prop('disabled', true);
+                            }
+                        },
+                        error:function(){
+                            alert('در برقراری ارتباط با سرور خطایی رخ داده است.');
+                        }
+                    });
                 }
-            });
-        }
+            }
+        }else
+            $('#national-code-error').text('کد ملی نمی تواند خالی باشد.').removeClass('hidden');
     });
 ");?>
