@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50616
+Source Server         : localhost
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : clinic
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-06 18:36:25
+Date: 2017-05-06 21:49:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -181,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494079102');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494086798');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -260,7 +260,7 @@ CREATE TABLE `ym_expertises` (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'توضیح کوتاه',
   `icon` varchar(255) DEFAULT NULL COMMENT 'آیکون',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_expertises
@@ -269,6 +269,12 @@ INSERT INTO `ym_expertises` VALUES ('1', 'قلب و عروق', null, 'heart');
 INSERT INTO `ym_expertises` VALUES ('2', 'ریه', null, 'lungs');
 INSERT INTO `ym_expertises` VALUES ('3', 'دندان', null, 'tooth');
 INSERT INTO `ym_expertises` VALUES ('4', 'مغز و اعصاب', null, 'brain');
+INSERT INTO `ym_expertises` VALUES ('5', 'پوست و مو', null, 'hair');
+INSERT INTO `ym_expertises` VALUES ('6', 'گوارش', null, 'digestion');
+INSERT INTO `ym_expertises` VALUES ('7', 'چشم پزشکی', null, 'eye');
+INSERT INTO `ym_expertises` VALUES ('8', 'ارتوپدی', null, 'bone');
+INSERT INTO `ym_expertises` VALUES ('9', 'پاتولوژی', null, 'pathology');
+INSERT INTO `ym_expertises` VALUES ('10', 'اورولوژی', null, 'urology');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -1040,4 +1046,28 @@ CREATE TABLE `ym_user_transactions` (
 
 -- ----------------------------
 -- Records of ym_user_transactions
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for ym_visits
+-- ----------------------------
+DROP TABLE IF EXISTS `ym_visits`;
+CREATE TABLE `ym_visits` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `clinic_id` int(10) unsigned DEFAULT NULL COMMENT 'بیمارستان / درمانگاه / مطب',
+  `doctor_id` int(10) unsigned DEFAULT NULL COMMENT 'پزشک',
+  `date` varchar(20) DEFAULT NULL COMMENT 'تاریخ',
+  `time` decimal(1,0) DEFAULT NULL COMMENT 'نوبت',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `clinic_id` (`clinic_id`),
+  KEY `doctor_id` (`doctor_id`),
+  CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `ym_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `ym_visits_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of ym_visits
 -- ----------------------------
