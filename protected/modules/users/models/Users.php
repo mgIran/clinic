@@ -28,6 +28,8 @@
  * @property Clinics $clinic
  * @property Expertises[] $expertises
  * @property DoctorSchedules[] $doctorSchedules
+ * @property Visits[] $visits
+ * @property Visits[] $visits1
  */
 class Users extends CActiveRecord
 {
@@ -124,6 +126,8 @@ class Users extends CActiveRecord
             'clinics' => array(self::MANY_MANY, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
             'expertises' => array(self::MANY_MANY, 'Expertises', '{{doctor_expertises}}(doctor_id, expertise_id)'),
             'doctorSchedules' => array(self::HAS_MANY, 'DoctorSchedules', 'doctor_id', 'order' => 'doctorSchedules.week_day'),
+            'visits' => array(self::HAS_MANY, 'Visits', 'user_id'),
+            'visits1' => array(self::HAS_MANY, 'Visits', 'doctor_id'),
         );
     }
 
