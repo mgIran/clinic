@@ -109,6 +109,38 @@ class ClinicsDoctorController extends Controller
         ));
     }
 
+    public function actionLeaves()
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = Yii::app()->user->getId();
+        $clinicID = Yii::app()->user->clinic->id;
+        $user = Users::model()->findByPk($userID);
+
+        $model = new DoctorLeaves();
+        if(isset($_POST['DoctorLeaves']) && isset($_POST['insert']) && $_POST['insert'] == true){
+            $model->date = $_POST['DoctorLeaves']['date'];
+            $model->doctor_id = $userID;
+            $model->clinic_id = $clinicID;
+            if($model->save()){
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            }else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
+        $search = new DoctorLeaves('search');
+        $search->unsetAttributes();
+        if(isset($_POST['DoctorLeaves']))
+            $search->attributes = $_POST['DoctorLeaves'];
+        $search->clinic_id = $clinicID;
+        $search->doctor_id = $userID;
+
+        $this->render('leaves', array(
+            'model' => $model,
+            'search' => $search
+        ));
+    }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
