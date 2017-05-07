@@ -23,7 +23,7 @@ class PDatePicker extends CInputWidget
             $this->options['altField']='#'.$this->id.'_altField';
             $this->options['altFormat']='X';
         }
-//        var_dump($this->options);exit;
+
         $js = "$('#$this->id').persianDatepicker(".CJavaScript::encode($this->options).");";
         $cs->registerScript(__CLASS__ . $this->id, $js, CClientScript::POS_READY);
         echo CHtml::textField($this->id, '', $this->htmlOptions);

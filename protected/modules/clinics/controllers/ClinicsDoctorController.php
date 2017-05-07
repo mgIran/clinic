@@ -12,7 +12,7 @@ class ClinicsDoctorController extends Controller
     {
         return array(
             'backend' => array(
-                'index', 'schedules',
+                'index', 'schedules', 'leaves', 'removeLeaves',
             )
         );
     }
@@ -114,11 +114,11 @@ class ClinicsDoctorController extends Controller
         Yii::app()->theme = 'frontend';
         $userID = Yii::app()->user->getId();
         $clinicID = Yii::app()->user->clinic->id;
-        $user = Users::model()->findByPk($userID);
 
+        // insert new leaves
         $model = new DoctorLeaves();
         if(isset($_POST['DoctorLeaves']) && isset($_POST['insert']) && $_POST['insert'] == true){
-            $model->date = $_POST['DoctorLeaves']['date'];
+            $model->date = strtotime(date("Y/m/d", $_POST['DoctorLeaves']['date']) . " 00:00");
             $model->doctor_id = $userID;
             $model->clinic_id = $clinicID;
             if($model->save()){
@@ -128,9 +128,11 @@ class ClinicsDoctorController extends Controller
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
+        // Get CActiveDataProvider for grid
+        DoctorLeaves::model()->deleteAll('date < :time', array(':time' => (time() - 60 * 60 * 24 * 30)));
         $search = new DoctorLeaves('search');
         $search->unsetAttributes();
-        if(isset($_POST['DoctorLeaves']))
+        if(isset($_POST['DoctorLeaves'])  && !isset($_POST['insert']))
             $search->attributes = $_POST['DoctorLeaves'];
         $search->clinic_id = $clinicID;
         $search->doctor_id = $userID;
@@ -139,6 +141,18 @@ class ClinicsDoctorController extends Controller
             'model' => $model,
             'search' => $search
         ));
+    }
+
+    public function actionRemoveLeaves($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = Yii::app()->user->getId();
+        $clinicID = Yii::app()->user->clinic->id;
+        $model = $this->loadLeavesModel($id);
+        if($model->doctor_id == $userID && $model->clinic_id == $clinicID)
+            $model->delete();
+        if(!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl'])?$_POST['returnUrl']:array('admin'));
     }
 
     /**
@@ -151,6 +165,19 @@ class ClinicsDoctorController extends Controller
     public function loadModel($id)
     {
         $model = Clinics::model()->findByPk($id);
+        if($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
+
+    /**
+     * @param $id
+     * @return DoctorLeaves
+     * @throws CHttpException
+     */
+    public function loadLeavesModel($id)
+    {
+        $model = DoctorLeaves::model()->findByPk($id);
         if($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
