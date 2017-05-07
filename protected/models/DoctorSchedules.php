@@ -54,10 +54,38 @@ class DoctorSchedules extends CActiveRecord
 			array('week_day', 'length', 'max' => 1),
 			array('entry_time_am, exit_time_am, entry_time_pm, exit_time_pm', 'length', 'max' => 2),
 			array('visit_count_am, visit_count_pm', 'length', 'max' => 3),
+			array('error', 'checkErrors'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('clinic_id, doctor_id, week_day, entry_time_am, exit_time_am, visit_count_am, entry_time_pm, exit_time_pm, visit_count_pm', 'safe', 'on' => 'search'),
 		);
+	}
+
+	public function checkErrors($attribute, $params)
+	{
+		if(empty($this->entry_time_am) && empty($this->entry_time_pm) &&
+			empty($this->exit_time_am) && empty($this->exit_time_pm) &&
+			empty($this->visit_count_am) && empty($this->visit_count_pm)
+		)
+			$this->addError($attribute, 'لطفا جهت فعال شدن این روز یکی از دو نوبت صبح یا بعدازظهر را پر کنید.');
+
+		if(!empty($this->entry_time_am) || !empty($this->exit_time_am) || !empty($this->visit_count_am)){
+			if(empty($this->entry_time_am) || empty($this->exit_time_am) || $this->visit_count_am == '')
+				$this->addError($attribute, 'لطفا جهت فعال شدن نوبت صبح تمام مقادیر را پر کنید.');
+			if($this->entry_time_am && $this->exit_time_am && $this->entry_time_am >= $this->exit_time_am)
+				$this->addError($attribute, 'زمان خروج نوبت صبح باید بزرگتر از زمان ورود باشد.');
+			if($this->visit_count_am <= 0)
+				$this->addError($attribute, 'تعداد ویزیت نوبت صبح باید بزرگتر از صفر باشد.');
+		}
+
+		if(!empty($this->entry_time_pm) || !empty($this->exit_time_pm) || !empty($this->visit_count_pm)){
+			if(empty($this->entry_time_pm) || empty($this->exit_time_pm) || $this->visit_count_pm == '')
+				$this->addError($attribute, 'لطفا جهت فعال شدن نوبت بعدازظهر تمام مقادیر را پر کنید.');
+			if($this->entry_time_pm && $this->exit_time_pm && $this->entry_time_pm >= $this->exit_time_pm)
+				$this->addError($attribute, 'زمان خروج نوبت بعدازظهر باید بزرگتر از زمان ورود باشد.');
+			if($this->visit_count_pm <= 0)
+				$this->addError($attribute, 'تعداد ویزیت نوبت بعدازظهر باید بزرگتر از صفر باشد.');
+		}
 	}
 
 	/**
@@ -133,5 +161,29 @@ class DoctorSchedules extends CActiveRecord
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	/**
+	 * Print Errors
+	 *
+	 * @param $errors
+	 * @return string
+	 */
+	public static function errorSummary($errors)
+	{
+		$html = '';
+		if($errors){
+			$html = '<div class="text-danger">لطفا خطاهای زیر را برطرف کنید:<br>';
+			$html .= '<ul>';
+			foreach($errors as $day => $error){
+				$html .= '<li>' . self::$weekDays[$day] . ':</li>';
+				$html .= '<ul>';
+				foreach($error as $item)
+					$html .= '<li>' . $item . '</li>';
+				$html .= '</ul>';
+			}
+			$html .= '</ul></div>';
+		}
+		return $html;
 	}
 }
