@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-06 21:49:08
+Date: 2017-05-07 11:52:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -162,11 +162,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '10');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457880');
+INSERT INTO `ym_counter_save` VALUES ('counter', '11');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457881');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -181,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494086798');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494140955');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -1059,14 +1059,16 @@ CREATE TABLE `ym_visits` (
   `doctor_id` int(10) unsigned DEFAULT NULL COMMENT 'پزشک',
   `date` varchar(20) DEFAULT NULL COMMENT 'تاریخ',
   `time` decimal(1,0) DEFAULT NULL COMMENT 'نوبت',
+  `status` decimal(1,0) DEFAULT NULL COMMENT 'وضعیت',
+  `tracking_code` varchar(20) DEFAULT NULL COMMENT 'کد رهگیری',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `clinic_id` (`clinic_id`),
   KEY `doctor_id` (`doctor_id`),
-  CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  CONSTRAINT `ym_visits_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `ym_visits_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_visits
