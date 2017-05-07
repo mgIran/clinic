@@ -11,6 +11,8 @@ class ReservationController extends Controller
             'frontend' => array(
                 'search',
                 'selectDoctor',
+                'schedule',
+                'info',
             ),
         );
     }
@@ -49,8 +51,16 @@ class ReservationController extends Controller
                 'clinicID' => $_POST['Reservation']['clinic_id'],
             ));
 
-            $this->redirect('info');
+            $this->redirect('schedule');
         }
+    }
+
+    public function actionSchedule()
+    {
+        Yii::app()->theme='frontend';
+        $this->layout='public';
+
+        $this->render('schedule');
     }
 
     public function actionInfo()

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-07 11:52:16
+Date: 2017-05-07 18:49:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -181,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494140955');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494165708');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -904,6 +904,7 @@ CREATE TABLE `ym_users` (
   `verification_token` varchar(100) DEFAULT NULL,
   `change_password_request_count` int(1) DEFAULT '0',
   `auth_mode` varchar(50) NOT NULL DEFAULT 'site',
+  `national_code` varchar(10) DEFAULT NULL COMMENT 'کد ملی',
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`) USING BTREE,
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
@@ -912,9 +913,9 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site');
-INSERT INTO `ym_users` VALUES ('45', '', '$2a$12$92HG95rnUS5MYLFvDjn2cOU4O4p64mpH9QnxFYzVnk9CjQIPrcTBC', 'yusef.mobasheri@gmail.com', '2', '1469083948', 'active', '72ca2204ef7d713a27204d6dfeb615a4', '1', 'site');
-INSERT INTO `ym_users` VALUES ('46', '', '$2a$12$.PR0pJ.0HU8zf1FqdCYeDeOlFHjLsZYyxzH/nzV/UnC5tEBeKenBK', 'zahra@gmail.com', '4', '1493876649', 'pending', 'd4cf45c2df97a2b6b3eb16017ca8804f', '0', 'site');
+INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site', null);
+INSERT INTO `ym_users` VALUES ('45', '', '$2a$12$92HG95rnUS5MYLFvDjn2cOU4O4p64mpH9QnxFYzVnk9CjQIPrcTBC', 'yusef.mobasheri@gmail.com', '2', '1469083948', 'active', '72ca2204ef7d713a27204d6dfeb615a4', '1', 'site', null);
+INSERT INTO `ym_users` VALUES ('46', '', '$2a$12$.PR0pJ.0HU8zf1FqdCYeDeOlFHjLsZYyxzH/nzV/UnC5tEBeKenBK', 'zahra@gmail.com', '4', '1493876649', 'pending', 'd4cf45c2df97a2b6b3eb16017ca8804f', '0', 'site', null);
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -924,7 +925,6 @@ CREATE TABLE `ym_user_details` (
   `user_id` int(10) unsigned NOT NULL COMMENT 'کاربر',
   `first_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام',
   `last_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام خانوادگی',
-  `national_code` varchar(10) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'کد ملی',
   `phone` varchar(11) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'تلفن',
   `zip_code` varchar(10) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'کد پستی',
   `address` varchar(1000) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نشانی دقیق پستی',
@@ -939,9 +939,9 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', 'amKd41493797323.jpg', '09123456789', null);
-INSERT INTO `ym_user_details` VALUES ('45', 'یوسف', 'مبشری', '0370518926', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null, null);
-INSERT INTO `ym_user_details` VALUES ('46', 'زهرا', 'مرفاوی', '1651131684', '02539586646', null, null, null, '09192561166', null);
+INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '09373252746', '3718895691', 'بلوار سوم خرداد', 'amKd41493797323.jpg', '09123456789', null);
+INSERT INTO `ym_user_details` VALUES ('45', 'یوسف', 'مبشری', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null, null);
+INSERT INTO `ym_user_details` VALUES ('46', 'زهرا', 'مرفاوی', '02539586646', null, null, null, '09192561166', null);
 
 -- ----------------------------
 -- Table structure for ym_user_notifications
@@ -994,7 +994,7 @@ CREATE TABLE `ym_user_role_permissions` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_user_role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_user_role_permissions
@@ -1021,7 +1021,8 @@ INSERT INTO `ym_user_role_permissions` VALUES ('213', '1', 'tickets', 'TicketsMa
 INSERT INTO `ym_user_role_permissions` VALUES ('214', '1', 'tickets', 'TicketsMessagesController', 'delete,create');
 INSERT INTO `ym_user_role_permissions` VALUES ('215', '1', 'users', 'UsersCreditController', 'buy,bill,captcha,verify');
 INSERT INTO `ym_user_role_permissions` VALUES ('216', '1', 'users', 'UsersPublicController', 'dashboard,logout,setting,notifications,changePassword,bookmarked,downloaded,transactions,library,sessions,removeSession');
-INSERT INTO `ym_user_role_permissions` VALUES ('217', '3', 'clinics', 'ClinicsDoctorController', 'index,schedules');
+INSERT INTO `ym_user_role_permissions` VALUES ('218', '3', 'clinics', 'ClinicsDoctorController', 'index,schedules');
+INSERT INTO `ym_user_role_permissions` VALUES ('219', '3', 'users', 'UsersPublicController', 'dashboard,logout,setting,notifications,forgetPassword,recoverPassword');
 
 -- ----------------------------
 -- Table structure for ym_user_transactions
