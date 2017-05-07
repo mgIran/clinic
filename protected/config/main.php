@@ -69,8 +69,7 @@ return array(
 			'appendParams'=>true,
 			'rules'=>array(
 				'<action:(about|contactus|help|publishers|search)>' => 'site/<action>',
-				'<action:(login)>' => 'users/public/login',
-				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded)>' => 'users/public/<action>',
+				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded|login)>' => 'users/public/<action>',
 				'clinics/manage/<action:(updatePersonnel|removePersonnel)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
 				'clinics/manage/<action:(addPersonnel|addNewPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
 				'/help'=>'site/help',

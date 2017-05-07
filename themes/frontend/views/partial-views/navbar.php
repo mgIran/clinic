@@ -26,7 +26,7 @@
                     <?php
                 elseif(Yii::app()->user->type == 'user'):
                     ?>
-                    <li><a href="<?php echo Yii::app()->createUrl('/dashboard');?>">داشبورد</a></li>
+                    <li><a href="<?php echo Yii::app()->createUrl((isset(Yii::app()->user->clinic))?'/clinics/panel':'/dashboard');?>">داشبورد</a></li>
                     <li><a class="text-danger" href="<?= Yii::app()->createUrl('/logout')?>">خروج</a></li>
                     <?php
                 endif;
