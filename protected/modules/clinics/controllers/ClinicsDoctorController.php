@@ -68,9 +68,11 @@ class ClinicsDoctorController extends Controller
         foreach($model as $item)
             $temp[$item->week_day] = $item;
         $model = $temp;
+
+        $errors = [];
+
         if(isset($_POST['DoctorSchedules'])){
             $flag = true;
-            $errors = [];
             foreach($_POST['DoctorSchedules'] as $key => $values){
                 $row = DoctorSchedules::model()->findByAttributes(array(
                     'clinic_id' => $clinicID,
@@ -87,12 +89,13 @@ class ClinicsDoctorController extends Controller
                     $row->attributes = $values;
                     if(!$row->save()){
                         $flag = false;
-                        $errors = CMap::mergeArray($errors, $row->errors);
+                        $errors[$key] = $row->errors['error'];
                     }
-
+                    $model[$key] = $row;
                 }elseif($row !== null)
                     $row->delete();
             }
+
             if($flag){
                 Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
                 $this->refresh();
@@ -102,6 +105,7 @@ class ClinicsDoctorController extends Controller
 
         $this->render('schedules', array(
             'model' => $model,
+            'errors' => $errors
         ));
     }
 

@@ -2,6 +2,7 @@
 /* @var $this ClinicsManageController */
 /* @var $model DoctorSchedules[] */
 /* @var $form CActiveForm */
+/* @var $errors [] */
 ?>
 
 <h3>مدیریت برنامه زمانی نوبت</h3>
@@ -13,7 +14,8 @@ $form = $this->beginWidget('CActiveForm', array(
     'enableAjaxValidation' => false
 ));
 ?>
-<?php //echo $form->errorSummary($model); ?>
+
+<?php echo DoctorSchedules::errorSummary($errors); ?>
 <?php echo CHtml::submitButton('ثبت / ویرایش',array('class' => 'btn btn-success')) ?>
 <table class="table table-bordered table-hover table-striped table-schedules">
     <thead>
