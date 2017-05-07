@@ -19,6 +19,8 @@
  * @property ClinicPersonnels[] $clinicPersonnels
  * @property Places $place
  * @property Towns $town
+ * @property DoctorSchedules[] $doctorSchedules
+ * @property Visits[] $visits
  */
 class Clinics extends CActiveRecord
 {
@@ -62,6 +64,8 @@ class Clinics extends CActiveRecord
 			'clinicPersonnels' => array(self::HAS_MANY, 'ClinicPersonnels', 'clinic_id'),
 			'place' => array(self::BELONGS_TO, 'Places', 'place_id'),
 			'town' => array(self::BELONGS_TO, 'Towns', 'town_id'),
+			'doctorSchedules' => array(self::HAS_MANY, 'DoctorSchedules', 'clinic_id'),
+			'visits' => array(self::HAS_MANY, 'Visits', 'clinic_id'),
 		);
 	}
 

@@ -1,5 +1,6 @@
 <?
 /* @var $this SiteController */
+/* @var $expertises Expertises[] */
 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/persian-date.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/persian-datepicker-0.4.5.min.js');
@@ -76,20 +77,15 @@ $this->renderPartial('_svg_icons');
     <div class="container">
         <h2>همین حالا شروع کنید<small>جهت رزرو نوبت، یکی از تخصص های زیر را انتخاب کنید</small></h2>
         <div class="expertise-items">
-            <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    <a href="<?php echo $this->createUrl('/reservation/search?exp=1');?>"><span><svg><use xlink:href="#heart-icon"></use></svg></span><h3>قلب و عروق</h3></a>
+            <?php for($i=0;$i<2;$i++):?>
+                <div class="row">
+                    <?php for($j=0;$j<5;$j++):?>
+                        <div class="expertise-item">
+                            <a href="<?php echo $this->createUrl('/reservation/search/'.$expertises[$i*5+$j]->id);?>"><span><svg><use xlink:href="#<?php echo $expertises[$i*5+$j]->icon;?>-icon"></use></svg></span><h3><?php echo $expertises[$i*5+$j]->title;?></h3></a>
+                        </div>
+                    <?php endfor;?>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    <a href="<?php echo $this->createUrl('/reservation/search?exp=2');?>"><span><svg><use xlink:href="#lungs-icon"></use></svg></span><h3>ریه</h3></a>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    <a href="<?php echo $this->createUrl('/reservation/search?exp=3');?>"><span><svg><use xlink:href="#tooth-icon"></use></svg></span><h3>دندان</h3></a>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    <a href="<?php echo $this->createUrl('/reservation/search?exp=4');?>"><span><svg><use xlink:href="#brain-icon"></use></svg></span><h3>مغز و اعصاب</h3></a>
-                </div>
-            </div>
+            <?php endfor;?>
         </div>
 <!--        <div class="content">-->
 <!--            <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs image">-->

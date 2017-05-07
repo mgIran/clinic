@@ -52,7 +52,11 @@ class SiteController extends Controller
         Yii::app()->theme = "frontend";
         $this->layout = "public";
 
-        $this->render('index');
+        $expertises = Expertises::model()->findAll('id <= 10');
+
+        $this->render('index', array(
+            'expertises' => $expertises,
+        ));
     }
 
     /**
