@@ -975,3 +975,10 @@ input[type="text"].date-input{
     font-size: 11px;
     color: #d9534f;
 }
+.select-date-form{
+    margin-top: 70px;
+}
+.select-date-form input[type="submit"]{
+    margin-top: 27px;
+    width: 150px;
+}

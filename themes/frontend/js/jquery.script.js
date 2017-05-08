@@ -1,31 +1,6 @@
 $(document).ready(function() {
     if($('.selectpicker').length != 0)
         $('.selectpicker').selectpicker();
-    if($('#from-date').length != 0)
-        $('#from-date').persianDatepicker({
-            'format': 'DD MMMM YYYY',
-            'minDate': 1491975045000,
-            'altField': '#from-date_altField',
-            'altFormat': 'X',
-            'onShow': function () {
-                $('.datepicker-plot-area').width($('#from-date').parent().width());
-            },
-            'dayPicker': {
-                'onSelect': function () {
-                    alert(1);
-                }
-            }
-        });
-    if($('#to-date').length != 0)
-        $('#to-date').persianDatepicker({
-            'format': 'DD MMMM YYYY',
-            'minDate': 1491975045000,
-            'altField': '#to-date_altField',
-            'altFormat': 'X',
-            'onShow': function () {
-                $('.datepicker-plot-area').width($('#to-date').parent().width())
-            }
-        });
 
     if($('.anchor-link').length != 0) {
         $('body').on('click', '.anchor-link', function () {
