@@ -63,7 +63,7 @@ class ClinicsDoctorController extends Controller
         $userID = Yii::app()->user->getId();
         $clinicID = Yii::app()->user->clinic->id;
         $user = Users::model()->findByPk($userID);
-        $model = $user->doctorSchedules(array('clinic_id' => $clinicID));
+        $model = $user->doctorSchedules(array('condition'=>'clinic_id = :clinic_id', 'params' => array(':clinic_id'=>$clinicID)));
         $temp = [];
         foreach($model as $item)
             $temp[$item->week_day] = $item;
