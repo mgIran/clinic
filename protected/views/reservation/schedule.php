@@ -15,28 +15,32 @@
     </div>
 
     <div class="container">
-        <?php echo CHtml::beginForm('', 'post', array('class'=>'select-date-form'));?>
+        <?php echo CHtml::beginForm('', 'post', array('class'=>'select-date-form row'));?>
+            <?php $this->renderPartial('//partial-views/_flashMessage');?>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                <?php echo CHtml::textField('PatientInfo[national_code]', '', array('placeholder'=>'کد ملی *'));?>
+                <?php echo CHtml::label('از', 'from');?>
                 <?php $this->widget('ext.PDatePicker.PDatePicker', array(
-                    'id'=>'year',
-                    'attribute' => 'from',
+                    'id'=>'from',
+                    'value' => isset($_POST['from_altField'])?$_POST['from_altField']:false,
                     'options'=>array(
-                        'format'=>'YYYY',
-                        'monthPicker'=>'js:{enabled:false}',
-                        'dayPicker'=>'js:{enabled:false}',
-                        'yearPicker'=>'js:{enabled:true}',
-                    ),
-                    'htmlOptions'=>array(
-                        'class'=>'form-control'
+                        'format'=>'DD MMMM YYYY',
+                        'onShow'=>"js:function(){ $('.datepicker-plot-area').width($('#from').parent().width()) }"
                     ),
                 ));?>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                <?php echo CHtml::textField('PatientInfo[name]', '', array('placeholder'=>'نام و نام خانوادگی'));?>
+                <?php echo CHtml::label('تا', 'to');?>
+                <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                    'id'=>'to',
+                    'value' => isset($_POST['to_altField'])?$_POST['to_altField']:false,
+                    'options'=>array(
+                        'format'=>'DD MMMM YYYY',
+                        'onShow'=>"js:function(){ $('.datepicker-plot-area').width($('#to').parent().width()) }"
+                    ),
+                ));?>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                <?php echo CHtml::submitButton('ثبت', array('class'=>'btn-red pull-left'));?>
+                <?php echo CHtml::submitButton('جستجو', array('class'=>'btn-red'));?>
             </div>
         <?php echo CHtml::endForm();?>
     </div>

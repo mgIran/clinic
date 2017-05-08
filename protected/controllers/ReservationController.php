@@ -57,8 +57,18 @@ class ReservationController extends Controller
 
     public function actionSchedule()
     {
-        Yii::app()->theme='frontend';
-        $this->layout='public';
+        Yii::app()->theme = 'frontend';
+        $this->layout = 'public';
+
+        if (isset($_POST['from']) and isset($_POST['to'])) {
+            if ($_POST['from'] == $_POST['to'])
+                Yii::app()->user->setFlash('failed', 'تاریخ ها یکسان می باشند.');
+            elseif($_POST['from'] > $_POST['to'])
+                Yii::app()->user->setFlash('failed', 'تاریخ های انتخاب شده اشتباه است.');
+            else{
+
+            }
+        }
 
         $this->render('schedule');
     }
