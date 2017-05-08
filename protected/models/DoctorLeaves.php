@@ -5,10 +5,12 @@
  *
  * The followings are the available columns in table '{{doctor_leaves}}':
  * @property string $id
+ * @property string $clinic_id
  * @property string $doctor_id
  * @property string $date
  *
  * The followings are the available model relations:
+ * @property Clinics $clinic
  * @property Users $doctor
  */
 class DoctorLeaves extends CActiveRecord
@@ -28,12 +30,15 @@ class DoctorLeaves extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$time = (time() - 60 * 60 * 24);
 		return array(
-			array('doctor_id', 'length', 'max'=>10),
-			array('date', 'length', 'max'=>20),
+			array('clinic_id, doctor_id', 'length', 'max' => 10),
+			array('date', 'length', 'max' => 20),
+			array('date', 'unique', 'message' => 'این تاریخ قبلا ثبت شده است.'),
+			array('date', 'compare', 'compareValue' => $time, 'operator' => '>', 'message' => 'این تاریخ معتبر نیست، تاریخ باید بیشتر از امروز باشد.'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, doctor_id, date', 'safe', 'on'=>'search'),
+			array('id, clinic_id, doctor_id, date', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -45,6 +50,7 @@ class DoctorLeaves extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'clinic' => array(self::BELONGS_TO, 'Clinics', 'clinic_id'),
 			'doctor' => array(self::BELONGS_TO, 'Users', 'doctor_id'),
 		);
 	}
@@ -56,6 +62,7 @@ class DoctorLeaves extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'clinic_id' => 'درمانگاه',
 			'doctor_id' => 'دکتر',
 			'date' => 'تاریخ',
 		);
@@ -80,8 +87,10 @@ class DoctorLeaves extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
+		$criteria->compare('clinic_id',$this->clinic_id,true);
 		$criteria->compare('doctor_id',$this->doctor_id,true);
 		$criteria->compare('date',$this->date,true);
+		$criteria->order = 't.date';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

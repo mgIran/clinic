@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50617
+Source Server         : local
+Source Server Version : 50616
 Source Host           : localhost:3306
 Source Database       : clinic
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-05-07 18:49:42
+Date: 2017-05-07 20:35:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -181,7 +181,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494165708');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494173104');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -212,16 +212,22 @@ INSERT INTO `ym_doctor_expertises` VALUES ('43', '4');
 DROP TABLE IF EXISTS `ym_doctor_leaves`;
 CREATE TABLE `ym_doctor_leaves` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `clinic_id` int(10) unsigned DEFAULT NULL,
   `doctor_id` int(10) unsigned DEFAULT NULL COMMENT 'دکتر',
   `date` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'تاریخ',
   PRIMARY KEY (`id`),
   KEY `doctor_id` (`doctor_id`),
+  KEY `clinic_id` (`clinic_id`),
+  CONSTRAINT `ym_doctor_leaves_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_doctor_leaves_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_doctor_leaves
 -- ----------------------------
+INSERT INTO `ym_doctor_leaves` VALUES ('11', '2', '45', '1494099000');
+INSERT INTO `ym_doctor_leaves` VALUES ('12', '2', '45', '1494790200');
+INSERT INTO `ym_doctor_leaves` VALUES ('13', '2', '45', '1494876600');
 
 -- ----------------------------
 -- Table structure for ym_doctor_schedules
