@@ -34,7 +34,7 @@ class ReservationController extends Controller
 
         $clinicPersonnel = new ClinicPersonnels('getDoctorsByExp');
         $clinicPersonnel->unsetAttributes();
-        if(isset($_GET['ClinicPersonnels']))
+        if (isset($_GET['ClinicPersonnels']))
             $clinicPersonnel->attributes = $_GET['ClinicPersonnels'];
         $clinicPersonnel->expertiseID = $id;
 
@@ -60,23 +60,49 @@ class ReservationController extends Controller
         Yii::app()->theme = 'frontend';
         $this->layout = 'public';
 
+        $renderOutput = array();
         if (isset($_POST['from']) and isset($_POST['to'])) {
             if ($_POST['from'] == $_POST['to'])
                 Yii::app()->user->setFlash('failed', 'تاریخ ها یکسان می باشند.');
-            elseif($_POST['from'] > $_POST['to'])
+            elseif ($_POST['from_altField'] > $_POST['to_altField'])
                 Yii::app()->user->setFlash('failed', 'تاریخ های انتخاب شده اشتباه است.');
-            else{
+            else {
+                $user = Users::model()->findByPk(Yii::app()->user->reservation['doctorID']);
+                $criteria = new CDbCriteria();
+                $criteria->addCondition('clinic_id = :clinic_id');
+                $criteria->params[':clinic_id'] = Yii::app()->user->reservation['clinicID'];
+                /* @var $schedules DoctorSchedules[] */
+                $schedules = $user->doctorSchedules($criteria);
+                $leaves = $user->doctorLeaves($criteria);
+                $weekDays = CHtml::listData($schedules, 'week_day', 'week_day');
+                $leaveDays = CHtml::listData($leaves, 'id', 'date');
+                $daysCount = ($_POST['to_altField'] - $_POST['from_altField']) / (60 * 60 * 24);
+                $days = array();
+                for ($i = 0; $i <= $daysCount; $i++) {
+                    $dayTimestamp = strtotime(date('Y/m/d 00:00', strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) + ($i * (60 * 60 * 24))));
+                    if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays))
+                        if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
+                            foreach($schedules as $schedule)
+                                if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false))
+                                    $days[$dayTimestamp]=$schedule->times;
+                        }
+                }
 
+                $renderOutput = array(
+                    'days'=>$days,
+                    'doctor'=>$user,
+                    'clinic'=>Clinics::model()->findByPk(Yii::app()->user->reservation['clinicID']),
+                );
             }
         }
 
-        $this->render('schedule');
+        $this->render('schedule', $renderOutput);
     }
 
     public function actionInfo()
     {
-        Yii::app()->theme='frontend';
-        $this->layout='public';
+        Yii::app()->theme = 'frontend';
+        $this->layout = 'public';
 
         $this->render('info');
     }

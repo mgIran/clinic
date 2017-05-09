@@ -13,6 +13,7 @@
  * @property string $entry_time_pm
  * @property string $exit_time_pm
  * @property string $visit_count_pm
+ * @property array $times
  *
  * The followings are the available model relations:
  * @property Users $doctor
@@ -185,5 +186,13 @@ class DoctorSchedules extends CActiveRecord
 			$html .= '</ul></div>';
 		}
 		return $html;
+	}
+
+	public function getTimes()
+	{
+		return array(
+			'AM' => $this->entry_time_am . ':00 - ' . $this->exit_time_am.':00',
+			'PM' => $this->entry_time_pm . ':00 - ' . $this->exit_time_pm.':00',
+		);
 	}
 }

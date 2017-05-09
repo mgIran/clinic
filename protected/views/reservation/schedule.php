@@ -1,5 +1,8 @@
 <?
 /* @var $this ReservationController */
+/* @var $days array */
+/* @var $doctor Users */
+/* @var $clinic Clinics */
 ?>
 
 <div class="inner-page">
@@ -43,6 +46,70 @@
                 <?php echo CHtml::submitButton('جستجو', array('class'=>'btn-red'));?>
             </div>
         <?php echo CHtml::endForm();?>
+
+        <?php if(isset($days)):?>
+            <div class="calendar-container">
+                <div class="doctor-info">
+                    <label>نام پزشک</label>
+                    <span><?php echo $doctor->userDetails->getShowName();?></span>
+                    <label>نام بیمارستان/درمانگاه/مطب</label>
+                    <span><?php echo $clinic->clinic_name;?></span>
+                    <label>تلفن بیمارستان/درمانگاه/مطب</label>
+                    <span><?php echo $clinic->phone;?></span>
+                </div>
+                <div class="calendar">
+                    <div class="row">
+                        <?php
+                        $monthDiff=JalaliDate::date('m', $_POST['to_altField'], false)-JalaliDate::date('m', $_POST['from_altField'], false);
+                        $currentMonth=JalaliDate::date('m', $_POST['from_altField'], false);
+                        for($i=0;$i<=$monthDiff;$i++):
+                            $monthDaysCount=30;
+                            $currentYear=JalaliDate::date('Y', $_POST['from_altField']+($i*30*24*60*60), false);
+                            if($currentMonth <= 6)
+                                $monthDaysCount=31;
+                            elseif($currentMonth==12 and !JalaliDate::date('L', $_POST['from_altField'], false))
+                                $monthDaysCount=29;
+                            ?>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <h4><?php echo JalaliDate::date('F', $_POST['from_altField']+($i*30*24*60*60))?></h4>
+                                <div class="week-days-name">
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,1,$currentYear));?></div>
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,2,$currentYear));?></div>
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,3,$currentYear));?></div>
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,4,$currentYear));?></div>
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,5,$currentYear));?></div>
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,6,$currentYear));?></div>
+                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,7,$currentYear));?></div>
+                                </div>
+                                <div class="days">
+                                    <?php for($j=1;$j<=$monthDaysCount;$j++):
+                                        $currentDay=JalaliDate::mktime(0,0,0,$currentMonth,$j,$currentYear);
+                                        if($currentDay < strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) or $currentDay > strtotime(date('Y/m/d 00:00', $_POST['to_altField']))):?>
+                                            <div class="day disabled">
+                                        <?php else:?>
+                                            <div class="day">
+                                        <?php endif;?>
+                                            <?php if(key_exists($currentDay, $days)):?>
+                                                <?php echo $j;?>
+                                                <small><?php echo $days[$currentDay]['AM'];?></small>
+                                                <a href="<?php echo $this->createUrl('selectDate', array('d'=>$currentDay));?>"></a>
+                                            <?php else:?>
+                                                <?php echo $j;?>
+                                            <?php endif;?>
+                                        </div>
+                                    <?php endfor;?>
+                                </div>
+                            </div>
+                            <?php $currentMonth++;?>
+                        <?php endfor;?>
+                        <?php foreach($days as $day=>$time):?>
+                            <?php echo JalaliDate::date('Y/m/d H:i', $day);?><br>
+<!--                            --><?php //echo $day;?><!--<br>-->
+                        <?php endforeach;?>
+                    </div>
+                </div>
+            </div>
+        <?php endif;?>
     </div>
 </div>
 <?php Yii::app()->clientScript->registerScript('load-user-info', "
