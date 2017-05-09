@@ -71,10 +71,10 @@ class ClinicsSecretaryController extends Controller
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
-                'all' => Controller::parseNumbers(Visits::getAllVisits($model->date)),
-                'accepted' => Controller::parseNumbers(Visits::getAllVisits($model->date, Visits::STATUS_ACCEPTED)),
-                'checked' => Controller::parseNumbers(Visits::getAllVisits($model->date, Visits::STATUS_CLINIC_CHECKED)),
-                'visited' => Controller::parseNumbers(Visits::getAllVisits($model->date, Visits::STATUS_CLINIC_VISITED)),
+                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date)),
+                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, Visits::STATUS_ACCEPTED)),
+                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, Visits::STATUS_CLINIC_CHECKED)),
+                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, Visits::STATUS_CLINIC_VISITED)),
             ]);
             Yii::app()->end();
         }

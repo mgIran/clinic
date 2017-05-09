@@ -71,10 +71,10 @@ class ClinicsDoctorController extends Controller
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
-                'all' => Controller::parseNumbers(Visits::getAllVisits($model->date)),
-                'accepted' => Controller::parseNumbers(Visits::getAllVisits($model->date, Visits::STATUS_ACCEPTED)),
-                'checked' => Controller::parseNumbers(Visits::getAllVisits($model->date, Visits::STATUS_CLINIC_CHECKED)),
-                'visited' => Controller::parseNumbers(Visits::getAllVisits($model->date, Visits::STATUS_CLINIC_VISITED)),
+                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date)),
+                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_ACCEPTED)),
+                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_CLINIC_CHECKED)),
+                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_CLINIC_VISITED)),
             ]);
             Yii::app()->end();
         }
@@ -89,8 +89,8 @@ class ClinicsDoctorController extends Controller
         Yii::app()->theme = 'frontend';
         $model = Visits::model()->findByPk($id);
         $model->status = Visits::STATUS_CLINIC_CHECKED;
-        $model->check_date= time();
-        $model->clinic_checked_number=$model->getGenerateNewVisitNumber();
+        $model->check_date = time();
+        $model->clinic_checked_number = $model->getGenerateNewVisitNumber();
         if($model->save())
             echo CJSON::encode(['status' => true]);
         else
@@ -117,7 +117,7 @@ class ClinicsDoctorController extends Controller
         $userID = Yii::app()->user->getId();
         $clinicID = Yii::app()->user->clinic->id;
         $user = Users::model()->findByPk($userID);
-        $model = $user->doctorSchedules(array('condition'=>'clinic_id = :clinic_id', 'params' => array(':clinic_id'=>$clinicID)));
+        $model = $user->doctorSchedules(array('condition' => 'clinic_id = :clinic_id', 'params' => array(':clinic_id' => $clinicID)));
         $temp = [];
         foreach($model as $item)
             $temp[$item->week_day] = $item;
@@ -185,7 +185,7 @@ class ClinicsDoctorController extends Controller
         // Get CActiveDataProvider for grid
         $search = new DoctorLeaves('search');
         $search->unsetAttributes();
-        if(isset($_POST['DoctorLeaves'])  && !isset($_POST['insert']))
+        if(isset($_POST['DoctorLeaves']) && !isset($_POST['insert']))
             $search->attributes = $_POST['DoctorLeaves'];
         $search->clinic_id = $clinicID;
         $search->doctor_id = $userID;
