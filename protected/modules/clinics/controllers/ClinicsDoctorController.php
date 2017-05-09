@@ -12,7 +12,7 @@ class ClinicsDoctorController extends Controller
     {
         return array(
             'backend' => array(
-                'index', 'schedules', 'leaves', 'removeLeaves',
+                'index', 'schedules', 'leaves', 'removeLeaves', 'reserves', 'removeReserve', 'clinicChecked', 'clinicVisited',
             )
         );
     }
@@ -54,6 +54,60 @@ class ClinicsDoctorController extends Controller
         ));
     }
 
+    public function actionReserves()
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = Yii::app()->user->getId();
+        $clinicID = Yii::app()->user->clinic->id;
+
+        $model = new Visits('search');
+        $model->unsetAttributes();
+        if(isset($_GET['Visits']))
+            $model->attributes = $_GET['Visits'];
+        $model->clinic_id = $clinicID;
+        $model->doctor_id = $userID;
+        $model->date = time();
+        $model->status = Visits::STATUS_CLINIC_CHECKED;
+
+        if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
+            echo CJSON::encode(['status' => true,
+                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date)),
+                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_ACCEPTED)),
+                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_CLINIC_CHECKED)),
+                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_CLINIC_VISITED)),
+            ]);
+            Yii::app()->end();
+        }
+
+        $this->render('reserves', array(
+            'model' => $model
+        ));
+    }
+
+    public function actionClinicChecked($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $model = Visits::model()->findByPk($id);
+        $model->status = Visits::STATUS_CLINIC_CHECKED;
+        $model->check_date = time();
+        $model->clinic_checked_number = $model->getGenerateNewVisitNumber();
+        if($model->save())
+            echo CJSON::encode(['status' => true]);
+        else
+            echo CJSON::encode(['status' => false, 'msg' => 'متاسفانه مشکلی در اعمال تغییرات بوجو آمده است! لطفا مجددا بررسی فرمایید.']);
+    }
+
+    public function actionClinicVisited($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $model = Visits::model()->findByPk($id);
+        $model->status = Visits::STATUS_CLINIC_VISITED;
+        if($model->save())
+            echo CJSON::encode(['status' => true]);
+        else
+            echo CJSON::encode(['status' => false, 'msg' => 'متاسفانه مشکلی در اعمال تغییرات بوجو آمده است! لطفا مجددا بررسی فرمایید.']);
+    }
+
     /**
      * Manages all models.
      */
@@ -63,7 +117,7 @@ class ClinicsDoctorController extends Controller
         $userID = Yii::app()->user->getId();
         $clinicID = Yii::app()->user->clinic->id;
         $user = Users::model()->findByPk($userID);
-        $model = $user->doctorSchedules(array('clinic_id' => $clinicID));
+        $model = $user->doctorSchedules(array('condition' => 'clinic_id = :clinic_id', 'params' => array(':clinic_id' => $clinicID)));
         $temp = [];
         foreach($model as $item)
             $temp[$item->week_day] = $item;
@@ -129,10 +183,9 @@ class ClinicsDoctorController extends Controller
         }
 
         // Get CActiveDataProvider for grid
-        DoctorLeaves::model()->deleteAll('date < :time', array(':time' => (time() - 60 * 60 * 24 * 30)));
         $search = new DoctorLeaves('search');
         $search->unsetAttributes();
-        if(isset($_POST['DoctorLeaves'])  && !isset($_POST['insert']))
+        if(isset($_POST['DoctorLeaves']) && !isset($_POST['insert']))
             $search->attributes = $_POST['DoctorLeaves'];
         $search->clinic_id = $clinicID;
         $search->doctor_id = $userID;
