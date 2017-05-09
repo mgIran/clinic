@@ -30,7 +30,7 @@
  * @property DoctorSchedules[] $doctorSchedules
  * @property DoctorLeaves[] $doctorLeaves
  * @property Visits[] $visits
- * @property Visits[] $visits1
+ * @property Visits[] $doctorVisits
  */
 class Users extends CActiveRecord
 {
@@ -129,7 +129,7 @@ class Users extends CActiveRecord
             'doctorSchedules' => array(self::HAS_MANY, 'DoctorSchedules', 'doctor_id', 'order' => 'doctorSchedules.week_day'),
             'doctorLeaves' => array(self::HAS_MANY, 'DoctorLeaves', 'doctor_id', 'order' => 'doctorSchedules.date'),
             'visits' => array(self::HAS_MANY, 'Visits', 'user_id'),
-            'visits1' => array(self::HAS_MANY, 'Visits', 'doctor_id'),
+            'doctorVisits' => array(self::HAS_MANY, 'Visits', 'doctor_id'),
         );
     }
 

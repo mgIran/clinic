@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-05-07 20:35:20
+Date: 2017-05-09 18:52:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -145,6 +145,7 @@ CREATE TABLE `ym_clinic_personnels` (
 -- Records of ym_clinic_personnels
 -- ----------------------------
 INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '3');
+INSERT INTO `ym_clinic_personnels` VALUES ('1', '45', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '43', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '3');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '46', '4');
@@ -162,8 +163,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '11');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457881');
+INSERT INTO `ym_counter_save` VALUES ('counter', '13');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457883');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -181,7 +182,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494173104');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494339761');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -220,7 +221,7 @@ CREATE TABLE `ym_doctor_leaves` (
   KEY `clinic_id` (`clinic_id`),
   CONSTRAINT `ym_doctor_leaves_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_doctor_leaves_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_doctor_leaves
@@ -228,6 +229,9 @@ CREATE TABLE `ym_doctor_leaves` (
 INSERT INTO `ym_doctor_leaves` VALUES ('11', '2', '45', '1494099000');
 INSERT INTO `ym_doctor_leaves` VALUES ('12', '2', '45', '1494790200');
 INSERT INTO `ym_doctor_leaves` VALUES ('13', '2', '45', '1494876600');
+INSERT INTO `ym_doctor_leaves` VALUES ('14', '2', '45', '1495308600');
+INSERT INTO `ym_doctor_leaves` VALUES ('15', '1', '45', '1497987000');
+INSERT INTO `ym_doctor_leaves` VALUES ('16', '1', '45', '1495222200');
 
 -- ----------------------------
 -- Table structure for ym_doctor_schedules
@@ -253,6 +257,7 @@ CREATE TABLE `ym_doctor_schedules` (
 -- Records of ym_doctor_schedules
 -- ----------------------------
 INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '1', '8', '12', '50', '16', '21', '50');
+INSERT INTO `ym_doctor_schedules` VALUES ('2', '45', '1', '8', '10', '20', '16', '21', '50');
 INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '3', '8', '12', '50', '16', '21', '50');
 INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '4', '8', '12', '50', '16', '21', '50');
 
@@ -1044,8 +1049,8 @@ CREATE TABLE `ym_user_transactions` (
   `authority` varchar(255) DEFAULT NULL,
   `description` varchar(200) CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'توضیحات',
   `gateway_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام درگاه',
-  `type` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT 'نوع تراکنش',
-  `type_id` int(10) unsigned DEFAULT NULL,
+  `model_name` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT 'مدل',
+  `model_id` int(10) unsigned DEFAULT NULL COMMENT 'شناسه مدل',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`) USING BTREE,
   CONSTRAINT `ym_user_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
@@ -1064,10 +1069,12 @@ CREATE TABLE `ym_visits` (
   `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
   `clinic_id` int(10) unsigned DEFAULT NULL COMMENT 'بیمارستان / درمانگاه / مطب',
   `doctor_id` int(10) unsigned DEFAULT NULL COMMENT 'پزشک',
-  `date` varchar(20) DEFAULT NULL COMMENT 'تاریخ',
+  `date` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'تاریخ',
   `time` decimal(1,0) DEFAULT NULL COMMENT 'نوبت',
   `status` decimal(1,0) DEFAULT NULL COMMENT 'وضعیت',
   `tracking_code` varchar(20) DEFAULT NULL COMMENT 'کد رهگیری',
+  `check_date` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'تاریخ حضور',
+  `clinic_checked_number` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `clinic_id` (`clinic_id`),
@@ -1075,8 +1082,12 @@ CREATE TABLE `ym_visits` (
   CONSTRAINT `ym_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_visits
 -- ----------------------------
+INSERT INTO `ym_visits` VALUES ('1', '45', '2', '45', '1494336778', '1', '4', '32523', '1494336964', '1');
+INSERT INTO `ym_visits` VALUES ('2', '45', '2', '45', '1494336778', '1', '4', '51asf1a63', '1494336969', '4');
+INSERT INTO `ym_visits` VALUES ('3', '45', '2', '45', '1494336778', '1', '4', 'gfdsfsad', '1494336968', '3');
+INSERT INTO `ym_visits` VALUES ('4', '45', '2', '45', '1494336778', '1', '4', 'gfdsfsad', '1494336966', '2');
