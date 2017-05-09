@@ -197,7 +197,7 @@ class ClinicPersonnels extends CActiveRecord
 			$this->last_name = $this->user->userDetails->last_name;
 			$this->phone = $this->user->userDetails->phone;
 			$this->mobile = $this->user->userDetails->mobile;
-			$this->national_code = $this->user->userDetails->national_code;
+			$this->national_code = $this->user->national_code;
 			$this->expertise = $this->user->expertises?CHtml::listData($this->user->expertises, 'id', 'id'):array();
 		}
 	}

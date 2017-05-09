@@ -221,7 +221,6 @@ class Users extends CActiveRecord
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;
             $model->mobile = $this->mobile;
-            $model->national_code = $this->national_code;
             if(!@$model->save())
                 $this->addErrors($model->errors);
         }elseif($this->scenario == 'update'){
@@ -230,7 +229,6 @@ class Users extends CActiveRecord
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;
             $model->mobile = $this->mobile;
-            $model->national_code = $this->national_code;
             if(!@$model->save())
                 $this->addErrors($model->errors);
         }

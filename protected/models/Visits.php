@@ -192,12 +192,12 @@ class Visits extends CActiveRecord
      * @param bool $status const DELETED|PENDING|ACCEPTED|CLINIC_CHECKED|CLINIC_VISITED
      * @return int
      */
-    public static function getAllVisits($date, $status = false)
+    public static function getAllVisits($clinic, $doctor, $date, $status = false)
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60;
-        $params = array(':toDay' => $toDay, ':toNight' => $toNight);
-        $where = 'date BETWEEN :toDay AND :toNight';
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight)';
+        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight);
         if($status){
             $where .= ' AND status = :checked';
             $params[':checked'] = $status;
