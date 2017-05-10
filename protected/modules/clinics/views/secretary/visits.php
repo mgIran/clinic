@@ -39,7 +39,7 @@
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-    'id'=>'reserves-grid',
+    'id'=>'visits-grid',
     'dataProvider'=>$model->search(),
     'filter'=>$model,
     'itemsCssClass'=>'table',
@@ -154,7 +154,7 @@ Yii::app()->clientScript->registerScript('checked-clinic','
             type: "GET",
             beforeSend: function(){},
             success: function(data){
-                $.fn.yiiGridView.update("reserves-grid");
+                $.fn.yiiGridView.update("visits-grid");
                 if(data.status){
                     $("#all").text(data.all);
                     $("#accepted").text(data.accepted);

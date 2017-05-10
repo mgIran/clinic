@@ -5,14 +5,14 @@
 ?>
 <h3>لیست نوبت های امروز</h3>
 <p class="description">لیست افرادی که امروز نوبت گرفته اند.
-    <a href="<?= $this->createUrl('secretary/visits/'.Yii::app()->user->id.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
+    <a href="<?= $this->createUrl('doctor/visits/'.Yii::app()->user->id.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
         <?php
         if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
             echo '<i class="icon-check"></i>';
         ?>
         نوبت صبح
     </a>
-    <a href="<?= $this->createUrl('secretary/visits/'.Yii::app()->user->id.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
+    <a href="<?= $this->createUrl('doctor/visits/'.Yii::app()->user->id.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
         <?php
         if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
             echo '<i class="icon-check"></i>';
@@ -39,7 +39,7 @@
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-    'id'=>'reserves-grid',
+    'id'=>'visits-grid',
     'dataProvider'=>$model->search(),
     'filter'=>$model,
     'itemsCssClass'=>'table',
@@ -156,7 +156,7 @@ Yii::app()->clientScript->registerScript('checked-clinic','
             type: "GET",
             beforeSend: function(){},
             success: function(data){
-                $.fn.yiiGridView.update("reserves-grid");
+                $.fn.yiiGridView.update("visits-grid");
                 if(data.status){
                     $("#all").text(data.all);
                     $("#accepted").text(data.accepted);

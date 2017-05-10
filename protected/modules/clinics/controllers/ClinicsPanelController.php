@@ -37,7 +37,9 @@ class ClinicsPanelController extends Controller
     public function actionIndex($clinic = null)
     {
         Yii::app()->theme = 'frontend';
-
+        if(Yii::app()->user->roles == 'secretary'){
+            $this->redirect(array('/clinics/secretary/doctors'));
+        }
         $clinic = Yii::app()->user->getState('clinic');
 
         $personnel = new ClinicPersonnels();
