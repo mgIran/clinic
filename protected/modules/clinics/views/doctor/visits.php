@@ -4,7 +4,22 @@
 /* @var $form CActiveForm */
 ?>
 <h3>لیست نوبت های امروز</h3>
-<p class="description">لیست افرادی که امروز نوبت گرفته اند.</p>
+<p class="description">لیست افرادی که امروز نوبت گرفته اند.
+    <a href="<?= $this->createUrl('doctor/visits/'.Yii::app()->user->id.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
+        <?php
+        if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
+            echo '<i class="icon-check"></i>';
+        ?>
+        نوبت صبح
+    </a>
+    <a href="<?= $this->createUrl('doctor/visits/'.Yii::app()->user->id.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
+        <?php
+        if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
+            echo '<i class="icon-check"></i>';
+        ?>
+        نوبت بعدازظهر
+    </a>
+</p>
 <div class="container-fluid">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)) ?></span> نوبت
@@ -24,7 +39,7 @@
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-    'id'=>'reserves-grid',
+    'id'=>'visits-grid',
     'dataProvider'=>$model->search(),
     'filter'=>$model,
     'itemsCssClass'=>'table',
@@ -55,7 +70,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name' => 'time',
             'value' => '$data->timeLabel',
-            'filter' => $model->timeLabels
+            'filter' => CHtml::activeDropDownList($model, 'time', $model->timeLabels, array('id' => 'Visits_time', 'prompt' => ''))
         ),
         array(
             'name' => 'status',
@@ -125,6 +140,10 @@ Yii::app()->clientScript->registerScript('checked-clinic','
         });
     });
     
+    $("body").on("change", "#Visits_time", function(e){
+        reloadStatistics();
+    });
+    
     setInterval(function () {
         reloadStatistics();
     }, 15000);
@@ -132,11 +151,12 @@ Yii::app()->clientScript->registerScript('checked-clinic','
     function reloadStatistics(){
         $.ajax({
             url: window.location,
+            data: {Visits: {time: $("#Visits_time").val()}},
             dataType: "JSON",
             type: "GET",
             beforeSend: function(){},
             success: function(data){
-                $.fn.yiiGridView.update("reserves-grid");
+                $.fn.yiiGridView.update("visits-grid");
                 if(data.status){
                     $("#all").text(data.all);
                     $("#accepted").text(data.accepted);

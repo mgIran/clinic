@@ -9,7 +9,7 @@
         <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
         <a title="برنامه زمانی نوبت دهی" href="<?php echo Yii::app()->createUrl('/clinics/doctor/schedules');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/schedules')?' active':'';?>">برنامه زمانی نوبت دهی</a>
         <a title="برنامه زمانی مرخصی ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/leaves');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/leaves')?' active':'';?>">برنامه زمانی مرخصی ها</a>
-        <a title="لیست نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/reserves');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/reserves')?' active':'';?>">لیست نوبت ها</a>
+        <a title="لیست نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/visits');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/visits')?' active':'';?>">لیست نوبت ها</a>
     <?php elseif(Yii::app()->user->roles == 'secretary'):?>
         <h5>منوی منشی</h5>
         <a title="مدیریت نوبت های پزشکان" href="<?php echo Yii::app()->createUrl('/clinics/secretary/doctors');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/secretary/doctors')?' active':'';?>">مدیریت نوبت های پزشکان</a>

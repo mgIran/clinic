@@ -218,4 +218,9 @@ class ClinicPersonnels extends CActiveRecord
 				DoctorExpertises::model()->deleteAll('doctor_id = :doctor_id',array(':doctor_id' => $this->user_id));
 		parent::afterSave();
 	}
+
+
+	public function getNowTime(){
+		return date('H')<12?1:2;
+	}
 }

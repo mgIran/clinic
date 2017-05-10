@@ -12,7 +12,7 @@ class ClinicsDoctorController extends Controller
     {
         return array(
             'backend' => array(
-                'index', 'schedules', 'leaves', 'removeLeaves', 'reserves', 'removeReserve', 'clinicChecked', 'clinicVisited',
+                'schedules', 'leaves', 'removeLeaves', 'visits', 'removeVisit', 'clinicChecked', 'clinicVisited',
             )
         );
     }
@@ -28,35 +28,7 @@ class ClinicsDoctorController extends Controller
         );
     }
 
-    /**
-     * @param ClinicPersonnels $clinic
-     */
-    public function actionIndex($clinic = null)
-    {
-        Yii::app()->theme = 'frontend';
-
-        $clinic = Yii::app()->user->getState('clinic');
-
-        $personnel = new ClinicPersonnels();
-        $personnel->unsetAttributes();
-        if(isset($_GET['ClinicPersonnels']))
-            $personnel->attributes = $_GET['ClinicPersonnels'];
-        $personnel->clinic_id = $clinic->id;
-        if(Yii::app()->user->roles == 'clinicAdmin'){
-            $personnel->post = [4, 3];
-        }elseif(Yii::app()->user->roles == 'doctor'){
-            $personnel->post = 4;
-        }elseif(Yii::app()->user->roles == 'secretary'){
-            $personnel->post = [4, 3];
-        }
-
-        $this->render('index', array(
-            'clinic' => $clinic,
-            'personnel' => $personnel,
-        ));
-    }
-
-    public function actionReserves()
+    public function actionVisits()
     {
         Yii::app()->theme = 'frontend';
         $userID = Yii::app()->user->getId();
@@ -69,7 +41,9 @@ class ClinicsDoctorController extends Controller
         $model->clinic_id = $clinicID;
         $model->doctor_id = $userID;
         $model->date = time();
-//        $model->status = Visits::STATUS_CLINIC_CHECKED;
+        if(!$model->time)
+            $model->time = date('H')<12?1:2;
+        $model->status = Visits::STATUS_CLINIC_CHECKED;
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
@@ -82,7 +56,7 @@ class ClinicsDoctorController extends Controller
             Yii::app()->end();
         }
 
-        $this->render('reserves', array(
+        $this->render('visits', array(
             'model' => $model
         ));
     }
