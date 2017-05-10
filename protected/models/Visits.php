@@ -208,7 +208,7 @@ class Visits extends CActiveRecord
         }
         $query = Yii::app()->db->createCommand()
             ->select('COUNT(id)')
-            ->from(self::tableName())
+            ->from(self::model()->tableName())
             ->where($where, $params)
             ->queryScalar();
         return $query;
@@ -229,7 +229,7 @@ class Visits extends CActiveRecord
         $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':time' => $time,':checked_status' => Visits::STATUS_CLINIC_CHECKED);
         $query = Yii::app()->db->createCommand()
             ->select('MIN(clinic_checked_number)')
-            ->from(self::tableName())
+            ->from(self::model()->tableName())
             ->where($where, $params)
             ->queryScalar();
         return $query?$query:'-';
