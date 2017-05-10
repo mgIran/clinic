@@ -191,18 +191,22 @@ class Visits extends CActiveRecord
     }
 
     /**
+     * @param $clinic
+     * @param $doctor
      * @param string $date UNIX timestamp
+     * @param $time
      * @param bool $status const DELETED|PENDING|ACCEPTED|CLINIC_CHECKED|CLINIC_VISITED
+     * @param string $statusOperator
      * @return int
      */
-    public static function getAllVisits($clinic, $doctor, $date, $status = false)
+    public static function getAllVisits($clinic, $doctor, $date, $time, $status = false, $statusOperator='>=')
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight)';
-        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight);
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND time = :time';
+        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':time' => $time);
         if($status){
-            $where .= ' AND status = :checked';
+            $where .= " AND status {$statusOperator} :checked";
             $params[':checked'] = $status;
         }
         $query = Yii::app()->db->createCommand()
@@ -211,5 +215,26 @@ class Visits extends CActiveRecord
             ->where($where, $params)
             ->queryScalar();
         return $query;
+    }
+
+    /**
+     * @param $clinic
+     * @param $doctor
+     * @param string $date UNIX timestamp
+     * @param $time
+     * @return int
+     */
+    public static function getNowVisit($clinic, $doctor, $date, $time)
+    {
+        $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
+        $toNight = $toDay + 24 * 60 * 60;
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND time = :time AND status = :checked_status';
+        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':time' => $time,':checked_status' => Visits::STATUS_CLINIC_CHECKED);
+        $query = Yii::app()->db->createCommand()
+            ->select('MIN(clinic_checked_number)')
+            ->from(self::tableName())
+            ->where($where, $params)
+            ->queryScalar();
+        return $query?$query:'-';
     }
 }
