@@ -70,7 +70,7 @@ class ClinicsDoctorController extends Controller
         $model->doctor_id = $userID;
         $model->date = time();
         $model->time = date('H')<12?1:2;
-//        $model->status = Visits::STATUS_CLINIC_CHECKED;
+        $model->status = Visits::STATUS_CLINIC_CHECKED;
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,

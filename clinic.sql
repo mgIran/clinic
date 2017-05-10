@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-05-09 18:52:40
+Date: 2017-05-10 17:14:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -145,9 +145,10 @@ CREATE TABLE `ym_clinic_personnels` (
 -- Records of ym_clinic_personnels
 -- ----------------------------
 INSERT INTO `ym_clinic_personnels` VALUES ('1', '43', '3');
-INSERT INTO `ym_clinic_personnels` VALUES ('1', '45', '3');
+INSERT INTO `ym_clinic_personnels` VALUES ('1', '45', '4');
+INSERT INTO `ym_clinic_personnels` VALUES ('1', '46', '4');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '43', '3');
-INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '3');
+INSERT INTO `ym_clinic_personnels` VALUES ('2', '45', '4');
 INSERT INTO `ym_clinic_personnels` VALUES ('2', '46', '4');
 
 -- ----------------------------
@@ -163,8 +164,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '13');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457883');
+INSERT INTO `ym_counter_save` VALUES ('counter', '14');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457884');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -182,7 +183,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494339761');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494420289');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -926,7 +927,7 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site', null);
 INSERT INTO `ym_users` VALUES ('45', '', '$2a$12$92HG95rnUS5MYLFvDjn2cOU4O4p64mpH9QnxFYzVnk9CjQIPrcTBC', 'yusef.mobasheri@gmail.com', '2', '1469083948', 'active', '72ca2204ef7d713a27204d6dfeb615a4', '1', 'site', null);
-INSERT INTO `ym_users` VALUES ('46', '', '$2a$12$.PR0pJ.0HU8zf1FqdCYeDeOlFHjLsZYyxzH/nzV/UnC5tEBeKenBK', 'zahra@gmail.com', '4', '1493876649', 'pending', 'd4cf45c2df97a2b6b3eb16017ca8804f', '0', 'site', null);
+INSERT INTO `ym_users` VALUES ('46', '', '$2a$12$.PR0pJ.0HU8zf1FqdCYeDeOlFHjLsZYyxzH/nzV/UnC5tEBeKenBK', 'zahra@gmail.com', '4', '1493876649', 'pending', 'd4cf45c2df97a2b6b3eb16017ca8804f', '0', 'site', '1516465849');
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -1087,7 +1088,7 @@ CREATE TABLE `ym_visits` (
 -- ----------------------------
 -- Records of ym_visits
 -- ----------------------------
-INSERT INTO `ym_visits` VALUES ('1', '45', '2', '45', '1494336778', '1', '4', '32523', '1494336964', '1');
-INSERT INTO `ym_visits` VALUES ('2', '45', '2', '45', '1494336778', '1', '4', '51asf1a63', '1494336969', '4');
-INSERT INTO `ym_visits` VALUES ('3', '45', '2', '45', '1494336778', '1', '4', 'gfdsfsad', '1494336968', '3');
-INSERT INTO `ym_visits` VALUES ('4', '45', '2', '45', '1494336778', '1', '4', 'gfdsfsad', '1494336966', '2');
+INSERT INTO `ym_visits` VALUES ('1', '45', '2', '43', '1494398704', '1', '4', '32523', '1494420031', '1');
+INSERT INTO `ym_visits` VALUES ('2', '45', '2', '43', '1494398704', '1', '4', '51asf1a63', '1494420045', '2');
+INSERT INTO `ym_visits` VALUES ('3', '45', '2', '43', '1494398704', '2', '4', 'gfdsfsad', '1494420036', '1');
+INSERT INTO `ym_visits` VALUES ('4', '45', '2', '43', '1494398704', '1', '4', 'gfdsfsad', '1494420048', '3');
