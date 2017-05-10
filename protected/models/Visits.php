@@ -203,8 +203,13 @@ class Visits extends CActiveRecord
         $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND time = :time';
         $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':time' => $time);
         if($status){
-            $where .= " AND status {$statusOperator} :checked";
-            $params[':checked'] = $status;
+            if(is_array($status))
+                $where .= " AND status {$statusOperator} (".implode(', ', $status).")";
+            else
+                $where .= " AND status {$statusOperator} :checked";
+
+            if(is_string($status))
+                $params[':checked'] = $status;
         }
         $query = Yii::app()->db->createCommand()
             ->select('COUNT(id)')

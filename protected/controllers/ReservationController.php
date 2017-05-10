@@ -12,6 +12,7 @@ class ReservationController extends Controller
                 'search',
                 'selectDoctor',
                 'schedule',
+                'selectTime',
                 'info',
             ),
         );
@@ -52,7 +53,9 @@ class ReservationController extends Controller
             ));
 
             $this->redirect('schedule');
-        }
+        } else
+            $this->redirect(Yii::app()->request->urlReferrer);
+
     }
 
     public function actionSchedule()
@@ -80,20 +83,25 @@ class ReservationController extends Controller
                 $days = array();
                 for ($i = 0; $i <= $daysCount; $i++) {
                     $dayTimestamp = strtotime(date('Y/m/d 00:00', strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) + ($i * (60 * 60 * 24))));
-                    if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays))
+                    if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)) {
                         if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
-                            foreach ($schedules as $schedule)
-                                if ($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
-                                    $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, '(0, 1)', 'NOT IN');
-                                    $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, '(0, 1)', 'NOT IN');
+                            if ($dayTimestamp > time()) {
+                                foreach ($schedules as $schedule)
+                                    if ($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
+                                        $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
+                                        $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
 
-                                    if ($AMVisitsCount != $schedule->visit_count_am)
-                                        $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
+                                        if ($AMVisitsCount != $schedule->visit_count_am)
+                                            if (!is_null($schedule->times['AM']))
+                                                $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
 
-                                    if ($PMVisitsCount != $schedule->visit_count_pm)
-                                        $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
-                                }
+                                        if ($PMVisitsCount != $schedule->visit_count_pm)
+                                            if (!is_null($schedule->times['PM']))
+                                                $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
+                                    }
+                            }
                         }
+                    }
                 }
 
                 $renderOutput = array(
@@ -107,11 +115,66 @@ class ReservationController extends Controller
         $this->render('schedule', $renderOutput);
     }
 
+    public function actionSelectTime()
+    {
+        if (isset($_GET['d']) and isset($_GET['t'])) {
+            Yii::app()->user->setState('reservation', array(
+                'doctorID' => Yii::app()->user->reservation['doctorID'],
+                'clinicID' => Yii::app()->user->reservation['clinicID'],
+                'date' => Yii::app()->request->getQuery('d'),
+                'time' => Yii::app()->request->getQuery('t'),
+            ));
+
+            $this->redirect('info');
+        } else
+            $this->redirect('schedule');
+    }
+
     public function actionInfo()
     {
         Yii::app()->theme = 'frontend';
         $this->layout = 'public';
 
-        $this->render('info');
+        $user = new Users();
+        $user->setScenario('reserve_register');
+        if (isset($_POST['Users'])) {
+            if (empty($_POST['Users']['mobile']))
+                Yii::app()->user->setFlash('failed', 'تلفن همراه نمی تواند خالی باشد.');
+            else {
+                $existUser = Users::model()->find('national_code = :national_code', array(':national_code' => $_POST['Users']['national_code']));
+                if (!$existUser) {
+                    $user->email = $_POST['Users']['email'];
+                    $user->national_code = $_POST['Users']['national_code'];
+                    $user->role_id = UserRoles::model()->find('role = :role', array(':role' => 'user'))->id;
+                    $user->create_date = time();
+                    $user->status = 'active';
+                    $user->change_password_request_count = 0;
+                    $user->auth_mode = 'site';
+                    $user->password = $user->generatePassword();
+                    $user->mobile=$_POST['Users']['mobile'];
+                    $user->first_name=$_POST['Users']['first_name'];
+                    $user->last_name=$_POST['Users']['last_name'];
+
+                    if($user->save()){
+                        $userDetails=$user->userDetails;
+                        $userDetails->user_id=$user->id;
+                        $userDetails->first_name=$user->first_name;
+                        $userDetails->last_name=$user->last_name;
+                        $userDetails->mobile=$user->mobile;
+
+                        /* @todo send sms to user */
+
+                        if($userDetails->save())
+                            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                        else
+                            var_dump($userDetails->errors);
+                    }
+                }
+            }
+        }
+
+        $this->render('info', array(
+            'user'=>$user,
+        ));
     }
 }

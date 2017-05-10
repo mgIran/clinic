@@ -87,16 +87,16 @@
                                         if($currentDay < strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) or $currentDay > strtotime(date('Y/m/d 00:00', $_POST['to_altField']))):?>
                                             <div class="day disabled">
                                         <?php else:?>
-                                            <div class="day">
+                                            <div class="day<?php echo key_exists($currentDay, $days)?' active':'';?>">
                                         <?php endif;?>
                                             <?php if(key_exists($currentDay, $days)):?>
                                                 <?php echo $this->parseNumbers($j);?>
-                                                <small><?php echo $this->parseNumbers($days[$currentDay]['AM']);?></small>
-                                                <small><?php echo $this->parseNumbers($days[$currentDay]['PM']);?></small>
-                                                <?php if(!is_null($days[$currentDay]['AM']) and !is_null($days[$currentDay]['PM'])):?>
+                                                <?php if(isset($days[$currentDay]['AM'])):?><small><?php echo $this->parseNumbers($days[$currentDay]['AM']);?></small><?php endif;?>
+                                                <?php if(isset($days[$currentDay]['PM'])):?><small><?php echo $this->parseNumbers($days[$currentDay]['PM']);?></small><?php endif;?>
+                                                <?php if(isset($days[$currentDay]['AM']) and isset($days[$currentDay]['PM'])):?>
                                                     <a href="#select-time-modal" data-toggle="modal" class="select-time-link" data-date="<?php echo $currentDay;?>" data-am="<?php echo $days[$currentDay]['AM'];?>" data-pm="<?php echo $days[$currentDay]['PM'];?>"></a>
                                                 <?php else:?>
-                                                    <a href="<?php echo $this->createUrl('selectDate', array('d'=>$currentDay, 't'=>(is_null($days[$currentDay]['AM']))?'pm':'am'));?>"></a>
+                                                    <a href="<?php echo $this->createUrl('selectDate', array('d'=>$currentDay, 't'=>(isset($days[$currentDay]['AM']))?'am':'pm'));?>"></a>
                                                 <?php endif;?>
                                             <?php else:?>
                                                 <?php echo $this->parseNumbers($j);?>
