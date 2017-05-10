@@ -1025,10 +1025,16 @@ input[type="text"].date-input{
 }
 .calendar .day small{
     display: block;
-    font-size: 10px;
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: normal;
+    color: #ed7262;
 }
 .calendar .days .day{
     height: 70px;
+    font-size: 13px;
+    font-weight: bold;
+    line-height:15px;
 }
 .calendar .day:nth-child(7n){
     margin-left: 1%;

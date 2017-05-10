@@ -90,11 +90,16 @@
                                             <div class="day">
                                         <?php endif;?>
                                             <?php if(key_exists($currentDay, $days)):?>
-                                                <?php echo $j;?>
-                                                <small><?php echo $days[$currentDay]['AM'];?></small>
-                                                <a href="<?php echo $this->createUrl('selectDate', array('d'=>$currentDay));?>"></a>
+                                                <?php echo $this->parseNumbers($j);?>
+                                                <small><?php echo $this->parseNumbers($days[$currentDay]['AM']);?></small>
+                                                <small><?php echo $this->parseNumbers($days[$currentDay]['PM']);?></small>
+                                                <?php if(!is_null($days[$currentDay]['AM']) and !is_null($days[$currentDay]['PM'])):?>
+                                                    <a href="#select-time-modal" data-toggle="modal" class="select-time-link" data-date="<?php echo $currentDay;?>" data-am="<?php echo $days[$currentDay]['AM'];?>" data-pm="<?php echo $days[$currentDay]['PM'];?>"></a>
+                                                <?php else:?>
+                                                    <a href="<?php echo $this->createUrl('selectDate', array('d'=>$currentDay, 't'=>(is_null($days[$currentDay]['AM']))?'pm':'am'));?>"></a>
+                                                <?php endif;?>
                                             <?php else:?>
-                                                <?php echo $j;?>
+                                                <?php echo $this->parseNumbers($j);?>
                                             <?php endif;?>
                                         </div>
                                     <?php endfor;?>
@@ -102,17 +107,38 @@
                             </div>
                             <?php $currentMonth++;?>
                         <?php endfor;?>
-                        <?php foreach($days as $day=>$time):?>
-                            <?php echo JalaliDate::date('Y/m/d H:i', $day);?><br>
-<!--                            --><?php //echo $day;?><!--<br>-->
-                        <?php endforeach;?>
                     </div>
                 </div>
             </div>
         <?php endif;?>
     </div>
 </div>
-<?php Yii::app()->clientScript->registerScript('load-user-info', "
+
+<div id="select-time-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border: none">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>لطفا زمان مورد نظر خود را مشخص کنید:</p>
+                <?php echo CHtml::radioButtonList('t', 'am', array('am'=>'صبح', 'pm'=>'بعد از ظهر'));?>
+                <?php echo CHtml::hiddenField('d', '');?>
+                <div><?php echo CHtml::button('ثبت', array('class'=>'btn btn-green','id'=>'submit-select-time','style'=>'margin-top:20px;'))?></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php Yii::app()->clientScript->registerScript('inline-scripts', "
+    $('.select-time-link').click(function(){
+        $('#select-time-modal input#d[type=\"hidden\"]').val($(this).data('date'));
+        $('#select-time-modal label[for=\"t_0\"]').text('صبح ('+$(this).data('am')+')');
+        $('#select-time-modal label[for=\"t_1\"]').text('بعد از ظهر ('+$(this).data('pm')+')');
+    });
+    $('#submit-select-time').click(function(){
+        window.location.href = '".$this->createUrl('selectTime')."?d='+$('#select-time-modal input#d[type=\"hidden\"]').val()+'&t='+$('#select-time-modal input[type=\"radio\"][name=\"t\"]:checked').val();
+    });
     $('#PatientInfo_national_code').focusout(function(){
         if($(this).val() != ''){
             if($(this).val().length < 10)

@@ -83,8 +83,11 @@ class ReservationController extends Controller
                     if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays))
                         if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
                             foreach($schedules as $schedule)
-                                if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false))
-                                    $days[$dayTimestamp]=$schedule->times;
+                                if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
+                                    $AMVisitsCount=Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp);
+                                    if ($AMVisitsCount)
+                                        $days[$dayTimestamp] = $schedule->times;
+                                }
                         }
                 }
 

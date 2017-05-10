@@ -83,17 +83,6 @@ class Controller extends AuthController
         return true;
     }
 
-    public function getCategoryBooks($id)
-    {
-        $model = BookCategories::model()->findByPk($id);
-        $catIds = $model->getCategoryChilds();
-        $criteria = Books::model()->getValidBooks($catIds);
-        $dataProvider = new CActiveDataProvider('Books', array(
-            'criteria' => $criteria,
-        ));
-        return $dataProvider->getData();
-    }
-
     public static function createAdminMenu()
     {
         if(!Yii::app()->user->isGuest && Yii::app()->user->type != 'user')

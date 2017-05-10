@@ -14,6 +14,7 @@
  * @property string $tracking_code
  * @property string $check_date
  * @property string $clinic_checked_number
+ * @property string $visits_count
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -30,6 +31,8 @@ class Visits extends CActiveRecord
     const STATUS_ACCEPTED = 2;
     const STATUS_CLINIC_CHECKED = 3;
     const STATUS_CLINIC_VISITED = 4;
+
+    public $visits_count;
 
     /**
      * @return string the associated database table name

@@ -191,8 +191,8 @@ class DoctorSchedules extends CActiveRecord
 	public function getTimes()
 	{
 		return array(
-			'AM' => $this->entry_time_am . ':00 - ' . $this->exit_time_am.':00',
-			'PM' => $this->entry_time_pm . ':00 - ' . $this->exit_time_pm.':00',
+			'AM' => ($this->entry_time_am)?$this->entry_time_am . ':00 - ' . $this->exit_time_am.':00':null,
+			'PM' => ($this->entry_time_pm)?$this->entry_time_pm . ':00 - ' . $this->exit_time_pm.':00':null,
 		);
 	}
 }
