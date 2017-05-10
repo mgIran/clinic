@@ -182,7 +182,7 @@ class Visits extends CActiveRecord
         $lastNumber = Yii::app()->db->createCommand()
             ->select('MAX(clinic_checked_number)')
             ->from($this->tableName())
-            ->where('date BETWEEN :toDay AND :toNight', array(':toDay' => $toDay, ':toNight' => $toNight))
+            ->where('(date BETWEEN :toDay AND :toNight) AND time = :time', array(':toDay' => $toDay, ':toNight' => $toNight, ':time' => $this->time))
             ->queryScalar();
         if(!$lastNumber)
             return 1;
@@ -203,8 +203,12 @@ class Visits extends CActiveRecord
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND time = :time';
-        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':time' => $time);
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight)';
+        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight);
+        if($time){
+            $where .= "  AND time = :time";
+            $params[':time'] = $time;
+        }
         if($status){
             $where .= " AND status {$statusOperator} :checked";
             $params[':checked'] = $status;
@@ -228,8 +232,12 @@ class Visits extends CActiveRecord
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND time = :time AND status = :checked_status';
-        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':time' => $time,':checked_status' => Visits::STATUS_CLINIC_CHECKED);
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND status = :checked_status';
+        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight,':checked_status' => Visits::STATUS_CLINIC_CHECKED);
+        if($time){
+            $where .= "  AND time = :time";
+            $params[':time'] = $time;
+        }
         $query = Yii::app()->db->createCommand()
             ->select('MIN(clinic_checked_number)')
             ->from(self::model()->tableName())

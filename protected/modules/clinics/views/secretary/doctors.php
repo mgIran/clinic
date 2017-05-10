@@ -37,14 +37,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'class'=>'CButtonColumn',
-            'template'=>'{am_time} {pm_time}',
+            'template'=>'{view}',
             'buttons' => array(
-                'am_time' => array(
-                    'label' => 'نمایش نوبت های صبح',
-                    'options' => array(
-                        'class' => 'btn btn-success btn-sm',
-                    ),
-                    'url' => 'Yii::app()->controller->createUrl("secretary/visits/".$data->user_id."/?Visits[time]=".Visits)',
+                'view' => array(
+                    'label' => 'نمایش نوبت ها',
+                    'url' => 'Yii::app()->controller->createUrl("secretary/visits/".$data->user_id."/?Visits[time]=".$data->getNowTime())',
                 )
             )
         ),
