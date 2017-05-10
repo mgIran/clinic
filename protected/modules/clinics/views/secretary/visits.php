@@ -7,19 +7,19 @@
 <p class="description">لیست افرادی که امروز نوبت گرفته اند.</p>
 <div class="container-fluid">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)) ?></span> نوبت
+        <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span> نوبت
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>نوبت های تایید شده امروز:</b> <span id="accepted"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time, Visits::STATUS_ACCEPTED)) ?></span> نوبت
+        <b>نوبت های تایید شده امروز:</b> <span id="accepted"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_ACCEPTED)) ?></span> نوبت
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>نوبت های حضور یافته در مطب:</b> <span id="checked"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)) ?></span> نوبت
+        <b>نوبت های حضور یافته در مطب:</b> <span id="checked"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)) ?></span> نوبت
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>نوبت های ویزیت شده:</b> <span id="visited"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time, Visits::STATUS_CLINIC_VISITED)) ?></span> نوبت
+        <b>نوبت های ویزیت شده:</b> <span id="visited"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_VISITED)) ?></span> نوبت
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)) ?></span></h3>
+        <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span></h3>
     </div>
 </div>
 <?php

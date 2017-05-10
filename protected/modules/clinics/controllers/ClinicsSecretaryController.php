@@ -12,7 +12,7 @@ class ClinicsSecretaryController extends Controller
     {
         return array(
             'backend' => array(
-                'index', 'reserves', 'removeReserve', 'clinicChecked', 'clinicVisited',
+                'doctors', 'visits', 'clinicChecked', 'clinicVisited',
             )
         );
     }
@@ -28,36 +28,27 @@ class ClinicsSecretaryController extends Controller
         );
     }
 
-    /**
-     * @param ClinicPersonnels $clinic
-     */
-    public function actionIndex($clinic = null)
+    
+    public function actionDoctors()
     {
         Yii::app()->theme = 'frontend';
+        $clinicID = Yii::app()->user->clinic->id;
 
-        $clinic = Yii::app()->user->getState('clinic');
-
-        $personnel = new ClinicPersonnels();
-        $personnel->unsetAttributes();
+        $model = new ClinicPersonnels('search');
         if(isset($_GET['ClinicPersonnels']))
-            $personnel->attributes = $_GET['ClinicPersonnels'];
-        $personnel->clinic_id = $clinic->id;
-        if(Yii::app()->user->roles == 'clinicAdmin'){
-            $personnel->post = [4, 3];
-        }elseif(Yii::app()->user->roles == 'doctor'){
-            $personnel->post = 4;
-        }
+            $model->attributes = $_GET['ClinicPersonnels'];
+        $model->clinic_id = $clinicID;
+        $model->post = 3;
 
-        $this->render('index', array(
-            'clinic' => $clinic,
-            'personnel' => $personnel,
+        $this->render('doctors', array(
+            'model' => $model
         ));
     }
 
-    public function actionReserves()
+    public function actionVisits($id)
     {
         Yii::app()->theme = 'frontend';
-        $userID = Yii::app()->user->getId();
+        $doctorID = $id;
         $clinicID = Yii::app()->user->clinic->id;
 
         $model = new Visits('search');
@@ -65,22 +56,23 @@ class ClinicsSecretaryController extends Controller
         if(isset($_GET['Visits']))
             $model->attributes = $_GET['Visits'];
         $model->clinic_id = $clinicID;
-        $model->doctor_id = $userID;
+        $model->doctor_id = $doctorID;
         $model->date = time();
-        $model->status = Visits::STATUS_CLINIC_CHECKED;
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
-                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date)),
-                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, Visits::STATUS_ACCEPTED)),
-                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, Visits::STATUS_CLINIC_CHECKED)),
-                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, Visits::STATUS_CLINIC_VISITED)),
+                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time)),
+                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time, Visits::STATUS_ACCEPTED)),
+                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)),
+                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time, Visits::STATUS_CLINIC_VISITED)),
+                'visiting' => Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)),
             ]);
             Yii::app()->end();
         }
 
-        $this->render('reserves', array(
-            'model' => $model
+        $this->render('visits', array(
+            'model' => $model,
+            'doctorID' => $doctorID,
         ));
     }
 
@@ -89,8 +81,8 @@ class ClinicsSecretaryController extends Controller
         Yii::app()->theme = 'frontend';
         $model = Visits::model()->findByPk($id);
         $model->status = Visits::STATUS_CLINIC_CHECKED;
-        $model->check_date= time();
-        $model->clinic_checked_number=$model->getGenerateNewVisitNumber();
+        $model->check_date = time();
+        $model->clinic_checked_number = $model->getGenerateNewVisitNumber();
         if($model->save())
             echo CJSON::encode(['status' => true]);
         else
@@ -123,16 +115,8 @@ class ClinicsSecretaryController extends Controller
         return $model;
     }
 
-    /**
-     * @param $id
-     * @return DoctorLeaves
-     * @throws CHttpException
-     */
-    public function loadLeavesModel($id)
-    {
-        $model = DoctorLeaves::model()->findByPk($id);
-        if($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
-        return $model;
+    public function actionMonitoring(){
+        $clinicID = Yii::app()->user->clinic->id;
+        $clinicID = Yii::app()->user->clinic->id;
     }
 }

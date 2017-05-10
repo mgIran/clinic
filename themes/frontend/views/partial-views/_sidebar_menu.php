@@ -12,8 +12,8 @@
         <a title="لیست نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/reserves');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/reserves')?' active':'';?>">لیست نوبت ها</a>
     <?php elseif(Yii::app()->user->roles == 'secretary'):?>
         <h5>منوی منشی</h5>
-        <a title="ثبت نوبت جدید" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panسel')?' active':'';?>">ثبت نوبت جدید</a>
-        <a title="سیستم حضور بیمار" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panسel')?' active':'';?>">سیستم حضور بیمار</a>
+        <a title="مدیریت نوبت های پزشکان" href="<?php echo Yii::app()->createUrl('/clinics/secretary/doctors');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/secretary/doctors')?' active':'';?>">مدیریت نوبت های پزشکان</a>
+        <a title="مانیتورینگ نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/secretary/monitoring');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/secretary/monitoring')?' active':'';?>">مانیتورینگ نوبت ها</a>
     <?php endif;?>
 <?php endif;?>
 <h5>منوی کاربری</h5>

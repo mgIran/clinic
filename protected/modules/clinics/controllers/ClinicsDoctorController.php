@@ -46,6 +46,8 @@ class ClinicsDoctorController extends Controller
             $personnel->post = [4, 3];
         }elseif(Yii::app()->user->roles == 'doctor'){
             $personnel->post = 4;
+        }elseif(Yii::app()->user->roles == 'secretary'){
+            $personnel->post = [4, 3];
         }
 
         $this->render('index', array(
@@ -67,14 +69,15 @@ class ClinicsDoctorController extends Controller
         $model->clinic_id = $clinicID;
         $model->doctor_id = $userID;
         $model->date = time();
-        $model->status = Visits::STATUS_CLINIC_CHECKED;
+//        $model->status = Visits::STATUS_CLINIC_CHECKED;
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
-                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date)),
-                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_ACCEPTED)),
-                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_CLINIC_CHECKED)),
-                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, Visits::STATUS_CLINIC_VISITED)),
+                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date,$model->time)),
+                'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time, Visits::STATUS_ACCEPTED)),
+                'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)),
+                'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time, Visits::STATUS_CLINIC_VISITED)),
+                'visiting' => Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)),
             ]);
             Yii::app()->end();
         }
