@@ -82,19 +82,24 @@ class ReservationController extends Controller
                     $dayTimestamp = strtotime(date('Y/m/d 00:00', strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) + ($i * (60 * 60 * 24))));
                     if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays))
                         if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
-                            foreach($schedules as $schedule)
-                                if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
-                                    $AMVisitsCount=Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp);
-                                    if ($AMVisitsCount)
-                                        $days[$dayTimestamp] = $schedule->times;
+                            foreach ($schedules as $schedule)
+                                if ($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
+                                    $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, '(0, 1)', 'NOT IN');
+                                    $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, '(0, 1)', 'NOT IN');
+
+                                    if ($AMVisitsCount != $schedule->visit_count_am)
+                                        $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
+
+                                    if ($PMVisitsCount != $schedule->visit_count_pm)
+                                        $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
                                 }
                         }
                 }
 
                 $renderOutput = array(
-                    'days'=>$days,
-                    'doctor'=>$user,
-                    'clinic'=>Clinics::model()->findByPk(Yii::app()->user->reservation['clinicID']),
+                    'days' => $days,
+                    'doctor' => $user,
+                    'clinic' => Clinics::model()->findByPk(Yii::app()->user->reservation['clinicID']),
                 );
             }
         }
