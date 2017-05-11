@@ -218,10 +218,10 @@ class Visits extends CActiveRecord
             if(is_array($status))
                 $where .= " AND status {$statusOperator} (".implode(', ', $status).")";
             else
+            {
                 $where .= " AND status {$statusOperator} :checked";
-
-            if(is_string($status))
                 $params[':checked'] = $status;
+            }
         }
         $query = Yii::app()->db->createCommand()
             ->select('COUNT(id)')
