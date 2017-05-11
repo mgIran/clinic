@@ -705,6 +705,28 @@ input[type="text"].date-input{
 .btn-red:active{
     background: #e06656;
 }
+.btn-black{
+    display: inline-block;
+    background: #384241;
+    color: #fff;
+    border-radius: 22px;
+    height:44px;
+    line-height:44px;
+    text-align: center;
+    border:none;
+    padding: 0 20px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.btn-black:hover,
+.btn-black:focus,
+.btn-black:active{
+    background: #515c5b;
+    color: #fff;
+}
 .btn-green{
     background: #18b29e;
     color: #fff;
@@ -781,8 +803,12 @@ input[type="text"].date-input{
     margin-bottom: 40px;
     position: relative;
 }
-.form-container input[type="submit"]{
+.form-container input[type="submit"],
+.form-container .btn-black{
     width: 150px;
+}
+.form-container .btn-black{
+    margin-left: 15px;
 }
 .form-container .row > div{
     padding-right: 25px;
@@ -824,6 +850,9 @@ input[type="text"].date-input{
     float: right;
     line-height:44px;
 }
+.price-info span{
+    line-height:44px;
+}
 .price-info h4 span{
     font-size: 25px;
     color: #ed7262;
@@ -832,11 +861,15 @@ input[type="text"].date-input{
     color: #ed7262;
     font-size: 17px;
 }
-.price-info .btn-red{
+.price-info .btn-red,
+.price-info .btn-black{
     width: 150px;
     float: left;
     font-weight: bold;
     font-size: 16px;
+}
+.price-info .btn-black{
+    margin-left: 15px;
 }
 .navbar-toggle{
     float: right;
@@ -985,9 +1018,13 @@ input[type="text"].date-input{
 .select-date-form{
     margin-top: 70px;
 }
-.select-date-form input[type="submit"]{
+.select-date-form input[type="submit"],
+.select-date-form .btn-black{
     margin-top: 27px;
     width: 150px;
+}
+.select-date-form .btn-black{
+    margin-right: 10px;
 }
 .calendar-container{
     margin-top: 80px;

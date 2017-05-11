@@ -8,14 +8,17 @@
  * @property string $user_id
  * @property string $clinic_id
  * @property string $doctor_id
+ * @property string $expertise_id
  * @property string $date
  * @property string $time
  * @property string $status
  * @property string $tracking_code
+ * @property string $create_date
  * @property string $check_date
  * @property string $clinic_checked_number
  *
  * The followings are the available model relations:
+ * @property Expertises $expertise
  * @property Users $user
  * @property Clinics $clinic
  * @property Users $doctor
@@ -60,12 +63,14 @@ class Visits extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('clinic_checked_number, user_id, clinic_id, doctor_id', 'length', 'max' => 10),
-            array('check_date, date, tracking_code', 'length', 'max' => 20),
+            array('clinic_checked_number, user_id, clinic_id, expertise_id, doctor_id', 'length', 'max' => 10),
+            array('check_date, date, tracking_code, create_date', 'length', 'max' => 20),
             array('time, status', 'length', 'max' => 1),
+            array('create_date', 'default', 'value'=>time(), 'on'=>'insert'),
+            array('tracking_code', 'default', 'value'=>self::generateTrackingCode(), 'on'=>'insert'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, user_id, clinic_id, doctor_id, check_date, date, time, status, tracking_code, clinic_checked_number', 'safe', 'on' => 'search'),
+            array('id, user_id, clinic_id, doctor_id, expertise_id, check_date, date, create_date, time, status, tracking_code, clinic_checked_number', 'safe', 'on' => 'search'),
         );
     }
 
@@ -77,6 +82,7 @@ class Visits extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'expertise' => array(self::BELONGS_TO, 'Expertises', 'expertise_id'),
             'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
             'clinic' => array(self::BELONGS_TO, 'Clinics', 'clinic_id'),
             'doctor' => array(self::BELONGS_TO, 'Users', 'doctor_id'),
@@ -93,7 +99,9 @@ class Visits extends CActiveRecord
             'user_id' => 'کاربر',
             'clinic_id' => 'بیمارستان / درمانگاه / مطب',
             'doctor_id' => 'پزشک',
-            'date' => 'تاریخ',
+            'expertise_id' => 'تخصص',
+            'date' => 'تاریخ مراجعه',
+            'create_date' => 'تاریخ ثبت',
             'check_date' => 'تاریخ حضور در مطب',
             'time' => 'نوبت',
             'status' => 'وضعیت',
@@ -246,5 +254,10 @@ class Visits extends CActiveRecord
             ->where($where, $params)
             ->queryScalar();
         return $query?$query:'-';
+    }
+
+    public static function generateTrackingCode()
+    {
+        return substr(md5(time()), 0, 10);
     }
 }

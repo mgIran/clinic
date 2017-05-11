@@ -20,10 +20,6 @@
     <div class="form-container">
         <?php $form=$this->beginWidget('CActiveForm', array(
             'id'=>'users-form',
-            // Please note: When you enable ajax validation, make sure the corresponding
-            // controller action is handling ajax validation correctly.
-            // There is a call to performAjaxValidation() commented in generated controller code.
-            // See class documentation of CActiveForm for details on this.
             'enableAjaxValidation'=>false,
             'enableClientValidation'=>true,
             'clientOptions'=>array(
@@ -36,7 +32,6 @@
                 <?php echo $form->errorSummary($user); ?>
             </div>
             <div class="row">
-<!--                --><?php //echo CHtml::textField('PatientInfo[national_code]', (isset($_POST['PatientInfo']['national_code']))?$_POST['PatientInfo']['national_code']:'', array('placeholder'=>'کد ملی *', 'maxlength'=>10));?>
                 <?php echo $form->textField($user,'national_code',array('placeholder'=>'کد ملی *', 'maxlength'=>10)); ?>
                 <?php echo $form->error($user,'national_code'); ?>
                 <span class="errorMessage" id="national-code-error"></span>
@@ -49,22 +44,18 @@
                 </div>
             </div>
             <div class="row">
-<!--                --><?php //echo CHtml::textField('PatientInfo[first_name]', (isset($_POST['PatientInfo']['first_name']))?$_POST['PatientInfo']['first_name']:'', array('placeholder'=>'نام'));?>
-                <?php echo $form->textField($user,'first_name',array('placeholder'=>'نام')); ?>
+                <?php echo $form->textField($user,'first_name',array('placeholder'=>'نام *')); ?>
                 <?php echo $form->error($user,'first_name'); ?>
             </div>
             <div class="row">
-<!--                --><?php //echo CHtml::textField('PatientInfo[last_name]', (isset($_POST['PatientInfo']['last_name']))?$_POST['PatientInfo']['last_name']:'', array('placeholder'=>'نام خانوادگی'));?>
-                <?php echo $form->textField($user,'last_name',array('placeholder'=>'نام خانوادگی')); ?>
+                <?php echo $form->textField($user,'last_name',array('placeholder'=>'نام خانوادگی *')); ?>
                 <?php echo $form->error($user,'last_name'); ?>
             </div>
             <div class="row">
-<!--                --><?php //echo CHtml::textField('PatientInfo[mobile]', (isset($_POST['PatientInfo']['mobile']))?$_POST['PatientInfo']['mobile']:'', array('placeholder'=>'تلفن همراه *', 'maxlength'=>11));?>
                 <?php echo $form->textField($user,'mobile',array('placeholder'=>'تلفن همراه *', 'maxlength'=>11)); ?>
                 <?php echo $form->error($user,'mobile'); ?>
             </div>
             <div class="row">
-<!--                --><?php //echo CHtml::textField('PatientInfo[email]', (isset($_POST['PatientInfo']['email']))?$_POST['PatientInfo']['email']:'', array('placeholder'=>'پست الکترونیکی'));?>
                 <?php echo $form->textField($user,'email',array('placeholder'=>'پست الکترونیکی')); ?>
                 <?php echo $form->error($user,'email'); ?>
             </div>
@@ -74,6 +65,7 @@
             <div class="row">
                 <small class="desc">در پایان فرایند رزرو نوبت، سیستم برای شما کد رهگیری در نظر می گیرد. لطفا هنگام مراجعه به درمانگاه، کد رهگیری را همراه داشته باشید.</small>
                 <?php echo CHtml::submitButton('ثبت', array('class'=>'btn-red pull-left'));?>
+                <?php echo CHtml::link('بازگشت', $this->createUrl('schedule'), array('class'=>'btn-black pull-left'));?>
             </div>
         <?php $this->endWidget();?>
     </div>
@@ -95,10 +87,41 @@
                         success:function(data){
                             $('#national-code-loading').hide();
                             if(data.status){
-                                $('#Users_first_name').val(data.first_name).prop('disabled', true);
-                                $('#Users_last_name').val(data.last_name).prop('disabled', true);
-                                $('#Users_mobile').val(data.mobile).prop('disabled', true);
-                                $('#Users_email').val(data.email).prop('disabled', true);
+                                if(data.first_name != '' && data.first_name != null){
+                                    $('#Users_first_name').val(data.first_name).prop('disabled', true);
+                                    $('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'Users[first_name]',
+                                        value: data.first_name
+                                    }).appendTo('form#users-form');
+                                }
+
+                                if(data.last_name != '' && data.last_name != null){
+                                    $('#Users_last_name').val(data.last_name).prop('disabled', true);
+                                    $('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'Users[last_name]',
+                                        value: data.last_name
+                                    }).appendTo('form#users-form');
+                                }
+
+                                if(data.mobile != '' && data.mobile != null){
+                                    $('#Users_mobile').val(data.mobile).prop('disabled', true);
+                                    $('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'Users[mobile]',
+                                        value: data.mobile
+                                    }).appendTo('form#users-form');
+                                }
+
+                                if(data.email != '' && data.email != null){
+                                    $('#Users_email').val(data.email).prop('disabled', true);
+                                    $('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'Users[email]',
+                                        value: data.email
+                                    }).appendTo('form#users-form');
+                                }
                             }else{
                                 $('#Users_first_name').val('').prop('disabled', false);
                                 $('#Users_last_name').val('').prop('disabled', false);

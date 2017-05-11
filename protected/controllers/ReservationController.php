@@ -14,6 +14,7 @@ class ReservationController extends Controller
                 'schedule',
                 'selectTime',
                 'info',
+                'checkout',
             ),
         );
     }
@@ -50,11 +51,12 @@ class ReservationController extends Controller
             Yii::app()->user->setState('reservation', array(
                 'doctorID' => $_POST['Reservation']['doctor_id'],
                 'clinicID' => $_POST['Reservation']['clinic_id'],
+                'expertiseID' => $_POST['Reservation']['expertise_id'],
             ));
 
             $this->redirect('schedule');
         } else
-            $this->redirect(Yii::app()->request->urlReferrer);
+            $this->redirect('search/'.Yii::app()->user->reservation['expertiseID']);
 
     }
 
@@ -121,6 +123,7 @@ class ReservationController extends Controller
             Yii::app()->user->setState('reservation', array(
                 'doctorID' => Yii::app()->user->reservation['doctorID'],
                 'clinicID' => Yii::app()->user->reservation['clinicID'],
+                'expertiseID' => Yii::app()->user->reservation['expertiseID'],
                 'date' => Yii::app()->request->getQuery('d'),
                 'time' => Yii::app()->request->getQuery('t'),
             ));
@@ -134,6 +137,7 @@ class ReservationController extends Controller
     {
         Yii::app()->theme = 'frontend';
         $this->layout = 'public';
+        $saveResult = false;
 
         $user = new Users();
         $user->setScenario('reserve_register');
@@ -141,6 +145,7 @@ class ReservationController extends Controller
             if (empty($_POST['Users']['mobile']))
                 Yii::app()->user->setFlash('failed', 'تلفن همراه نمی تواند خالی باشد.');
             else {
+                /* @var $existUser Users */
                 $existUser = Users::model()->find('national_code = :national_code', array(':national_code' => $_POST['Users']['national_code']));
                 if (!$existUser) {
                     $user->email = $_POST['Users']['email'];
@@ -151,30 +156,113 @@ class ReservationController extends Controller
                     $user->change_password_request_count = 0;
                     $user->auth_mode = 'site';
                     $user->password = $user->generatePassword();
-                    $user->mobile=$_POST['Users']['mobile'];
-                    $user->first_name=$_POST['Users']['first_name'];
-                    $user->last_name=$_POST['Users']['last_name'];
+                    $user->mobile = $_POST['Users']['mobile'];
+                    $user->first_name = $_POST['Users']['first_name'];
+                    $user->last_name = $_POST['Users']['last_name'];
 
-                    if($user->save()){
-                        $userDetails=$user->userDetails;
-                        $userDetails->user_id=$user->id;
-                        $userDetails->first_name=$user->first_name;
-                        $userDetails->last_name=$user->last_name;
-                        $userDetails->mobile=$user->mobile;
+                    if ($user->save()) {
+                        $userDetails = $user->userDetails;
+                        $userDetails->user_id = $user->id;
+                        $userDetails->first_name = $user->first_name;
+                        $userDetails->last_name = $user->last_name;
+                        $userDetails->mobile = $user->mobile;
 
                         /* @todo send sms to user */
 
-                        if($userDetails->save())
-                            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-                        else
-                            var_dump($userDetails->errors);
+                        if ($userDetails->save()) {
+                            $time = (Yii::app()->user->reservation['time'] == 'am') ? Visits::TIME_AM : Visits::TIME_PM;
+                            $saveResult = $this->saveVisit($user->id, Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], Yii::app()->user->reservation['expertiseID'], Yii::app()->user->reservation['date'], $time, Visits::STATUS_PENDING);
+                        }
                     }
+                } else {
+                    $existUser->setScenario('reserve_register');
+                    if (!$existUser->userDetails->first_name)
+                        $existUser->userDetails->first_name = $_POST['Users']['first_name'];
+                    if (!$existUser->userDetails->last_name)
+                        $existUser->userDetails->last_name = $_POST['Users']['last_name'];
+                    if (!$existUser->email)
+                        $existUser->email = $_POST['Users']['email'];
+                    $existUser->save();
+                    $existUser->userDetails->save();
+
+                    $time = (Yii::app()->user->reservation['time'] == 'am') ? Visits::TIME_AM : Visits::TIME_PM;
+                    $saveResult = $this->saveVisit($existUser->id, Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], Yii::app()->user->reservation['expertiseID'], Yii::app()->user->reservation['date'], $time, Visits::STATUS_PENDING);
                 }
             }
         }
 
+        if ($saveResult['saved']) {
+            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+            $this->redirect('checkout/' . $saveResult['modelID']);
+        }
+
         $this->render('info', array(
-            'user'=>$user,
+            'user' => $user,
         ));
+    }
+
+    public function actionCheckout($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = 'public';
+
+        /* @var $model Visits */
+        $model = Visits::model()->findByPk($id);
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('clinic_id = :id');
+        $criteria->params[':id'] = $model->clinic_id;
+        $doctorSchedule = $model->doctor->doctorSchedules($criteria);
+
+        Yii::app()->getModule('setting');
+        $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'));
+
+        if(isset($_POST['Confirm'])){
+            $model->status=Visits::STATUS_ACCEPTED;
+            if($model->save())
+                Yii::app()->user->setFlash('success', 'نوبت شما با موفقیت رزرو شد.');
+        }
+
+        $this->render('checkout', array(
+            'model' => $model,
+            'doctorSchedule' => $doctorSchedule[0],
+            'commission' => $commission,
+        ));
+    }
+
+    private function saveVisit($userID, $clinicID, $doctorID, $expertiseID, $date, $time, $status)
+    {
+        $model = Visits::model()->findByAttributes(array(
+            'user_id' => $userID,
+            'clinic_id' => $clinicID,
+            'doctor_id' => $doctorID,
+            'expertise_id' => $expertiseID,
+            'date' => $date,
+            'time' => $time,
+            'status' => $status
+        ));
+
+        if ($model) {
+            return array(
+                'saved' => true,
+                'modelID' => $model->id,
+            );
+        } else {
+            $model = new Visits();
+            $model->user_id = $userID;
+            $model->clinic_id = $clinicID;
+            $model->doctor_id = $doctorID;
+            $model->expertise_id = $expertiseID;
+            $model->date = $date;
+            $model->time = $time;
+            $model->status = $status;
+
+            $result = $model->save();
+
+            return array(
+                'saved' => $result,
+                'modelID' => $result ? $model->id : null,
+            );
+        }
     }
 }

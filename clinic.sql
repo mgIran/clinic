@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50616
+Source Server         : localhost
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : clinic
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-10 17:14:47
+Date: 2017-05-11 12:45:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -164,8 +164,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '14');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457884');
+INSERT INTO `ym_counter_save` VALUES ('counter', '15');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457885');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -183,7 +183,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494420289');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494490119');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -257,8 +257,8 @@ CREATE TABLE `ym_doctor_schedules` (
 -- ----------------------------
 -- Records of ym_doctor_schedules
 -- ----------------------------
-INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '1', '8', '12', '50', '16', '21', '50');
-INSERT INTO `ym_doctor_schedules` VALUES ('2', '45', '1', '8', '10', '20', '16', '21', '50');
+INSERT INTO `ym_doctor_schedules` VALUES ('1', '43', '1', '8', '12', '50', '16', '21', '50');
+INSERT INTO `ym_doctor_schedules` VALUES ('2', '43', '1', '8', '10', '20', '16', '21', '50');
 INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '3', '8', '12', '50', '16', '21', '50');
 INSERT INTO `ym_doctor_schedules` VALUES ('1', '45', '4', '8', '12', '50', '16', '21', '50');
 
@@ -808,7 +808,7 @@ CREATE TABLE `ym_site_setting` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   `value` text CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_site_setting
@@ -817,13 +817,8 @@ INSERT INTO `ym_site_setting` VALUES ('1', 'site_title', 'عنوان سایت', 
 INSERT INTO `ym_site_setting` VALUES ('2', 'default_title', 'عنوان پیش فرض صفحات', 'پزشک یار');
 INSERT INTO `ym_site_setting` VALUES ('3', 'keywords', 'کلمات کلیدی سایت', '');
 INSERT INTO `ym_site_setting` VALUES ('4', 'site_description', 'شرح وبسایت', '');
-INSERT INTO `ym_site_setting` VALUES ('5', 'buy_credit_options', 'گزینه های خرید اعتبار', '[\"5000\",\"10000\",\"20000\",\"30000\",\"100\"]');
-INSERT INTO `ym_site_setting` VALUES ('6', 'min_credit', 'حداقل درآمد برای تسویه حساب', '500');
-INSERT INTO `ym_site_setting` VALUES ('7', 'tax', 'میزان مالیات (درصد)', '9');
-INSERT INTO `ym_site_setting` VALUES ('8', 'commission', 'کمیسیون ناشر (درصد)', '15');
-INSERT INTO `ym_site_setting` VALUES ('9', 'social_links', 'شبکه های اجتماعی', '{\"facebook\":\"http:\\/\\/facebook.com\",\"twitter\":\"http:\\/\\/twitter.com\"}');
-INSERT INTO `ym_site_setting` VALUES ('10', 'android_app_url', 'آدرس دانلود نرم افزار اندروید سایت', 'http://');
-INSERT INTO `ym_site_setting` VALUES ('11', 'windows_app_url', 'آدرس دانلود نرم افزار ویندوز سایت', 'http://');
+INSERT INTO `ym_site_setting` VALUES ('6', 'commission', 'کمیسیون سایت', '0');
+INSERT INTO `ym_site_setting` VALUES ('5', 'social_links', 'شبکه های اجتماعی', '{\"facebook\":\"http:\\/\\/facebook.com\",\"twitter\":\"http:\\/\\/twitter.com\"}');
 
 -- ----------------------------
 -- Table structure for ym_tags
@@ -920,14 +915,15 @@ CREATE TABLE `ym_users` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`) USING BTREE,
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site', null);
+INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'e5f6c6688608a519aadbda298d16c433', '1', 'site', '0370518926');
 INSERT INTO `ym_users` VALUES ('45', '', '$2a$12$92HG95rnUS5MYLFvDjn2cOU4O4p64mpH9QnxFYzVnk9CjQIPrcTBC', 'yusef.mobasheri@gmail.com', '2', '1469083948', 'active', '72ca2204ef7d713a27204d6dfeb615a4', '1', 'site', null);
 INSERT INTO `ym_users` VALUES ('46', '', '$2a$12$.PR0pJ.0HU8zf1FqdCYeDeOlFHjLsZYyxzH/nzV/UnC5tEBeKenBK', 'zahra@gmail.com', '4', '1493876649', 'pending', 'd4cf45c2df97a2b6b3eb16017ca8804f', '0', 'site', '1516465849');
+INSERT INTO `ym_users` VALUES ('47', '', '$2a$12$61XtqOalxULFcZzIQ3OjqOrgYT180hP6qZrpLb11yCc8c/eYmkWxq', 'gharagozlu.masoud2@gmail.com', '1', '1494481443', 'active', null, '0', 'site', '0370518921');
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -954,6 +950,7 @@ CREATE TABLE `ym_user_details` (
 INSERT INTO `ym_user_details` VALUES ('43', 'مسعود', 'قراگوزلو', '09373252746', '3718895691', 'بلوار سوم خرداد', 'amKd41493797323.jpg', '09123456789', null);
 INSERT INTO `ym_user_details` VALUES ('45', 'یوسف', 'مبشری', '09373252746', '3718895691', 'بلوار سوم خرداد', null, null, null);
 INSERT INTO `ym_user_details` VALUES ('46', 'زهرا', 'مرفاوی', '02539586646', null, null, null, '09192561166', null);
+INSERT INTO `ym_user_details` VALUES ('47', 'سعید', 'رضایی', null, null, null, null, '09194518373', null);
 
 -- ----------------------------
 -- Table structure for ym_user_notifications
@@ -1070,25 +1067,31 @@ CREATE TABLE `ym_visits` (
   `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
   `clinic_id` int(10) unsigned DEFAULT NULL COMMENT 'بیمارستان / درمانگاه / مطب',
   `doctor_id` int(10) unsigned DEFAULT NULL COMMENT 'پزشک',
-  `date` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'تاریخ',
+  `expertise_id` int(10) unsigned DEFAULT NULL COMMENT 'تخصص',
+  `date` varchar(20) DEFAULT NULL COMMENT 'تاریخ مراجعه',
   `time` decimal(1,0) DEFAULT NULL COMMENT 'نوبت',
   `status` decimal(1,0) DEFAULT NULL COMMENT 'وضعیت',
   `tracking_code` varchar(20) DEFAULT NULL COMMENT 'کد رهگیری',
-  `check_date` varchar(20) CHARACTER SET latin1 DEFAULT NULL COMMENT 'تاریخ حضور',
+  `check_date` varchar(20) DEFAULT NULL COMMENT 'تاریخ حضور',
   `clinic_checked_number` int(10) unsigned DEFAULT NULL,
+  `create_date` varchar(20) DEFAULT NULL COMMENT 'تاریخ ثبت',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `clinic_id` (`clinic_id`),
   KEY `doctor_id` (`doctor_id`),
+  KEY `expertise_id` (`expertise_id`),
+  CONSTRAINT `ym_visits_ibfk_4` FOREIGN KEY (`expertise_id`) REFERENCES `ym_expertises` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_visits
 -- ----------------------------
-INSERT INTO `ym_visits` VALUES ('1', '45', '2', '43', '1494398704', '1', '4', '32523', '1494420031', '1');
-INSERT INTO `ym_visits` VALUES ('2', '45', '2', '43', '1494398704', '1', '4', '51asf1a63', '1494420045', '2');
-INSERT INTO `ym_visits` VALUES ('3', '45', '2', '43', '1494398704', '2', '4', 'gfdsfsad', '1494420036', '1');
-INSERT INTO `ym_visits` VALUES ('4', '45', '2', '43', '1494398704', '1', '4', 'gfdsfsad', '1494420048', '3');
+INSERT INTO `ym_visits` VALUES ('1', '45', '2', '43', '1', '1494398704', '1', '4', '32523', '1494420031', '1', null);
+INSERT INTO `ym_visits` VALUES ('2', '45', '2', '43', '1', '1494398704', '1', '4', '51asf1a63', '1494420045', '2', null);
+INSERT INTO `ym_visits` VALUES ('3', '45', '2', '43', '1', '1494398704', '2', '4', 'gfdsfsad', '1494420036', '1', null);
+INSERT INTO `ym_visits` VALUES ('4', '45', '2', '43', '1', '1494398704', '1', '4', 'gfdsfsad', '1494420048', '3', null);
+INSERT INTO `ym_visits` VALUES ('10', '47', '1', '43', '1', '1495222200', '2', '1', '5ad91ad1d9', null, null, '1494487784');
+INSERT INTO `ym_visits` VALUES ('11', '47', '1', '43', '1', '1495222200', '1', '1', '42ee46a29e', null, null, '1494490114');

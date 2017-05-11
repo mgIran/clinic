@@ -70,7 +70,7 @@ class Users extends CActiveRecord
         // will receive user inputs.
         return array(
             array('email, password', 'required', 'on' => 'insert,create'),
-            array('national_code, mobile', 'required', 'on' => 'reserve_register'),
+            array('national_code, mobile, first_name, last_name', 'required', 'on' => 'reserve_register'),
             array('national_code', 'length', 'is' => 10, 'message'=>'کد ملی باید 10 رقم باشد.'),
             array('national_code, mobile', 'numerical', 'integerOnly' => true, 'message'=>'{attribute} باید عددی باشد.'),
             array('email', 'required', 'on' => 'update'),
@@ -157,6 +157,8 @@ class Users extends CActiveRecord
             'type' => 'نوع کاربری',
             'national_code' => 'کد ملی',
             'mobile' => 'تلفن همراه',
+            'first_name' => 'نام',
+            'last_name' => 'نام خانوادگی',
         );
     }
 
