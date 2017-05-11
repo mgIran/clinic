@@ -220,7 +220,8 @@ class UsersPublicController extends Controller
         if ($model)
             echo CJSON::encode(array(
                 'status' => true,
-                'name' => $model->userDetails->getShowName(),
+                'first_name' => $model->userDetails->first_name,
+                'last_name' => $model->userDetails->last_name,
                 'mobile' => $model->userDetails->mobile,
                 'email' => $model->email,
             ));

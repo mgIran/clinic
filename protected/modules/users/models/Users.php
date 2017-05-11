@@ -70,10 +70,13 @@ class Users extends CActiveRecord
         // will receive user inputs.
         return array(
             array('email, password', 'required', 'on' => 'insert,create'),
+            array('national_code, mobile, first_name, last_name', 'required', 'on' => 'reserve_register'),
+            array('national_code', 'length', 'is' => 10, 'message'=>'کد ملی باید 10 رقم باشد.'),
+            array('national_code, mobile', 'numerical', 'integerOnly' => true, 'message'=>'{attribute} باید عددی باشد.'),
             array('email', 'required', 'on' => 'update'),
             array('role_id', 'default', 'value' => 1),
             array('email', 'required', 'on' => 'email, OAuthInsert'),
-            array('email', 'unique', 'on' => 'insert, create, OAuthInsert, update'),
+            array('email', 'unique', 'on' => 'insert, create, OAuthInsert, update, reserve_register'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
             array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
@@ -153,6 +156,9 @@ class Users extends CActiveRecord
             'change_password_request_count' => 'تعداد درخواست تغییر کلمه عبور',
             'type' => 'نوع کاربری',
             'national_code' => 'کد ملی',
+            'mobile' => 'تلفن همراه',
+            'first_name' => 'نام',
+            'last_name' => 'نام خانوادگی',
         );
     }
 
@@ -236,7 +242,7 @@ class Users extends CActiveRecord
     }
 
     public function generatePassword(){
-        return substr(md5($this->email),0,8);
+        return substr(md5($this->national_code),0,8);
     }
 
     public function useGeneratedPassword(){

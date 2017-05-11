@@ -91,19 +91,10 @@ class Controller extends AuthController
                     'label' => 'پیشخوان',
                     'url' => array('/admins/dashboard')
                 ),
-//                array(
-//                    'label' => 'کتاب ها<span class="caret"></span>',
-//                    'url' => '#',
-//                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-//                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
-//                    'items' => array(
-//                        array('label' => 'مدیریت کتاب ها', 'url' => Yii::app()->createUrl('/manageBooks/baseManage/admin/')),
-//                        array('label' => 'مدیریت دسته بندی کتاب ها', 'url' => Yii::app()->createUrl('/category/admin/')),
-//                        array('label' => 'تخفیفات', 'url' => Yii::app()->createUrl('/manageBooks/baseManage/discount/')),
-//                        array('label' => 'تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
-//                        array('label' => 'نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminBooks')),
-//                    )
-//                ),
+                array(
+                    'label' => 'نوبت ها',
+                    'url' => array('/reservation/admin')
+                ),
                 array(
                     'label' => 'مطب ها<span class="caret"></span>',
                     'url' => '#',
@@ -120,20 +111,6 @@ class Controller extends AuthController
                     'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
                         array('label' => 'تراکنش ها', 'url' => Yii::app()->createUrl('/site/transactions')),
-                        array('label' => 'تسویه حساب', 'url' => Yii::app()->createUrl('/publishers/panel/manageSettlement')),
-                        array('label' => 'گزارش درآمد', 'url' => Yii::app()->createUrl('/book/reportIncome')),
-                    )
-                ),
-                array(
-                    'label' => 'گزارشات<span class="caret"></span>',
-                    'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
-                    'items' => array(
-                        array('label' => 'نمودار گزارش فروش', 'url' => Yii::app()->createUrl('/book/reportSales')),
-                        array('label' => 'گزارش فروش کتاب ها', 'url' => Yii::app()->createUrl('/book/reportBookSales')),
-                        array('label' => 'گزارش افزایش اعتبار', 'url' => Yii::app()->createUrl('/users/credit/reportCreditBuys')),
-                        array('label' => 'گزارش استفاده از بن', 'url' => Yii::app()->createUrl('/users/credit/reportBonBuys')),
                     )
                 ),
                 array(
@@ -152,12 +129,8 @@ class Controller extends AuthController
                     'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
                     'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'افزودن ناشر', 'url' => Yii::app()->createUrl('/publishers/panel/create')),
                         array('label' => 'مدیریت تخصص ها', 'url' => Yii::app()->createUrl('/users/expertises/admin')),
-                        array('label' => 'مدیریت ناشران', 'url' => Yii::app()->createUrl('/users/manage/adminPublishers')),
                         array('label' => 'مدیریت کاربران', 'url' => Yii::app()->createUrl('/users/manage')),
-                        array('label' => 'مدیریت بن های خرید', 'url' => Yii::app()->createUrl('/users/bon')),
-                        array('label' => 'مدیریت کد های تخفیف', 'url' => Yii::app()->createUrl('/discountCodes/manage/admin')),
                     )
                 ),
                 array(
@@ -169,8 +142,6 @@ class Controller extends AuthController
                         array('label' => 'عمومی', 'url' => Yii::app()->createUrl('/setting/manage/changeSetting')),
                         array('label' => 'صفحات استاتیک', 'url' => Yii::app()->createUrl('/pages/manage/admin/slug/base')),
                         array('label' => 'لینک شبکه های اجتماعی', 'url' => Yii::app()->createUrl('/setting/manage/socialLinks')),
-                        array('label' => 'مدیریت تگ ها', 'url' => Yii::app()->createUrl('/tags/admin')),
-                        array('label' => 'مدیریت طرح ها', 'url' => Yii::app()->createUrl('/festivals/manage/admin')),
                         array('label' => 'تغییر کلمه عبور', 'url' => Yii::app()->createUrl('/admins/manage/changePass')),
                     )
                 ),

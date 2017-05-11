@@ -369,6 +369,12 @@ textarea{
     box-shadow: none;
     border-radius: 0;
 }
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+textarea:disabled{
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 textarea{
     resize: vertical;
 }
@@ -699,6 +705,28 @@ input[type="text"].date-input{
 .btn-red:active{
     background: #e06656;
 }
+.btn-black{
+    display: inline-block;
+    background: #384241;
+    color: #fff;
+    border-radius: 22px;
+    height:44px;
+    line-height:44px;
+    text-align: center;
+    border:none;
+    padding: 0 20px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.btn-black:hover,
+.btn-black:focus,
+.btn-black:active{
+    background: #515c5b;
+    color: #fff;
+}
 .btn-green{
     background: #18b29e;
     color: #fff;
@@ -773,9 +801,14 @@ input[type="text"].date-input{
 }
 .form-container .row{
     margin-bottom: 40px;
+    position: relative;
 }
-.form-container input[type="submit"]{
+.form-container input[type="submit"],
+.form-container .btn-black{
     width: 150px;
+}
+.form-container .btn-black{
+    margin-left: 15px;
 }
 .form-container .row > div{
     padding-right: 25px;
@@ -817,6 +850,9 @@ input[type="text"].date-input{
     float: right;
     line-height:44px;
 }
+.price-info span{
+    line-height:44px;
+}
 .price-info h4 span{
     font-size: 25px;
     color: #ed7262;
@@ -825,11 +861,15 @@ input[type="text"].date-input{
     color: #ed7262;
     font-size: 17px;
 }
-.price-info .btn-red{
+.price-info .btn-red,
+.price-info .btn-black{
     width: 150px;
     float: left;
     font-weight: bold;
     font-size: 16px;
+}
+.price-info .btn-black{
+    margin-left: 15px;
 }
 .navbar-toggle{
     float: right;
@@ -978,9 +1018,13 @@ input[type="text"].date-input{
 .select-date-form{
     margin-top: 70px;
 }
-.select-date-form input[type="submit"]{
+.select-date-form input[type="submit"],
+.select-date-form .btn-black{
     margin-top: 27px;
     width: 150px;
+}
+.select-date-form .btn-black{
+    margin-right: 10px;
 }
 .calendar-container{
     margin-top: 80px;
@@ -1042,8 +1086,14 @@ input[type="text"].date-input{
 .calendar .day:nth-child(7n+1){
     margin-right: 1%;
 }
-.calendar .days .day:not(.disabled):hover{
+.calendar .days .day:not(.disabled):not(.active):hover{
     background: #F5F5F5;
+}
+.calendar .days .day.active{
+    background: rgba(0,160,220,0.07);
+}
+.calendar .days .day.active:hover{
+    background: rgba(0,160,220,0.15);
 }
 .calendar .days .day.disabled{
     color: #aaa;
@@ -1052,4 +1102,63 @@ input[type="text"].date-input{
 .calendar .week-days-name{
     font-weight: bold;
     overflow: hidden;
+}
+.loading-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+.loading-container .spinner {
+    margin: 0 auto;
+    width: 70px;
+    text-align: center;
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+}
+.loading-container .spinner > div {
+    width: 13px;
+    height: 13px;
+    background-color: #999;
+
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+.loading-container .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+.loading-container .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+.loading-container .spinner > div{
+    width: 8px;
+    height: 8px;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    } 40% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+      }
 }

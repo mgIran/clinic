@@ -28,7 +28,7 @@ $columns = array(
     'email',
     array(
         'header' => 'نام کامل',
-        'value' => '$data->userDetails->first_name',
+        'value' => '$data->userDetails->getShowName()',
         'filter' => CHtml::activeTextField($model,'first_name')
     ),
     array(
@@ -37,21 +37,7 @@ $columns = array(
         'filter' => CHtml::activeDropDownList($model,'statusFilter',$model->statusLabels,array('prompt' => 'همه'))
     ),
     array(
-        'header' => 'اعتبار',
-        'value' => 'Controller::parseNumbers(number_format($data->userDetails->credit))." تومان"',
-        'filter' => false
-    ),
-    array(
-        'header' => 'دستگاه فعال',
-        'value' => 'Controller::parseNumbers(number_format($data->getSessionsCount()))',
-        'htmlOptions' => array(
-            'style' => 'width:10px'
-        ),
-        'filter' => false
-    ),
-    array(
         'class'=>'CButtonColumn',
-        'template' => '{session} {view}{update}{delete}',
         'buttons' => $buttons
     ),
 );
@@ -64,14 +50,6 @@ if($role == 2){
         'view' => array(
             'url' => 'Yii::app()->createUrl("/users/manage/view",array("id" => $data->id))'
         ),
-        'session' => array(
-            'label' => 'دستگاه های متصل',
-            'options' => array(
-                'class' => 'btn btn-sm btn-warning',
-                'style' => 'margin-bottom:5px'
-            ),
-            'url' => 'Yii::app()->createUrl("/users/manage/sessions/".$data->id)'
-        )
     );
     $columns = array(
         'email',
@@ -86,31 +64,7 @@ if($role == 2){
             'filter' => CHtml::activeDropDownList($model, 'statusFilter', $model->statusLabels, array('prompt' => 'همه'))
         ),
         array(
-            'header' => 'اعتبار',
-            'value' => 'Controller::parseNumbers(number_format($data->userDetails->credit))." تومان"',
-            'filter' => false
-        ),
-        array(
-            'header' => 'درآمد ناشر',
-            'value' => 'Controller::parseNumbers(number_format($data->userDetails->earning))." تومان"',
-            'filter' => false
-        ),
-        array(
-            'header' => 'اطلاعات مالی',
-            'value' => '$data->userDetails->getDetailsStatus()',
-            'filter' => false
-        ),
-        array(
-            'header' => 'دستگاه های متصل',
-            'value' => 'Controller::parseNumbers(number_format($data->getSessionsCount()))',
-            'htmlOptions' => array(
-                'style' => 'width:10px'
-            ),
-            'filter' => false
-        ),
-        array(
             'class' => 'CButtonColumn',
-            'template' => '{session} {view}{update}{delete}',
             'buttons' => $buttons
         ),
     );
