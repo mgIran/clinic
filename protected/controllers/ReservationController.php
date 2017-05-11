@@ -16,6 +16,11 @@ class ReservationController extends Controller
                 'info',
                 'checkout',
             ),
+            'backend'=>array(
+                'admin',
+                'view',
+                'delete',
+            )
         );
     }
 
@@ -25,7 +30,8 @@ class ReservationController extends Controller
     public function filters()
     {
         return array(
-            'postOnly + selectDoctor'
+            'postOnly + selectDoctor',
+            'checkAccess + admin, delete, view',
         );
     }
 
@@ -264,5 +270,40 @@ class ReservationController extends Controller
                 'modelID' => $result ? $model->id : null,
             );
         }
+    }
+
+    public function actionAdmin()
+    {
+        $model= new Visits('search');
+        $model->unsetAttributes();
+        if (isset($_GET['Visits']))
+            $model->attributes = $_GET['Visits'];
+
+        $this->render('admin', array(
+            'model'=>$model,
+        ));
+    }
+
+    public function actionView($id)
+    {
+        $this->layout='column2';
+
+        /* @var $model Visits */
+        $model=Visits::model()->findByPk($id);
+
+        $this->render('view', array(
+            'model'=>$model,
+        ));
+    }
+
+    public function actionDelete($id)
+    {
+        /* @var $model Visits */
+        $model=Visits::model()->findByPk($id);
+
+        $model->delete();
+
+        if(!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-11 13:14:41
+Date: 2017-05-11 14:15:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -66,38 +66,33 @@ CREATE TABLE `ym_admin_role_permissions` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_admin_role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_admin_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1055 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1121 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_admin_role_permissions
 -- ----------------------------
-INSERT INTO `ym_admin_role_permissions` VALUES ('1028', '2', 'base', 'BookCategoriesController', 'create,update,admin,delete,upload,deleteUpload,uploadIcon,deleteUploadIcon');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1029', '2', 'base', 'BookController', 'reportSales,reportIncome,reportBookSales');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1030', '2', 'base', 'BookPersonsController', 'create,update,admin,delete,list');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1031', '2', 'base', 'SiteController', 'transactions');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1032', '2', 'base', 'TagsController', 'index,create,update,admin,delete,list');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1033', '2', 'admins', 'AdminsDashboardController', 'index');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1034', '2', 'admins', 'AdminsManageController', 'index,views,create,update,admin,sessions,removeSession,changePass,delete');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1035', '2', 'admins', 'AdminsRolesController', 'create,update,admin,delete');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1036', '2', 'pages', 'PageCategoriesManageController', 'index,view,create,update,admin,delete');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1037', '2', 'pages', 'PagesManageController', 'index,create,update,admin,delete');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1038', '2', 'places', 'PlacesCitiesController', 'create,update,admin,delete,index,view');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1039', '2', 'places', 'PlacesTownsController', 'create,update,admin,delete,index,view');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1040', '2', 'publishers', 'PublishersPanelController', 'manageSettlement,uploadNationalCardImage,uploadRegistrationCertificateImage,update,create,excel');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1041', '2', 'rows', 'RowsManageController', 'admin,const,index,view,delete,create,update,updateConst,add,remove,order');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1042', '2', 'setting', 'SettingManageController', 'changeSetting,socialLinks');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1043', '2', 'shop', 'ShopOrderController', 'admin,index,view,delete,update,changeStatus,exportCode,report');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1044', '2', 'shop', 'ShopPaymentController', 'admin,index,view,delete,create,update,changeStatus,order');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1045', '2', 'shop', 'ShopShippingController', 'admin,index,view,delete,create,update,changeStatus,order');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1046', '2', 'tickets', 'TicketsDepartmentsController', 'admin,create,update,delete');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1047', '2', 'tickets', 'TicketsManageController', 'delete,pendingTicket,openTicket,admin,index,view,create,update,closeTicket,upload,deleteUploaded,send');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1048', '2', 'tickets', 'TicketsMessagesController', 'delete,create');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1049', '2', 'users', 'UsersBonController', 'create,update,admin,delete,index,view,generateCode');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1050', '2', 'users', 'UsersCreditController', 'reportCreditBuys,reportBonBuys');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1051', '2', 'users', 'UsersExpertisesController', 'create,update,admin,delete,index,upload');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1052', '2', 'users', 'UsersManageController', 'index,view,sessions,removeSession,create,update,admin,adminPublishers,delete,userLibrary,userTransactions,changeCredit,changeFinanceStatus,confirmDevID,deleteDevID,confirmPublisher,refusePublisher');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1053', '2', 'users', 'UsersRolesController', 'create,update,admin,delete');
-INSERT INTO `ym_admin_role_permissions` VALUES ('1054', '2', 'clinics', 'ClinicsManageController', 'create,update,admin,delete,upload');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1099', '2', 'base', 'ReservationController', 'admin,delete,view');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1100', '2', 'base', 'SiteController', 'transactions');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1101', '2', 'base', 'TagsController', 'index,create,update,admin,delete,list');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1102', '2', 'admins', 'AdminsDashboardController', 'index');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1103', '2', 'admins', 'AdminsManageController', 'index,views,create,update,admin,sessions,removeSession,changePass,delete');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1104', '2', 'admins', 'AdminsRolesController', 'create,update,admin,delete');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1105', '2', 'clinics', 'ClinicsDoctorController', 'schedules,leaves,removeLeaves,visits,removeVisit,clinicChecked,clinicVisited');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1106', '2', 'clinics', 'ClinicsManageController', 'view,create,update,admin,delete,upload,adminPersonnel,addPersonnel,addNewPersonnel,removePersonnel,updatePersonnel');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1107', '2', 'clinics', 'ClinicsPanelController', 'index');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1108', '2', 'clinics', 'ClinicsSecretaryController', 'doctors,visits,clinicChecked,clinicVisited');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1109', '2', 'pages', 'PageCategoriesManageController', 'index,view,create,update,admin,delete');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1110', '2', 'pages', 'PagesManageController', 'index,create,update,admin,delete');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1111', '2', 'places', 'PlacesCitiesController', 'create,update,admin,delete,index,view');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1112', '2', 'places', 'PlacesTownsController', 'create,update,admin,delete,index,view');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1113', '2', 'setting', 'SettingManageController', 'changeSetting,socialLinks');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1114', '2', 'tickets', 'TicketsDepartmentsController', 'admin,create,update,delete');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1115', '2', 'tickets', 'TicketsManageController', 'delete,pendingTicket,openTicket,admin,index,view,create,update,closeTicket,upload,deleteUploaded,send');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1116', '2', 'tickets', 'TicketsMessagesController', 'delete,create');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1117', '2', 'users', 'UsersCreditController', 'reportCreditBuys,reportBonBuys');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1118', '2', 'users', 'UsersExpertisesController', 'create,update,admin,delete,index,upload');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1119', '2', 'users', 'UsersManageController', 'index,view,sessions,removeSession,create,update,admin,adminPublishers,delete,userLibrary,userTransactions,changeCredit,changeFinanceStatus,confirmDevID,deleteDevID,confirmPublisher,refusePublisher');
+INSERT INTO `ym_admin_role_permissions` VALUES ('1120', '2', 'users', 'UsersRolesController', 'create,update,admin,delete');
 
 -- ----------------------------
 -- Table structure for ym_clinics
@@ -183,7 +178,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494492264');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494495896');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -1088,9 +1083,6 @@ CREATE TABLE `ym_visits` (
 -- ----------------------------
 -- Records of ym_visits
 -- ----------------------------
-INSERT INTO `ym_visits` VALUES ('1', '45', '2', '43', '1', '1494398704', '1', '4', '32523', '1494420031', '1', null);
-INSERT INTO `ym_visits` VALUES ('2', '45', '2', '43', '1', '1494398704', '1', '4', '51asf1a63', '1494420045', '2', null);
-INSERT INTO `ym_visits` VALUES ('3', '45', '2', '43', '1', '1494398704', '2', '4', 'gfdsfsad', '1494420036', '1', null);
-INSERT INTO `ym_visits` VALUES ('4', '45', '2', '43', '1', '1494398704', '1', '4', 'gfdsfsad', '1494420048', '3', null);
-INSERT INTO `ym_visits` VALUES ('10', '47', '1', '43', '1', '1495222200', '2', '1', '5ad91ad1d9', null, null, '1494487784');
-INSERT INTO `ym_visits` VALUES ('11', '47', '1', '43', '1', '1495222200', '1', '1', '42ee46a29e', null, null, '1494490114');
+INSERT INTO `ym_visits` VALUES ('1', '45', '2', '43', '1', '1494398704', '1', '4', '32523', '1494420031', '1', '1');
+INSERT INTO `ym_visits` VALUES ('2', '45', '2', '43', '1', '1494398704', '1', '4', '51asf1a63', '1494420045', '2', '1');
+INSERT INTO `ym_visits` VALUES ('4', '45', '2', '43', '1', '1494398704', '1', '4', 'gfdsfsad', '1494420048', '3', '1');

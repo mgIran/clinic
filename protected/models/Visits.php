@@ -133,7 +133,7 @@ class Visits extends CActiveRecord
         $criteria->compare('clinic_id', $this->clinic_id, true);
         $criteria->compare('doctor_id', $this->doctor_id, true);
         $criteria->compare('time', $this->time, true);
-        $criteria->compare('status', $this->status, true);
+        $criteria->compare('status', $this->status);
         $criteria->compare('tracking_code', $this->tracking_code, true);
         $criteria->compare('clinic_checked_number', $this->clinic_checked_number);
 
@@ -143,7 +143,7 @@ class Visits extends CActiveRecord
             $criteria->addBetweenCondition('date', $toDay, $toNight);
         }
         $criteria->order = 't.date ,t.time, t.status DESC, t.clinic_checked_number';
-
+//        var_dump($criteria);exit;
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'pagination' => array('pageSize' => 50)
