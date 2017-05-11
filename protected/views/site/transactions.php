@@ -28,11 +28,6 @@
         'token',
         'gateway_name',
         array(
-            'name'=>'type',
-            'value'=>'$data->typeLabels[$data->type]',
-            'filter'=>CHtml::activeDropDownList($model,'type',$model->typeLabels,array('prompt' => 'همه'))
-        ),
-        array(
             'name'=>'status',
             'value'=>function($data){
                 return '<span class="label label-'.(($data->status=='paid')?'success':'danger').'">'.$data->statusLabels[$data->status].'</span>';

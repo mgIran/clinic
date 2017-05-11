@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-11 12:45:58
+Date: 2017-05-11 13:14:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -183,7 +183,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494490119');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494492264');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -311,7 +311,6 @@ INSERT INTO `ym_pages` VALUES ('3', 'درباره ما - بخش نمایش کت�
 INSERT INTO `ym_pages` VALUES ('6', 'راهنما', 'متن راهنما', '1');
 INSERT INTO `ym_pages` VALUES ('7', 'قرارداد ناشران', 'متن قرارداد', '1');
 INSERT INTO `ym_pages` VALUES ('8', 'تماس با ما', 'متن تماس با ما', '1');
-INSERT INTO `ym_pages` VALUES ('9', 'ناشران', 'متن ناشران', '1');
 
 -- ----------------------------
 -- Table structure for ym_page_categories

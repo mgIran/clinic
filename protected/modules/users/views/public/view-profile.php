@@ -12,6 +12,14 @@ $purifier=new CHtmlPurifier();
             <div class="text">
                 <h1><?php echo $model->userDetails->getShowName();?></h1>
                 <small><span><?php echo $model->email;?></span><span>تاریخ عضویت: <?php echo JalaliDate::date('d F Y', $model->create_date);?></span></small>
+                <?php if($model->expertises):?>
+                    <div class="clinic-items">
+                        <h4>تخصص ها</h4>
+                        <?php foreach($model->expertises as $expertise):?>
+                            <div class="clinic-item"><?php echo $expertise->title;?></div>
+                        <?php endforeach;?>
+                    </div>
+                <?php endif;?>
                 <?php if($model->clinic):?>
                     <div class="clinic-items">
                         <h4>اطلاعات بیمارستان / درمانگاه / مطب</h4>
