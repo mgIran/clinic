@@ -15,6 +15,9 @@ if($user->useGeneratedPassword()):
 endif;
 ?>
 <?php $this->renderPartial('//partial-views/_flashMessage'); ?>
+<?php
+if($clinics):
+?>
 <div class="transparent-form">
     <h3>لیست بیمارستان ها / درمانگاه ها / مطب ها</h3>
     <p class="description">لیست بیمارستان، درمانگاه یا مطب هایی که در آنها عضو هستید.</p>
@@ -59,3 +62,5 @@ endif;
         ),
     )); ?>
 </div>
+<?
+endif;

@@ -20,5 +20,12 @@
 <?php if(!isset(Yii::app()->user->clinic)):?>
     <a title="داشبورد" href="<?php echo Yii::app()->createUrl('/dashboard');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='dashboard')?' active':'';?>">داشبورد</a>
 <?php endif;?>
+<?php if(Yii::app()->user->roles == 'user'):
+    ?>
+    <a title="لیست نوبت های گرفته شده" href="<?php echo Yii::app()->createUrl('/users/public/visits');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/visits')?' active':'';?>">لیست نوبت های گرفته شده</a>
+    <a title="تراکنش ها" href="<?php echo Yii::app()->createUrl('/users/public/transactions');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/transactions')?' active':'';?>">تراکنش ها</a>
+    <?php
+endif;
+?>
 <a title="پروفایل" href="<?php echo Yii::app()->createUrl('/users/public/profile');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/profile')?' active':'';?>">پروفایل</a>
 <a title="تنظیمات" href="<?php echo Yii::app()->createUrl('/users/public/setting');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='users/public/setting')?' active':'';?>">تنظیمات</a>

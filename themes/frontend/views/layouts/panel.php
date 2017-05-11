@@ -33,6 +33,7 @@
     $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js', CClientScript::POS_END);
     $cs->registerScriptFile($baseUrl.'/js/bootstrap-select.min.js', CClientScript::POS_END);
     $cs->registerScriptFile($baseUrl.'/js/jquery.script.js?3.8', CClientScript::POS_END);
+    $cs->registerScriptFile($baseUrl.'/js/panel.script.js?3.8', CClientScript::POS_END);
     $cs->registerScript('sidebar-scroll', '
         $(".sidebar").niceScroll({cursorcolor: "#8b8b8b",
             cursorborder: "none",

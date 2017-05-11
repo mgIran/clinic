@@ -15,7 +15,7 @@ class ClinicsPanelController extends Controller
                 'enter'
             ),
             'backend' => array(
-                'index',
+                'index','removeVisit'
             )
         );
     }
@@ -89,6 +89,21 @@ class ClinicsPanelController extends Controller
     public function actionDelete($id)
     {
         $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionRemoveVisit($id)
+    {
+        Visits::model()->findByPk($id)->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))

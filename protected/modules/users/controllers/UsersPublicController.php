@@ -17,10 +17,9 @@ class UsersPublicController extends Controller
                 'forgetPassword',
                 'recoverPassword',
                 'authCallback',
-                'bookmarked',
                 'downloaded',
                 'transactions',
-                'library',
+                'visits',
                 'index',
                 'sessions',
                 'removeSession',
@@ -88,12 +87,13 @@ class UsersPublicController extends Controller
 
         /* @var $user Users */
         $user = Users::model()->findByPk(Yii::app()->user->id);
-        $criteria = new CDbCriteria();
-        $criteria->select = 'clinics_clinics.post as post, clinics.*';
-        $clinics = new CArrayDataProvider($user->clinics($criteria));
-
+        if($user->role_id != 1){
+            $criteria = new CDbCriteria();
+            $criteria->select = 'clinics_clinics.post as post, clinics.*';
+            $clinics = new CArrayDataProvider($user->clinics($criteria));
+        }
         $this->render('dashboard', array(
-            'clinics' => $clinics,
+            'clinics' => isset($clinics)?$clinics:false,
             'user' => $user,
         ));
     }
@@ -423,48 +423,22 @@ class UsersPublicController extends Controller
     }
 
     /**
-     * List all bought and bookmarked books
+     * List all transactions
      */
-    public function actionLibrary()
+    public function actionVisits()
     {
         Yii::app()->theme = 'frontend';
         $this->layout = '//layouts/panel';
-        $userID = Yii::app()->user->getId();
-        $user = Users::model()->findByPk($userID);
-        /* @var $user Users */
-        // create downloaded model from Library for search in grid view
-        $downloadBooks = new Library('search');
-        $downloadBooks->unsetAttributes();
-        if (isset($_GET['Library']) && isset($_GET['ajax']) && $_GET['ajax'] == 'downloaded-list')
-            $downloadBooks->attributes = $_GET['Library'];
-        $downloadBooks->user_id = $userID;
-        $downloadBooks->download_status = Library::STATUS_DOWNLOADED;
-        //
-        // create bought model from Library for search in grid view
-        $boughtBooks = new Library('search');
-        $boughtBooks->unsetAttributes();
-        if (isset($_GET['Library']) && isset($_GET['ajax']) && $_GET['ajax'] == 'bought-list')
-            $boughtBooks->attributes = $_GET['Library'];
-        $boughtBooks->user_id = $userID;
-        $boughtBooks->download_status = Library::STATUS_DOWNLOADED_NOT;
-        //
-        // get my book
-        $myBooks = false;
-        if ($user->role_id == 2) {
-            $criteria = Books::model()->getValidBooks();
-            $criteria->addCondition('publisher_id = :publisher_id');
-            $criteria->params[':publisher_id'] = $user->id;
-            $myBooks = new CActiveDataProvider("Books", array(
-                'criteria' => $criteria
-            ));
-        }
-        ///
 
-        $this->render('library', array(
-            'user' => $user,
-            'boughtBooks' => $boughtBooks,
-            'downloadBooks' => $downloadBooks,
-            'myBooks' => $myBooks,
+        $model = new Visits('search');
+        $model->unsetAttributes();
+        if (isset($_GET['Visits']))
+            $model->attributes = $_GET['Visits'];
+        $model->user_id = Yii::app()->user->getId();
+        //
+
+        $this->render('visits', array(
+            'model' => $model
         ));
     }
 

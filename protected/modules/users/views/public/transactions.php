@@ -9,13 +9,13 @@
     <?php
     echo CHtml::beginForm($this->route,'GET',array('class' => 'form-inline form'));
     ?>
-    <div class="filters">
+    <div>
 
         <div class="form-group">
-            <?php echo CHtml::activeTextField($model, 'id', array('class' => 'form-control ajax-grid-search', 'placeholder' => 'شناسه تراکنش را جستجو کنید'));?>
+            <?php echo CHtml::activeTextField($model, 'id', array('class' => 'ajax-grid-search', 'placeholder' => 'شناسه تراکنش را جستجو کنید'));?>
         </div>
         <div class="form-group">
-            <?php echo CHtml::activeTextField($model, 'token', array('class' => 'form-control ajax-grid-search', 'placeholder' => 'کدرهگیری را جستجو کنید'));?>
+            <?php echo CHtml::activeTextField($model, 'token', array('class' => 'ajax-grid-search', 'placeholder' => 'کدرهگیری را جستجو کنید'));?>
         </div>
     </div>
     <?php
