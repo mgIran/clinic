@@ -58,7 +58,7 @@
             </div>
             <?php $this->endWidget(); ?>
             <p><a href="<?= Yii::app()->createUrl('/users/public/forgetPassword') ?>" class="forget-link">کلمه عبور خود را فراموش کرده اید؟</a></p>
-        <!--    <p>تازه وارد هستید؟ <a href="--><?//= Yii::app()->createUrl('/register') ?><!--" class="register-link">ثبت نام کنید</a></p>-->
+            <p>تازه وارد هستید؟ <a href="<?= Yii::app()->createUrl('/register') ?>" class="register-link">ثبت نام کنید</a></p>
         </div>
     </div>
 </div>

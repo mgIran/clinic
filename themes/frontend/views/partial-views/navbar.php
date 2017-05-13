@@ -17,7 +17,7 @@
                 if(Yii::app()->user->isGuest):
                     ?>
                     <li><a href="<?php echo Yii::app()->createUrl('/login');?>">ورود</a></li>
-                    <li><a href="#">ثبت نام</a></li>
+                    <li><a href="<?php echo Yii::app()->createUrl('/register');?>">ثبت نام</a></li>
                     <?php
                 elseif(Yii::app()->user->type == 'admin'):
                     ?>

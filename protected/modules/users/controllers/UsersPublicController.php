@@ -29,6 +29,7 @@ class UsersPublicController extends Controller
                 'deleteUpload',
                 'viewProfile',
                 'getUserByCode',
+                'login',
             )
         );
     }
@@ -587,6 +588,53 @@ class UsersPublicController extends Controller
         // End of login codes
 
         $this->render('login', array(
+            'model' => $model,
+        ));
+    }
+
+    public function actionRegister()
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = '//layouts/public';
+
+        $model = new Users('create');
+
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'register-form') {
+            $errors = CActiveForm::validate($model);
+            if (CJSON::decode($errors)) {
+                echo $errors;
+                Yii::app()->end();
+            }
+        }
+
+        if (isset($_POST['Users'])) {
+            $model->attributes = $_POST['Users'];
+            $model->status = 'pending';
+            $model->create_date = time();
+            if ($model->save()) {
+                $token = md5($model->id . '#' . $model->password . '#' . $model->email . '#' . $model->create_date);
+                $model->updateByPk($model->id, array('verification_token' => $token));
+                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در ' . Yii::app()->name . ' بر روی لینک زیر کلیک کنید:</div>';
+                $message .= '<div style="text-align: right;font-size: 9pt;">';
+                $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '</a>';
+                $message .= '</div>';
+                $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
+                Mailer::mail($model->email, 'ثبت نام در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
+                if (isset($_POST['ajax'])) {
+                    echo CJSON::encode(array('status' => true, 'msg' => 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد. لطفا Inbox و Spam پست الکترونیکی خود را چک کنید.'));
+                    Yii::app()->end();
+                } else
+                    Yii::app()->user->setFlash('register-success', 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد. لطفا Inbox و Spam پست الکترونیکی خود را چک کنید.');
+            } else {
+                if (isset($_POST['ajax'])) {
+                    echo CJSON::encode(array('status' => false, 'msg' => 'متاسفانه در ثبت نام مشکلی بوجود آمده است. لطفا مجددا سعی کنید.'));
+                    Yii::app()->end();
+                } else
+                    Yii::app()->user->setFlash('register-failed', 'متاسفانه در ثبت نام مشکلی بوجود آمده است. لطفا مجددا سعی کنید.');
+            }
+        }
+
+        $this->render('register', array(
             'model' => $model,
         ));
     }
