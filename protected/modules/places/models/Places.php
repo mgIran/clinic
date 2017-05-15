@@ -122,17 +122,17 @@ class Places extends CActiveRecord
     }
 
     protected function beforeSave(){
-        if($this->tags){
-            foreach($this->tags as $tag){
-                $model = AdvertiseTags::model()->findByAttributes(array('title' => $tag));
-                if(!$model){
-                    $model = new AdvertiseTags();
-                    $model->title = $tag;
-                    $model->save();
-                }
-            }
-            $this->tags = !empty($this->tags) && is_array($this->tags) ? CJSON::encode($this->tags) : null;
-        }
+//        if($this->tags){
+//            foreach($this->tags as $tag){
+//                $model = Tags::model()->findByAttributes(array('title' => $tag));
+//                if(!$model){
+//                    $model = new Tags();
+//                    $model->title = $tag;
+//                    $model->save();
+//                }
+//            }
+//            $this->tags = !empty($this->tags) && is_array($this->tags) ? CJSON::encode($this->tags) : null;
+//        }
         return true;
     }
 }

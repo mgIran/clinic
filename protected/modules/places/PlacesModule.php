@@ -10,7 +10,6 @@ class PlacesModule extends CWebModule
 		// import the module-level models and components
 		$this->setImport(array(
 			'places.models.*',
-			'advertises.models.AdvertiseTags',
 			'places.components.*',
 		));
 	}
