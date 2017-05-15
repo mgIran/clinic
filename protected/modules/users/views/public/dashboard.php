@@ -47,6 +47,12 @@ if($clinics):
                 'header'=>Clinics::model()->getAttributeLabel('address')
             ),
             array(
+                'header' => 'سمت',
+                'value'=>function($data){
+                    return UserRoles::model()->findByPk($data->post)->name;
+                },
+            ),
+            array(
                 'class'=>'CButtonColumn',
                 'template'=>'{enter}',
                 'buttons'=>array(

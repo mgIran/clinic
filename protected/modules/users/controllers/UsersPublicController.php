@@ -72,6 +72,7 @@ class UsersPublicController extends Controller
     public function actionLogout()
     {
         Yii::app()->user->logout();
+        Yii::app()->user->setState('clinic',null);
         $this->redirect(array('//'));
     }
 
@@ -573,10 +574,11 @@ class UsersPublicController extends Controller
                 Yii::app()->user->returnUrl = $_POST['returnUrl'];
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()) {
-                if (Yii::app()->user->returnUrl != Yii::app()->request->baseUrl . '/')
+                if (Yii::app()->user->returnUrl != Yii::app()->request->baseUrl . '/' &&
+                    Yii::app()->user->returnUrl != 'logout')
                     $redirect = Yii::app()->createUrl('/'.Yii::app()->user->returnUrl);
                 else
-                    $redirect = Yii::app()->createAbsoluteUrl('/users/public/dashboard');
+                    $redirect = Yii::app()->createAbsoluteUrl('/dashboard');
                 if (isset($_POST['ajax'])) {
                     echo CJSON::encode(array('status' => true, 'url' => $redirect, 'msg' => 'در حال انتقال ...'));
                     Yii::app()->end();

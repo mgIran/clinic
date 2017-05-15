@@ -169,7 +169,11 @@ class ClinicPersonnels extends CActiveRecord
 
 	public function getValidPosts()
 	{
-		return CHtml::listData(UserRoles::model()->findAll('role != "user" AND role != "clinicAdmin"'), 'id', 'name');
+		$condition = 'role != "user" AND role != "clinicAdmin"';
+		if(Yii::app()->user->type == 'admin')
+			$condition = 'role != "user"';
+
+		return CHtml::listData(UserRoles::model()->findAll($condition), 'id', 'name');
 	}
 
 	public function getExpertises()

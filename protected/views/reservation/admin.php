@@ -17,22 +17,22 @@ $this->breadcrumbs=array(
 	'columns'=>array(
 		array(
 			'name'=>'user_id',
-			'value'=>'$data->user->userDetails->getShowName()',
+			'value'=>'$data->user && $data->user->userDetails ? $data->user->userDetails->getShowName() : "وجود ندارد"',
             'filter'=>CHtml::activeDropDownList($model, 'user_id', CHtml::listData(Users::model()->findAll(), 'id', 'userDetails.showName'), array('prompt'=>'همه'))
 		),
         array(
 			'name'=>'clinic_id',
-			'value'=>'$data->clinic->clinic_name',
+			'value'=>'$data->clinic ? $data->clinic->clinic_name : "وجود ندارد"',
             'filter'=>CHtml::activeDropDownList($model, 'clinic_id', CHtml::listData(Clinics::model()->findAll(), 'id', 'clinic_name'), array('prompt'=>'همه'))
 		),
         array(
             'name'=>'doctor_id',
-            'value'=>'$data->doctor->userDetails->getShowName()',
+            'value'=>'$data->doctor && $data->doctor->userDetails ? $data->doctor->userDetails->getShowName() : "وجود ندارد"',
             'filter'=>CHtml::activeDropDownList($model, 'doctor_id', CHtml::listData(Users::model()->findAll('role_id = 3 OR role_id = 2'), 'id', 'userDetails.showName'), array('prompt'=>'همه'))
         ),
         array(
             'name'=>'expertise_id',
-            'value'=>'$data->expertise->title',
+            'value'=>'$data->expertise ? $data->expertise->title : "وجود ندارد"',
             'filter'=>false
         ),
         array(

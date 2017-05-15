@@ -11,6 +11,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'افزودن مطب', 'url'=>array('create')),
 	array('label'=>'لیست مطب ها', 'url'=>array('admin')),
+	array('label'=>'لیست پرسنل این مطب', 'url'=>array('manage/adminPersonnel/'.$model->id)),
 );
 ?>
 

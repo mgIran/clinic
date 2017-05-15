@@ -52,7 +52,7 @@ class ClinicsManageController extends Controller
 
 			if($model->save()){
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-				$this->refresh();
+				$this->redirect(array('manage/adminPersonnel/'.$model->id));
 			}else
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
