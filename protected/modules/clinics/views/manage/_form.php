@@ -18,17 +18,13 @@
 
     <?= $this->renderPartial('//partial-views/_flashMessage'); ?>
 
-	<p class="note">فیلد های <span class="required">*</span>دار اجباری هستند.</p>
-
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'clinic_name'); ?>
 		<?php echo $form->textField($model,'clinic_name',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'clinic_name'); ?>
 	</div>
 
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'town_id'); ?>
         <?php $this->widget('ext.dropDown.dropDown', array(
             'id' => 'towns',
@@ -53,7 +49,7 @@
 		<?php echo $form->error($model,'town_id'); ?>
 	</div>
 
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'place_id'); ?>
         <?php $this->widget('ext.dropDown.dropDown', array(
             'id' => 'places',
@@ -68,38 +64,39 @@
 		<?php echo $form->error($model,'place_id'); ?>
 	</div>
 
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'zip_code'); ?>
 		<?php echo $form->textField($model,'zip_code',array('maxlength'=>10)); ?>
 		<?php echo $form->error($model,'zip_code'); ?>
 	</div>
 
-    <div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <?php echo $form->labelEx($model,'phone'); ?>
         <?php echo $form->textField($model,'phone',array('maxlength'=>11)); ?>
         <?php echo $form->error($model,'phone'); ?>
     </div>
 
-    <div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <?php echo $form->labelEx($model,'fax'); ?>
         <?php echo $form->textField($model,'fax',array('maxlength'=>11)); ?>
         <?php echo $form->error($model,'fax'); ?>
     </div>
 
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'address'); ?>
 		<?php echo $form->textArea($model,'address',array('rows'=>6, 'cols'=>30, 'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'address'); ?>
 	</div>
 
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'description'); ?>
 		<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>30, 'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
-	<div class="row">
+	<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<?php echo $form->labelEx($model,'contracts'); ?>
+		<div class="clearfix"></div>
         <div style="display: inline-block;vertical-align: top;">
             <?php $this->widget('application.extensions.dynamicField.dynamicField', array(
                 'id'=>'dynamic-field',
@@ -112,7 +109,7 @@
 		<?php echo $form->error($model,'contracts'); ?>
 	</div>
 
-	<div class="row buttons">
+	<div class="form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class'=>'btn btn-success')); ?>
 	</div>
 

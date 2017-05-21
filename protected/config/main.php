@@ -139,13 +139,13 @@ return array(
 	'params'=>array(
 		// @todo change webmail of emails
 		'adminEmail'=>'webmaster@ketabic.ir',
-		'noReplyEmail' => 'noreply@ketabic.ir',
+		'noReplyEmail' => 'noreply@visit365.ir',
 		'SMTP' => array(
-			'Host' => 'mail.ketabic.ir',
-			'Port' => 587,
-			'Secure' => 'tls',
-			'Username' => 'noreply@ketabic.ir',
-			'Password' => '!@ketabic1395',
+			'Host' => 'mail.visit365.ir',
+			'Secure' => 'ssl',
+			'Port' => '465',
+			'Username' => 'noreply@visit365.ir',
+			'Password' => '@#visit1396',
 		),
 		'mailTheme'=>
 			'<div style="border: 1px solid #dadada; border-radius: 4px;display: block;overflow: hidden;" ><h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #18b29e;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">پزشک یار<span style="font-size: 14px;color:#f0f0f0"> - رزرو اینترنتی پزشک</span></h2>

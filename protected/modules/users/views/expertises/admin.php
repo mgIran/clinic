@@ -21,6 +21,7 @@ $this->menu=array(
 	'itemsCssClass'=>'table',
 	'columns'=>array(
 		'title',
+		'والد',
 		array(
 			'class'=>'CButtonColumn',
             'template'=>'{update} {delete}'

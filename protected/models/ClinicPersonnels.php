@@ -208,7 +208,7 @@ class ClinicPersonnels extends CActiveRecord
 
 	public function afterSave()
 	{
-		if($this->post == 3 && $this->expertise){
+		if(($this->post == 3 || $this->post == 2) && $this->expertise){
 			if(!$this->isNewRecord)
 				DoctorExpertises::model()->deleteAll('doctor_id = :doctor_id',array(':doctor_id' => $this->user_id));
 			foreach($this->expertise as $item){
@@ -218,7 +218,7 @@ class ClinicPersonnels extends CActiveRecord
 				if(!$model->save())
 					$this->addErrors($model->errors);
 			}
-		}elseif($this->post != 3)
+		}elseif($this->post != 3 && $this->post != 2)
 				DoctorExpertises::model()->deleteAll('doctor_id = :doctor_id',array(':doctor_id' => $this->user_id));
 		parent::afterSave();
 	}

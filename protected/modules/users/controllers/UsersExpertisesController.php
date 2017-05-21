@@ -94,7 +94,6 @@ class UsersExpertisesController extends Controller
                 $icon = array(array('name' => $file, 'src' => $tmpUrl . '/' . $file, 'size' => filesize($tmpDIR . $file), 'serverName' => $file,));
                 $iconFlag = true;
             }
-
 			$model->attributes=$_POST['Expertises'];
 			if($model->save()) {
                 if ($iconFlag)

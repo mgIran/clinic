@@ -12,7 +12,7 @@ class ClinicsDoctorController extends Controller
     {
         return array(
             'backend' => array(
-                'schedules', 'leaves', 'removeLeaves', 'visits', 'removeVisit', 'clinicChecked', 'clinicVisited',
+                'expertises', 'schedules', 'leaves', 'removeLeaves', 'visits', 'removeVisit', 'clinicChecked', 'clinicVisited',
             )
         );
     }
@@ -26,6 +26,29 @@ class ClinicsDoctorController extends Controller
             'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
         );
+    }
+
+    public function actionExpertises()
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = Yii::app()->user->getId();
+        $clinicID = Yii::app()->user->clinic->id;
+        $model = $this->loadPersonnelModel($clinicID, $userID);
+        $model->loadPropertyValues();
+        if(isset($_POST['ClinicPersonnels'])){
+            $model->loadPropertyValues($_POST['ClinicPersonnels']);
+            if($model->post != 3 && $model->post != 2)
+                $model->expertise = null;
+            if($model->save()){
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            }else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
+        $this->render('expertises', array(
+            'model' => $model
+        ));
     }
 
     public function actionVisits()
@@ -208,6 +231,21 @@ class ClinicsDoctorController extends Controller
     public function loadLeavesModel($id)
     {
         $model = DoctorLeaves::model()->findByPk($id);
+        if($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer $clinic the Clinic ID of the model to be loaded
+     * @param integer $person the User ID of the model to be loaded
+     * @return ClinicPersonnels the loaded model
+     * @throws CHttpException
+     */
+    public function loadPersonnelModel($clinic, $person)
+    {
+        $model = ClinicPersonnels::model()->findByAttributes(array('clinic_id' => $clinic, 'user_id' => $person));
         if($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;

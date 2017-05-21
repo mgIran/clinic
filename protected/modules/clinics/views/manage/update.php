@@ -15,6 +15,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>ویرایش <?php echo $model->clinic_name;?></h1>
+<h3>ویرایش اطلاعات درمانگاه "<?php echo $model->clinic_name;?>"</h3>
+<p class="description">برای اعمال تغییرات در اطلاعات این درمانگاه لطفا فرم زیر را ویرایش کنید.</p>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

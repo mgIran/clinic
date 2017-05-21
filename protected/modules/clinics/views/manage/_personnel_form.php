@@ -30,6 +30,44 @@
     ?>
     </div>
     <div class="clearfix"></div>
+
+
+    <div id="expertises" class="form-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+        <?php echo $form->labelEx($model,'expertise'); ?>
+        <div class="clearfix"></div>
+        <select class="selectpicker" data-live-search="true" name="<?= CHtml::activeName($model,'expertise') ?>[]" multiple>
+            <?php
+            foreach(Expertises::model()->findAll('parent_id IS NULL') as $item):
+                if($item->childes):
+                ?>
+                    <optgroup label="<?= CHtml::encode($item->title)?>">
+                        <option value="<?= $item->id ?>"<?php
+                        if(in_array($item->id, $model->expertise))
+                            echo ' selected';
+                        ?>><?= CHtml::encode($item->title)?></option>
+                        <?php
+                        foreach($item->childes as $child):
+                            ?>
+                            <option value="<?= $child->id ?>"><?= CHtml::encode($child->title)?></option>
+                            <?php
+                        endforeach;
+                        ?>
+                    </optgroup>
+                <?php
+                else:
+                ?>
+                    <option value="<?= $item->id ?>"<?php
+                    if(in_array($item->id, $model->expertise))
+                        echo ' selected';
+                    ?>><?= CHtml::encode($item->title)?></option>
+                <?php
+                endif;
+            endforeach;
+            ?>
+        </select>
+        <?php echo $form->error($model,'expertise'); ?>
+    </div>
+
     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <?php echo $form->labelEx($model,'email'); ?>
         <?php echo $form->textField($model,'email',array('class' => 'ltr text-right')); ?>
@@ -71,13 +109,6 @@
         <?php echo $form->dropDownList($model,'post', $model->getValidPosts(),array('class' => 'selectpicker')); ?>
         <?php echo $form->error($model,'post'); ?>
     </div>
-    
-    <div id="expertises" class="form-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
-        <?php echo $form->labelEx($model,'expertise'); ?>
-        <div class="clearfix"></div>
-        <?php echo $form->checkBoxList($model,'expertise', $model->getExpertises(),array('separator' => '', 'template'=> '<div class="checkbox-group">{input} {label}</div>')); ?>
-        <?php echo $form->error($model,'expertise'); ?>
-    </div>
 
     <div class="clearfix"></div>
     <div class="form-group buttons">
@@ -90,12 +121,12 @@
 
 <?
 Yii::app()->clientScript->registerScript('hide-exps','
-    if($("#ClinicPersonnels_post").val() == 3)
+    if($("#ClinicPersonnels_post").val() == 2 || $("#ClinicPersonnels_post").val() == 3)
         $("#expertises").show();
     else
         $("#expertises").hide();
     $("body").on("change", "#ClinicPersonnels_post", function(){
-        if($("#ClinicPersonnels_post").val() == 3)
+        if($("#ClinicPersonnels_post").val() == 2 || $("#ClinicPersonnels_post").val() == 3)
             $("#expertises").show();
         else
             $("#expertises").hide();

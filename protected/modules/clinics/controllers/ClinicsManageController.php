@@ -68,8 +68,13 @@ class ClinicsManageController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate($id = null)
 	{
+		if(Yii::app()->user->type == 'user'){
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+			$id = Yii::app()->user->clinic->id;
+		}
 		$model = $this->loadModel($id);
 
 		$this->performAjaxValidation($model);
@@ -219,6 +224,8 @@ class ClinicsManageController extends Controller
 				$model->scenario = 'insert';
 				$model->post = $_POST['ClinicPersonnels']['post'];
 				$model->user_id = $userModel->id;
+				if($model->post != 3 && $model->post != 2)
+					$model->expertise = null;
 				if($model->save()){
 					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد. <span style="font-weight: 500;font-size: 18px">کلمه عبور کاربر: ' . $userModel->generatePassword() . '</span>');
 					$this->redirect(array('manage/updatePersonnel/' . $model->clinic_id . '/' . $model->user_id));
@@ -254,6 +261,8 @@ class ClinicsManageController extends Controller
 			$userModel->scenario = 'update';
 			$userModel->attributes = $_POST['ClinicPersonnels'];
 			if($userModel->save()){
+				if($model->post != 3 && $model->post != 2)
+					$model->expertise = null;
 				if($model->save()){
 					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 					$this->redirect(Yii::app()->user->type == 'user'?array('/clinics/panel/'):

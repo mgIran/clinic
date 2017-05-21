@@ -35,6 +35,14 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'parent_id'); ?>
+		<?php echo $form->dropDownList($model,'parent_id',
+			CHtml::listData(Expertises::model()->findAll('parent_id IS NULL'), 'id' , 'title')
+			,array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'parent_id'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'icon',array('class'=> 'block')); ?>
 		<?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
 			'id' => 'uploaderIcon',
