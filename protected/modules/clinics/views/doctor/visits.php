@@ -2,24 +2,63 @@
 /* @var $this ClinicsDoctorController */
 /* @var $model Visits */
 /* @var $form CActiveForm */
+/* @var $today boolean */
 ?>
-<h3>لیست نوبت های امروز</h3>
-<p class="description">لیست افرادی که امروز نوبت گرفته اند.
-    <a href="<?= $this->createUrl('doctor/visits/'.Yii::app()->user->id.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
+<?php
+if($today):
+?>
+    <h3>لیست نوبت های امروز</h3>
+    <p class="description">لیست افرادی که امروز نوبت گرفته اند.
+        <a href="<?= $this->createUrl('doctor/visits/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
+            <?php
+            if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
+                echo '<i class="icon-check"></i>';
+            ?>
+            نوبت صبح
+        </a>
+        <a href="<?= $this->createUrl('doctor/visits/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
+            <?php
+            if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
+                echo '<i class="icon-check"></i>';
+            ?>
+            نوبت بعدازظهر
+        </a>
+    </p>
+<?php
+else:
+    ?>
+    <div class="form well">
         <?php
-        if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
-            echo '<i class="icon-check"></i>';
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'doctor-schedules',
+            'enableAjaxValidation' => false
+        ));
         ?>
-        نوبت صبح
-    </a>
-    <a href="<?= $this->createUrl('doctor/visits/'.Yii::app()->user->id.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
+        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
+            <?php echo $form->labelEx($model, 'date'); ?>
+            <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                'id' => 'date-picker',
+                'model' => $model,
+                'attribute' => 'date',
+                'htmlOptions' => array(
+                    'autocomplete' => 'off'
+                ),
+                'options' => array(
+                    'format' => 'YYYY/MM/DD',
+                )
+            )); ?>
+            <?php echo $form->error($model, 'date'); ?>
+        </div>
+        <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
         <?php
-        if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
-            echo '<i class="icon-check"></i>';
+        $this->endWidget();
         ?>
-        نوبت بعدازظهر
-    </a>
-</p>
+    </div>
+    <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
+    <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>
+    <?
+endif;
+?>
 <div class="container-fluid">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)) ?></span> نوبت
@@ -33,9 +72,15 @@
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <b>نوبت های ویزیت شده:</b> <span id="visited"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time, Visits::STATUS_CLINIC_VISITED)) ?></span> نوبت
     </div>
+    <?php
+    if($today):
+    ?>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)) ?></span></h3>
     </div>
+    <?php
+    endif;
+    ?>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -86,7 +131,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'class'=>'CButtonColumn',
-            'template'=>'{visited} {check} {delete}',
+            'template'=> (!$today?'{delete}':'{visited} {check} {delete}'),
             'buttons' => array(
                 'delete' => array(
                     'label' => 'حذف نوبت',

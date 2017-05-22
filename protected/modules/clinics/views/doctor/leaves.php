@@ -3,6 +3,7 @@
 /* @var $model DoctorLeaves */
 /* @var $search DoctorLeaves */
 /* @var $form CActiveForm */
+/* @var $visitsExists string */
 ?>
 <div class="container-fluid" style="min-height: 600px">
     <div class="col-lg-7 col-md-7 col-sm-7 col-ex-12">

@@ -2,16 +2,19 @@
     <?php if(Yii::app()->user->roles == 'clinicAdmin'):?>
         <h5>منوی مدیر درمانگاه و پزشک</h5>
         <a title="اطلاعات درمانگاه" href="<?php echo Yii::app()->createUrl('/clinics/manage/update');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/manage/update')?' active':'';?>">اطلاعات درمانگاه</a>
+        <a title="لیست نوبت های امروز" href="<?php echo Yii::app()->createUrl('/clinics/doctor/visits');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/visits')?' active':'';?>">لیست نوبت ها</a>
+        <a title="لیست تاریخی نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/visits/?date='.time());?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/visits/?date='.time())?' active':'';?>">لیست تاریخی نوبت ها</a>
         <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
         <a title="برنامه زمانی نوبت دهی" href="<?php echo Yii::app()->createUrl('/clinics/doctor/schedules');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/schedules')?' active':'';?>">برنامه زمانی نوبت دهی</a>
         <a title="برنامه زمانی مرخصی ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/leaves');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/leaves')?' active':'';?>">برنامه زمانی مرخصی ها</a>
         <a title="تعریف تخصص های پزشکی" href="<?php echo Yii::app()->createUrl('/clinics/doctor/expertises');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/expertises')?' active':'';?>">تعریف تخصص های پزشکی</a>
     <?php elseif(Yii::app()->user->roles == 'doctor'):?>
         <h5>منوی پزشک</h5>
+        <a title="لیست نوبت های امروز" href="<?php echo Yii::app()->createUrl('/clinics/doctor/visits');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/visits')?' active':'';?>">لیست نوبت ها</a>
+        <a title="لیست تاریخی نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/visits/?date='.time());?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/visits/?date='.time())?' active':'';?>">لیست تاریخی نوبت ها</a>
         <a title="پرسنل" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">پرسنل</a>
         <a title="برنامه زمانی نوبت دهی" href="<?php echo Yii::app()->createUrl('/clinics/doctor/schedules');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/schedules')?' active':'';?>">برنامه زمانی نوبت دهی</a>
         <a title="برنامه زمانی مرخصی ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/leaves');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/leaves')?' active':'';?>">برنامه زمانی مرخصی ها</a>
-        <a title="لیست نوبت ها" href="<?php echo Yii::app()->createUrl('/clinics/doctor/visits');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/visits')?' active':'';?>">لیست نوبت ها</a>
         <a title="تعریف تخصص های پزشکی" href="<?php echo Yii::app()->createUrl('/clinics/doctor/expertises');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/doctor/expertises')?' active':'';?>">تعریف تخصص های پزشکی</a>
     <?php elseif(Yii::app()->user->roles == 'secretary'):?>
         <h5>منوی منشی</h5>

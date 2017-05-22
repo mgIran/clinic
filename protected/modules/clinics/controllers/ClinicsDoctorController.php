@@ -53,9 +53,16 @@ class ClinicsDoctorController extends Controller
 
     public function actionVisits()
     {
+        $date = false;
+        if(isset($_GET['date']))
+            $date = $_GET['date'];
+
         Yii::app()->theme = 'frontend';
         $userID = Yii::app()->user->getId();
         $clinicID = Yii::app()->user->clinic->id;
+
+        if(isset($_POST['Visits']['date']) && !empty($_POST['Visits']['date']))
+            $this->redirect(array('doctor/visits/?date='.$_POST['Visits']['date']));
 
         $model = new Visits('search');
         $model->unsetAttributes();
@@ -63,10 +70,14 @@ class ClinicsDoctorController extends Controller
             $model->attributes = $_GET['Visits'];
         $model->clinic_id = $clinicID;
         $model->doctor_id = $userID;
-        $model->date = time();
-        if(!$model->time)
-            $model->time = date('H')<12?1:2;
-        $model->status = Visits::STATUS_CLINIC_CHECKED;
+        $model->date = $date?$date:time();
+        $today = $date?false:true;
+        if(!$date){
+            if(!$model->time)
+                $model->time = date('H') < 12?1:2;
+            $model->status = Visits::STATUS_CLINIC_CHECKED;
+        }else
+            $model->time = null;
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
@@ -80,7 +91,8 @@ class ClinicsDoctorController extends Controller
         }
 
         $this->render('visits', array(
-            'model' => $model
+            'model' => $model,
+            'today' => $today
         ));
     }
 
@@ -168,20 +180,37 @@ class ClinicsDoctorController extends Controller
         Yii::app()->theme = 'frontend';
         $userID = Yii::app()->user->getId();
         $clinicID = Yii::app()->user->clinic->id;
-
+        $visitsExists = false;
         // insert new leaves
         $model = new DoctorLeaves();
         if(isset($_POST['DoctorLeaves']) && isset($_POST['insert']) && $_POST['insert'] == true){
+            $flag = true;
             $model->date = strtotime(date("Y/m/d", $_POST['DoctorLeaves']['date']) . " 00:00");
             $model->doctor_id = $userID;
             $model->clinic_id = $clinicID;
-            if($model->save()){
+            if($model->validate()){
+                $visits = new Visits('search');
+                $startDate = $model->date;
+                $endDate = $startDate + 24*60*60;
+                $criteria = new CDbCriteria();
+                $criteria->compare('clinic_id',$clinicID);
+                $criteria->compare('doctor_id',$userID);
+                $criteria->addBetweenCondition('date',$startDate,$endDate);
+                $visitsExists = $visits->findAll($criteria);
+                if(isset($_POST['visitsExists']) && $_POST['visitsExists'] == true){
+
+                    $flag = false;
+                }
+                elseif($visitsExists)
+                    $flag = false;
+            }
+            if($flag){
+                $model->save();
                 Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
                 $this->refresh();
             }else
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
-
         // Get CActiveDataProvider for grid
         $search = new DoctorLeaves('search');
         $search->unsetAttributes();
@@ -189,10 +218,10 @@ class ClinicsDoctorController extends Controller
             $search->attributes = $_POST['DoctorLeaves'];
         $search->clinic_id = $clinicID;
         $search->doctor_id = $userID;
-
         $this->render('leaves', array(
             'model' => $model,
-            'search' => $search
+            'search' => $search,
+            'visitsExists' => $visitsExists
         ));
     }
 

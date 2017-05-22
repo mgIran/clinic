@@ -90,6 +90,8 @@ class DoctorLeaves extends CActiveRecord
 		$criteria->compare('clinic_id',$this->clinic_id,true);
 		$criteria->compare('doctor_id',$this->doctor_id,true);
 		$criteria->compare('date',$this->date,true);
+		$criteria->addCondition('date >= :now');
+		$criteria->params[':now'] = strtotime(date("Y/m/d", time()) . " 00:00");
 		$criteria->order = 't.date';
 
 		return new CActiveDataProvider($this, array(
