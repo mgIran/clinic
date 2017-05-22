@@ -62,7 +62,14 @@
             )); ?>
             <?php echo $form->error($model, 'date'); ?>
         </div>
-        <?php echo CHtml::submitButton('افزودن مرخصی',array('class' => 'btn btn-success')) ?>
+        <?php
+        if($visitsExists):
+            echo CHtml::hiddenField('visitsExists',true);
+            echo CHtml::link('نمایش نوبت ها',array('/clinics/doctor/visits/?leaves=true&date='.$model->date),array('class' => 'btn btn-info'));
+        else:
+            echo CHtml::submitButton('افزودن مرخصی',array('class' => 'btn btn-success'));
+        endif;
+        ?>
         <?php
         $this->endWidget();
         ?>

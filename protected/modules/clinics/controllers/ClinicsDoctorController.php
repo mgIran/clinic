@@ -62,7 +62,7 @@ class ClinicsDoctorController extends Controller
         $clinicID = Yii::app()->user->clinic->id;
 
         if(isset($_POST['Visits']['date']) && !empty($_POST['Visits']['date']))
-            $this->redirect(array('doctor/visits/?date='.$_POST['Visits']['date']));
+            $this->redirect(array('doctor/visits/?date=' . $_POST['Visits']['date']));
 
         $model = new Visits('search');
         $model->unsetAttributes();
@@ -81,11 +81,11 @@ class ClinicsDoctorController extends Controller
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
-                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date,$model->time)),
+                'all' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time)),
                 'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time, Visits::STATUS_ACCEPTED)),
                 'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)),
                 'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time, Visits::STATUS_CLINIC_VISITED)),
-                'visiting' => Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, Yii::app()->user->id,$model->date, $model->time)),
+                'visiting' => Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, Yii::app()->user->id, $model->date, $model->time)),
             ]);
             Yii::app()->end();
         }
@@ -191,25 +191,26 @@ class ClinicsDoctorController extends Controller
             if($model->validate()){
                 $visits = new Visits('search');
                 $startDate = $model->date;
-                $endDate = $startDate + 24*60*60;
+                $endDate = $startDate + 24 * 60 * 60;
                 $criteria = new CDbCriteria();
-                $criteria->compare('clinic_id',$clinicID);
-                $criteria->compare('doctor_id',$userID);
-                $criteria->addBetweenCondition('date',$startDate,$endDate);
+                $criteria->compare('clinic_id', $clinicID);
+                $criteria->compare('doctor_id', $userID);
+                $criteria->addBetweenCondition('date', $startDate, $endDate);
                 $visitsExists = $visits->findAll($criteria);
                 if(isset($_POST['visitsExists']) && $_POST['visitsExists'] == true){
 
                     $flag = false;
-                }
-                elseif($visitsExists)
+                }elseif($visitsExists)
                     $flag = false;
             }
             if($flag){
-                $model->save();
-                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-                $this->refresh();
+                if($model->save()){
+                    Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                    $this->refresh();
+                }else
+                    Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
             }else
-                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+                Yii::app()->user->setFlash('warning', 'در این روز نوبت رزرو شده است. لطفا رزروها را مدیریت کرده و سپس مرخصی را ثبت کنید.');
         }
         // Get CActiveDataProvider for grid
         $search = new DoctorLeaves('search');
@@ -264,6 +265,7 @@ class ClinicsDoctorController extends Controller
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

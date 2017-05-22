@@ -25,7 +25,7 @@ if($today):
         </a>
     </p>
 <?php
-else:
+elseif(!isset($_GET['leaves'])):
     ?>
     <div class="form well">
         <?php
