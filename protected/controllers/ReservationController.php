@@ -72,12 +72,12 @@ class ReservationController extends Controller
         $this->layout = 'public';
 
         $renderOutput = array();
-        if (isset($_POST['from']) and isset($_POST['to'])) {
-            if ($_POST['from'] == $_POST['to'])
+        if(isset($_POST['from']) and isset($_POST['to'])){
+            if($_POST['from'] == $_POST['to'])
                 Yii::app()->user->setFlash('failed', 'تاریخ ها یکسان می باشند.');
-            elseif ($_POST['from_altField'] > $_POST['to_altField'])
+            elseif($_POST['from_altField'] > $_POST['to_altField'])
                 Yii::app()->user->setFlash('failed', 'تاریخ های انتخاب شده اشتباه است.');
-            else {
+            else{
                 $user = Users::model()->findByPk(Yii::app()->user->reservation['doctorID']);
                 $criteria = new CDbCriteria();
                 $criteria->addCondition('clinic_id = :clinic_id');
@@ -89,22 +89,22 @@ class ReservationController extends Controller
                 $leaveDays = CHtml::listData($leaves, 'id', 'date');
                 $daysCount = ($_POST['to_altField'] - $_POST['from_altField']) / (60 * 60 * 24);
                 $days = array();
-                for ($i = 0; $i <= $daysCount; $i++) {
+                for($i = 0;$i <= $daysCount;$i++){
                     $dayTimestamp = strtotime(date('Y/m/d 00:00', strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) + ($i * (60 * 60 * 24))));
-                    if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)) {
-                        if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
-                            if ($dayTimestamp > time()) {
-                                foreach ($schedules as $schedule)
-                                    if ($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
+                    if(in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)){
+                        if(!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)){
+                            if($dayTimestamp > time()){
+                                foreach($schedules as $schedule)
+                                    if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
                                         $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
                                         $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
 
-                                        if ($AMVisitsCount != $schedule->visit_count_am)
-                                            if (!is_null($schedule->times['AM']))
+                                        if($AMVisitsCount != $schedule->visit_count_am)
+                                            if(!is_null($schedule->times['AM']))
                                                 $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
 
-                                        if ($PMVisitsCount != $schedule->visit_count_pm)
-                                            if (!is_null($schedule->times['PM']))
+                                        if($PMVisitsCount != $schedule->visit_count_pm)
+                                            if(!is_null($schedule->times['PM']))
                                                 $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
                                     }
                             }
@@ -126,13 +126,21 @@ class ReservationController extends Controller
     public function actionSelectTime()
     {
         if (isset($_GET['d']) and isset($_GET['t'])) {
-            Yii::app()->user->setState('reservation', array(
+            $reservation = array(
                 'doctorID' => Yii::app()->user->reservation['doctorID'],
                 'clinicID' => Yii::app()->user->reservation['clinicID'],
                 'expertiseID' => Yii::app()->user->reservation['expertiseID'],
                 'date' => Yii::app()->request->getQuery('d'),
-                'time' => Yii::app()->request->getQuery('t'),
+                'time' => Yii::app()->request->getQuery('t')
+            );
+            $schedule = DoctorSchedules::model()->findByAttributes(array(
+                'doctor_id'=> $reservation['doctorID'],
+                'clinic_id'=> $reservation['clinicID'],
+                'week_day'=> (int)JalaliDate::date('w',$reservation['date'],false)+1,
             ));
+            $reservation['visitStartTime'] = $schedule->{'entry_time_'.$reservation['time']};
+            $reservation['visitEndTime'] = $schedule->{'exit_time_'.$reservation['time']};
+            Yii::app()->user->setState('reservation', $reservation);
 
             $this->redirect('info');
         } else
@@ -226,7 +234,43 @@ class ReservationController extends Controller
         if(isset($_POST['Confirm'])){
             $model->status=Visits::STATUS_ACCEPTED;
             if($model->save())
+            {
                 Yii::app()->user->setFlash('success', 'نوبت شما با موفقیت رزرو شد.');
+                $reservation = Yii::app()->user->getState('reservation');
+                $visitDate = JalaliDate::date('Y/m/d',$reservation['date']);
+                $visitTimeLabel = $reservation['time']=='am'?'صبح':'بعدازظهر';
+                $message = "نوبت شما با موفقیت رزرو شد.
+کد رهگیری نوبت: {$model->tracking_code}
+تاریخ مراجعه به مطب: {$visitDate}
+ساعت مراجعه بین {$reservation['visitStartTime']} تا {$reservation['visitEndTime']} {$visitTimeLabel}";
+                $phone = $model->user && $model->user->userDetails && $model->user->userDetails->mobile?$model->user->userDetails->mobile:null;
+                if($phone)
+                    Notify::SendSms($message, $phone);
+                Yii::app()->user->setState('reservation', null);
+            }
+            $this->refresh();
+        }
+        elseif(isset($_POST['Payment'])){
+            $transaction = new UserTransactions();
+            $transaction->user_id = $model->user_id;
+            $transaction->amount = (double)$commission->value;
+            $transaction->date = time();
+            $transaction->gateway_name='زرین پال';
+            if ($model->save()) {
+                $gateway = new ZarinPal();
+                $gateway->callback_url = Yii::app()->getBaseUrl(true) . '/reservation/verifyPayment/'.$id;
+                $siteName = Yii::app()->name;
+                $description = "افزایش اعتبار در {$siteName} از طریق درگاه {$gateway->getGatewayName()}";
+                $result = $gateway->request(doubleval($transaction->amount), $description, $model->user->email, $model->user && $model->user->userDetails && $model->user->userDetails->phone?$model->user->userDetails->phone:'0');
+                $transaction->scenario = 'set-authority';
+                $transaction->authority = $result->getAuthority();
+                @$transaction->save();
+                //Redirect to URL You can do it also by creating a form
+                if($result->getStatus() == 100)
+                    $this->redirect($gateway->getRedirectUrl());
+                else
+                    throw new CHttpException(404, 'خطای بانکی: ' . $result->getError());
+            }
         }
 
         $this->render('checkout', array(
@@ -234,6 +278,74 @@ class ReservationController extends Controller
             'doctorSchedule' => $doctorSchedule[0],
             'commission' => $commission,
         ));
+    }
+
+    public function actionVerifyPayment($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = 'public';
+        if(!isset($_GET['Authority'])){
+            $this->redirect(array('/reservation/checkout/' . $id));
+        }else{
+            /* @var $visit Visits */
+            $visit = Visits::model()->findByPk($id);
+            $Authority = $_GET['Authority'];
+            $transaction = UserTransactions::model()->findByAttributes(array(
+                'authority' => $Authority,
+                'user_id' => $visit->user_id
+            ));
+            if($transaction->status == UserTransactions::TRANSACTION_STATUS_PAID){
+                $visit->status = Visits::STATUS_ACCEPTED;
+                if($visit->save())
+                    Yii::app()->user->setFlash('success', 'این تراکنش قبلا پرداخت شده است. نوبت شما با موفقیت رزرو شد.');
+            }elseif($transaction->status == UserTransactions::TRANSACTION_STATUS_UNPAID){
+                $Amount = $transaction->amount;
+                if($_GET['Status'] == 'OK'){
+                    $gateway = new ZarinPal();
+                    $gateway->verify($Authority, $Amount);
+                    if($gateway->getStatus() == 100){
+                        $transaction->status = UserTransactions::TRANSACTION_STATUS_PAID;
+                        $transaction->token = $gateway->getRefId();
+                        @$transaction->save();
+                    }else{
+                        Yii::app()->user->setFlash('failed', $gateway->getError());
+                        $this->redirect(array('/reservation/checkout/' . $id));
+                    }
+                }else{
+                    Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
+                    $this->redirect(array('/reservation/checkout/' . $id));
+                }
+            }
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('clinic_id = :id');
+            $criteria->params[':id'] = $visit->clinic_id;
+            $doctorSchedule = $visit->doctor->doctorSchedules($criteria);
+
+            Yii::app()->getModule('setting');
+            $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'));
+
+            $visit->status = Visits::STATUS_ACCEPTED;
+            if($visit->save())
+            {
+                Yii::app()->user->setFlash('success', 'پرداخت شما انجام و نوبت شما با موفقیت رزرو شد.');
+                $reservation = Yii::app()->user->getState('reservation');
+                $visitDate = JalaliDate::date('Y/m/d',$reservation['date']);
+                $message = "نوبت شما با موفقیت رزرو شد.
+کد رهگیری نوبت: {$visit->tracking_code}
+تاریخ مراجعه به مطب: {$visitDate}
+ساعت مراجعه بین {$reservation['visitStartTime']} تا {$reservation['visitEndTime']}";
+                $phone = $visit->user && $visit->user->userDetails && $visit->user->userDetails->mobile?$visit->user->userDetails->mobile:null;
+                if($phone)
+                    Notify::SendSms($message, $phone);
+                Yii::app()->user->setState('reservation', null);
+            }
+            $this->render('checkout', array(
+                'model' => $visit,
+                'doctorSchedule' => $doctorSchedule[0],
+                'commission' => $commission,
+                'transaction' => $transaction,
+            ));
+        }
     }
 
     private function saveVisit($userID, $clinicID, $doctorID, $expertiseID, $date, $time, $status)

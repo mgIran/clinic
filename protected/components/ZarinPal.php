@@ -6,7 +6,7 @@ class ZarinPal extends CComponent
 {
     public $callback_url;
     
-    private $_merchant_id = '012d3926-9824-11e6-a86b-005056a205be';
+    private $_merchant_id = 'b5c45350-3fc8-11e7-ba1c-005056a205be';
     private $_gateway_name = 'زرین پال';
     private $_status;
     private $_authority;

@@ -97,7 +97,7 @@
                                                 <?php if(isset($days[$currentDay]['AM']) and isset($days[$currentDay]['PM'])):?>
                                                     <a href="#select-time-modal" data-toggle="modal" class="select-time-link" data-date="<?php echo $currentDay;?>" data-am="<?php echo $days[$currentDay]['AM'];?>" data-pm="<?php echo $days[$currentDay]['PM'];?>"></a>
                                                 <?php else:?>
-                                                    <a href="<?php echo $this->createUrl('selectDate', array('d'=>$currentDay, 't'=>(isset($days[$currentDay]['AM']))?'am':'pm'));?>"></a>
+                                                    <a href="<?php echo $this->createUrl('selectTime', array('d'=>$currentDay, 't'=>(isset($days[$currentDay]['AM']))?'am':'pm'));?>"></a>
                                                 <?php endif;?>
                                             <?php else:?>
                                                 <?php echo $this->parseNumbers($j);?>

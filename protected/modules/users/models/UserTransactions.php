@@ -22,10 +22,6 @@
  */
 class UserTransactions extends CActiveRecord
 {
-	const TRANSACTION_TYPE_CREDIT = 'credit';
-	const TRANSACTION_TYPE_BOOK = 'book';
-	const TRANSACTION_TYPE_SHOP = 'shop';
-
 	const TRANSACTION_STATUS_PAID = 'paid';
 	const TRANSACTION_STATUS_UNPAID = 'unpaid';
 
@@ -136,7 +132,7 @@ class UserTransactions extends CActiveRecord
 	}
 
 	/**
-	 * @param $criteria
+	 * @param $criteria CDbCriteria
 	 */
 	public function reportConditions(&$criteria)
 	{
@@ -207,5 +203,14 @@ class UserTransactions extends CActiveRecord
 		$this->reportConditions($criteria);
 		$record = $this->find($criteria);
 		return $record?$record->totalAmount:0;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function modelRelation()
+	{
+		$model = call_user_func(array($this->model_name, 'model'));
+		return $model->findByPk($this->model_id);
 	}
 }

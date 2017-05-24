@@ -66,8 +66,8 @@ class Visits extends CActiveRecord
             array('clinic_checked_number, user_id, clinic_id, expertise_id, doctor_id', 'length', 'max' => 10),
             array('check_date, date, tracking_code, create_date', 'length', 'max' => 20),
             array('time, status', 'length', 'max' => 1),
-            array('create_date', 'default', 'value'=>time(), 'on'=>'insert'),
-            array('tracking_code', 'default', 'value'=>self::generateTrackingCode(), 'on'=>'insert'),
+            array('create_date', 'default', 'value' => time(), 'on' => 'insert'),
+            array('tracking_code', 'default', 'value' => self::generateTrackingCode(), 'on' => 'insert'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, user_id, clinic_id, doctor_id, expertise_id, check_date, date, create_date, time, status, tracking_code, clinic_checked_number', 'safe', 'on' => 'search'),
@@ -204,7 +204,7 @@ class Visits extends CActiveRecord
      * @param string $statusOperator
      * @return int
      */
-    public static function getAllVisits($clinic, $doctor, $date, $time, $status = false, $statusOperator='>=')
+    public static function getAllVisits($clinic, $doctor, $date, $time, $status = false, $statusOperator = '>=')
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60;
@@ -216,9 +216,8 @@ class Visits extends CActiveRecord
         }
         if($status){
             if(is_array($status))
-                $where .= " AND status {$statusOperator} (".implode(', ', $status).")";
-            else
-            {
+                $where .= " AND status {$statusOperator} (" . implode(', ', $status) . ")";
+            else{
                 $where .= " AND status {$statusOperator} :checked";
                 $params[':checked'] = $status;
             }
@@ -243,7 +242,7 @@ class Visits extends CActiveRecord
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60;
         $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND status = :checked_status';
-        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight,':checked_status' => Visits::STATUS_CLINIC_CHECKED);
+        $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':checked_status' => Visits::STATUS_CLINIC_CHECKED);
         if($time){
             $where .= "  AND time = :time";
             $params[':time'] = $time;
@@ -258,6 +257,17 @@ class Visits extends CActiveRecord
 
     public static function generateTrackingCode()
     {
-        return substr(md5(time()), 0, 10);
+        $attempt = 0;
+        $len = 6;
+        $code = Controller::generateRandomString($len, 'number');
+        while(Visits::model()->countByAttributes(array('tracking_code' => $code))){
+            if($attempt > 3){
+                $len++;
+                $attempt = 0;
+            }
+            $code = Controller::generateRandomString($len, 'number');
+            $attempt++;
+        }
+        return $code;
     }
 }

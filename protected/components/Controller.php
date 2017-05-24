@@ -173,9 +173,19 @@ class Controller extends AuthController
         return $errors;
     }
 
-    public static function generateRandomString($length = 20)
+    /**
+     * @param int $length
+     * @param string $type number|string
+     * @return string
+     */
+    public static function generateRandomString($length = 20, $type = null)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if(strtolower($type) == 'number')
+            $characters = '0123456789';
+        elseif(strtolower($type) == 'string')
+            $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
         $charactersLength = strlen($characters);
         $randomString = '';
         for($i = 0;$i < $length;$i++){
