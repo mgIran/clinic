@@ -294,11 +294,7 @@ class ReservationController extends Controller
                 'authority' => $Authority,
                 'user_id' => $visit->user_id
             ));
-            if($transaction->status == UserTransactions::TRANSACTION_STATUS_PAID){
-                $visit->status = Visits::STATUS_ACCEPTED;
-                if($visit->save())
-                    Yii::app()->user->setFlash('success', 'این تراکنش قبلا پرداخت شده است. نوبت شما با موفقیت رزرو شد.');
-            }elseif($transaction->status == UserTransactions::TRANSACTION_STATUS_UNPAID){
+            if($transaction->status == UserTransactions::TRANSACTION_STATUS_UNPAID){
                 $Amount = $transaction->amount;
                 if($_GET['Status'] == 'OK'){
                     $gateway = new ZarinPal();
@@ -330,10 +326,11 @@ class ReservationController extends Controller
                 Yii::app()->user->setFlash('success', 'پرداخت شما انجام و نوبت شما با موفقیت رزرو شد.');
                 $reservation = Yii::app()->user->getState('reservation');
                 $visitDate = JalaliDate::date('Y/m/d',$reservation['date']);
+                $visitTimeLabel = $reservation['time']=='am'?'صبح':'بعدازظهر';
                 $message = "نوبت شما با موفقیت رزرو شد.
 کد رهگیری نوبت: {$visit->tracking_code}
 تاریخ مراجعه به مطب: {$visitDate}
-ساعت مراجعه بین {$reservation['visitStartTime']} تا {$reservation['visitEndTime']}";
+ساعت مراجعه بین {$reservation['visitStartTime']} تا {$reservation['visitEndTime']} {$visitTimeLabel}";
                 $phone = $visit->user && $visit->user->userDetails && $visit->user->userDetails->mobile?$visit->user->userDetails->mobile:null;
                 if($phone)
                     Notify::SendSms($message, $phone);

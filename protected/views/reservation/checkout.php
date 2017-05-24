@@ -8,7 +8,9 @@
 
 <div class="inner-page">
     <?php $this->renderPartial('_steps', array('active'=>4));?>
-
+    <?php
+    if($model->status == Visits::STATUS_PENDING):
+    ?>
     <div class="page-help">
         <div class="container">
             <h4>اطلاعات نوبت ویزیت</h4>
@@ -18,7 +20,9 @@
             </ul>
         </div>
     </div>
-
+    <?php
+    endif;
+    ?>
     <div class="patient-info">
         <div class="container">
             <div class="row">
