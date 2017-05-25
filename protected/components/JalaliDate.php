@@ -442,7 +442,7 @@ class JalaliDate
     /**
      * Returns correct names for months
      */
-    public static function getMonthNames( $month, $shorten = false, $len = 3 )
+    private static function getMonthNames( $month, $shorten = false, $len = 3 )
     {
         // Convert
         $months = array(
