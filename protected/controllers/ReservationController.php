@@ -173,6 +173,9 @@ class ReservationController extends Controller
                     $user->mobile = $_POST['Users']['mobile'];
                     $user->first_name = $_POST['Users']['first_name'];
                     $user->last_name = $_POST['Users']['last_name'];
+                    // for sms message
+                    $pwd = $user->password;
+                    $username = $user->national_code;
 
                     if ($user->save()) {
                         $userDetails = $user->userDetails;
@@ -181,7 +184,14 @@ class ReservationController extends Controller
                         $userDetails->last_name = $user->last_name;
                         $userDetails->mobile = $user->mobile;
 
-                        /* @todo send sms to user */
+                        // Send Sms
+                        $siteName = Yii::app()->name;
+                        $message = "ثبت نام شما در سایت {$siteName} با موفقیت انجام شد.
+نام کاربری: {$username}
+کلمه عبور: {$pwd}";
+                        $phone = $userDetails->mobile;
+                        if($phone)
+                            Notify::SendSms($message, $phone);
 
                         if ($userDetails->save()) {
                             $time = (Yii::app()->user->reservation['time'] == 'am') ? Visits::TIME_AM : Visits::TIME_PM;

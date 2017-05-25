@@ -279,11 +279,13 @@ class ClinicsManageController extends Controller
 		));
 	}
 
-	public function actionRemovePersonnel($clinic = null, $person = null)
+	public function actionRemovePersonnel($clinic = null, $person = null, $id = null)
 	{
 		if(Yii::app()->user->type == 'user'){
-			if(!$person && $clinic)
-				$person = $clinic;
+			Yii::app()->theme = 'frontend';
+			$this->layout = '//layouts/panel';
+			if(!$person && $id)
+				$person = $id;
 			$clinic = Yii::app()->user->clinic->id;
 		}
 		$this->loadPersonnelModel($clinic, $person)->delete();

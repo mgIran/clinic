@@ -76,7 +76,7 @@ class Users extends CActiveRecord
             array('email', 'required', 'on' => 'update'),
             array('role_id', 'default', 'value' => 1),
             array('email', 'required', 'on' => 'email, OAuthInsert'),
-            array('email', 'unique', 'on' => 'insert, create, OAuthInsert, update, reserve_register'),
+            array('email, national_code', 'unique', 'on' => 'insert, create, OAuthInsert, update, reserve_register'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
             array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),

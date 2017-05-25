@@ -7,6 +7,8 @@
  */
 class UserLoginForm extends CFormModel
 {
+	public $verification_field_value;
+	public $verification_field;
 	public $username;
     public $email;
 	public $password;
@@ -26,14 +28,46 @@ class UserLoginForm extends CFormModel
 	{
 		return array(
 			// username and password are required
-			array('email, password', 'required' ,'except' => 'OAuth'),
+			array('verification_field_value, password', 'required' ,'except' => 'OAuth'),
 			array('email ,OAuth', 'required' ,'on' => 'OAuth'),
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
-            array('email', 'email'),
+            array('email', 'email', 'on' => 'OAuth'),
+            array('verification_field_value', 'email', 'on' => 'emailAuth'),
+            array('verification_field_value', 'numerical', 'integerOnly' => true, 'on' => 'mobileAuth, nationalAuth'),
+            array('verification_field_value', 'length', 'is' => 10, 'on' => 'mobileAuth, nationalAuth'),
+			// multiple username
+			array('verification_field_value, verification_field', 'safe'),
+			array('verification_field_value', 'check', 'fields' => ['national_code', 'mobile', 'email']),
 			// authenticate_field needs to be authenticated
 			array('authenticate_field', 'authenticate','except' => 'OAuth'),
 		);
+	}
+
+	public function check($attribute, $params)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->compare('national_code', $this->{$attribute});
+		$criteria->limit = 1;
+		$national_code = Users::model()->count($criteria);
+		$criteria = new CDbCriteria();
+		$criteria->compare('mobile', $this->{$attribute});
+		$criteria->limit = 1;
+		$mobile = UserDetails::model()->count($criteria);
+		$criteria = new CDbCriteria();
+		$criteria->compare('email', $this->{$attribute});
+		$criteria->limit = 1;
+		$email = Users::model()->count($criteria);
+		if($national_code){
+			$this->verification_field = 'national_code';
+			$this->scenario = 'nationalAuth';
+		}else if($mobile){
+			$this->verification_field = 'mobile';
+			$this->scenario = 'mobileAuth';
+		}else if($email){
+			$this->verification_field = 'email';
+			$this->scenario = 'emailAuth';
+		}
 	}
 
 	/**
@@ -46,7 +80,8 @@ class UserLoginForm extends CFormModel
             'password' => 'کلمه عبور',
 			'rememberMe'=>'مرا بخاطر بسپار',
             'email' => 'پست الکترونیک',
-            'authenticate_field' => 'Authenticate Field'
+            'authenticate_field' => 'Authenticate Field',
+            'verification_field_value' => 'شماره موبایل یا کدملی یا پست الکترونیکی',
 		);
 	}
 
@@ -61,7 +96,7 @@ class UserLoginForm extends CFormModel
 			if($this->OAuth)
 				$this->_identity = new UserIdentity($this->email,null,$this->OAuth);
 			else
-				$this->_identity = new UserIdentity($this->email,$this->password);
+				$this->_identity = new UserIdentity($this->verification_field_value,$this->password,null,$this->verification_field);
             if(!$this->_identity->authenticate())
             {
                 if($this->_identity->errorCode===3)

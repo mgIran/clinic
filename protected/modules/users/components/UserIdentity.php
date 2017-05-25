@@ -7,6 +7,7 @@
  */
 class UserIdentity extends CUserIdentity
 {
+    public $defaultAuthenticationField = 'email';
     /**
      * Authenticates a user.
      * The example implementation makes sure if the username and password
@@ -20,9 +21,13 @@ class UserIdentity extends CUserIdentity
     private $_id;
 
     /**
-     * @var string email
+     * @var string verification_field
      */
-    public $email;
+    public $verification_field;
+    /**
+     * @var string verification_field
+     */
+    public $verification_field_value;
 
     /**
      * @var string OAuth webservice
@@ -38,27 +43,36 @@ class UserIdentity extends CUserIdentity
 
     /**
      * UserIdentity constructor.
-     * @param string $email
+     * @param string $verification_field_value
      * @param string $password
      * @param string $OAuth
+     * @param string $verification_field
      */
-    public function __construct($email, $password, $OAuth = null)
+    public function __construct($verification_field_value, $password, $OAuth = null, $verification_field = null)
     {
-        $this->email = $email;
+        $this->verification_field = $verification_field;
+        if(!$verification_field)
+            $this->verification_field = $this->defaultAuthenticationField;
+        $this->verification_field_value = $verification_field_value;
         $this->password = $password;
         $this->OAuth = $OAuth;
-        parent::__construct($email, $password);
+        parent::__construct($verification_field_value, $password);
     }
 
     public function authenticate()
     {
         if ($this->OAuth)
-            $record = Users::model()->findByAttributes(array('email' => $this->email));
+            $record = Users::model()->findByAttributes(array($this->verification_field => $this->verification_field_value));
         else {
             $bCrypt = new bCrypt;
-            $record = Users::model()->findByAttributes(array('email' => $this->email));
+            if($this->verification_field == 'mobile')
+            {
+                $record = UserDetails::model()->findByAttributes(array($this->verification_field => $this->verification_field_value));
+                $record = $record && $record->user?$record->user:null;
+            }
+            else
+                $record = Users::model()->findByAttributes(array($this->verification_field => $this->verification_field_value));
         }
-
         if ($record === null)
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         elseif ($record->status == 'pending')

@@ -38,7 +38,7 @@ class ClinicsSecretaryController extends Controller
         if(isset($_GET['ClinicPersonnels']))
             $model->attributes = $_GET['ClinicPersonnels'];
         $model->clinic_id = $clinicID;
-        $model->post = 3;
+        $model->post = [2,3];
 
         $this->render('doctors', array(
             'model' => $model

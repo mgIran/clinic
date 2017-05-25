@@ -40,7 +40,7 @@ class UsersPublicController extends Controller
     public function filters()
     {
         return array(
-            'checkAccess + dashboard, logout, setting, notifications, bookmarked, downloaded, transactions, library, sessions, removeSession',
+            'checkAccess + dashboard, setting, notifications, bookmarked, downloaded, transactions, library, sessions, removeSession',
             'ajaxOnly + getUserByCode'
         );
     }
@@ -89,13 +89,11 @@ class UsersPublicController extends Controller
 
         /* @var $user Users */
         $user = Users::model()->findByPk(Yii::app()->user->id);
-        if($user->role_id != 1){
-            $criteria = new CDbCriteria();
-            $criteria->select = 'clinics_clinics.post as post, clinics.*';
-            $clinics = new CArrayDataProvider($user->clinics($criteria));
-        }
+        $criteria = new CDbCriteria();
+        $criteria->select = 'clinics_clinics.post as post, clinics.*';
+        $clinics = new CArrayDataProvider($user->clinics($criteria));
         $this->render('dashboard', array(
-            'clinics' => isset($clinics)?$clinics:false,
+            'clinics' => $clinics,
             'user' => $user,
         ));
     }
