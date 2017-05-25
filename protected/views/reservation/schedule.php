@@ -64,7 +64,11 @@
                         $months = array(
                             'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
                         );
-                        $monthDiff=JalaliDate::date('m', $to, false)-JalaliDate::date('m', $from, false);
+                        $monthDiff=0;
+                        if(JalaliDate::date('Y', $to, false) != JalaliDate::date('Y', $from, false))
+                            $monthDiff=((int)JalaliDate::date('m', $to, false)+12)-JalaliDate::date('m', $from, false);
+                        else
+                            $monthDiff=JalaliDate::date('m', $to, false)-JalaliDate::date('m', $from, false);
                         $currentMonth=JalaliDate::date('m', $from, false);
                         for($i=0;$i<=$monthDiff;$i++):
                             $monthDaysCount=30;
@@ -115,7 +119,7 @@
                                     <?php endfor;?>
                                 </div>
                             </div>
-                            <?php $currentMonth++;?>
+                            <?php $currentMonth = ($currentMonth == 12) ? 1 : (int)$currentMonth + 1;?>
                         <?php endfor;?>
                     </div>
                 </div>
