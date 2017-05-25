@@ -91,11 +91,11 @@ class ReservationController extends Controller
             $currentMonth = JalaliDate::date('m', $from, false);
             $currentYear = JalaliDate::date('Y', $from, false);
             $monthDaysCount = 30;
-            if($currentMonth+1 <= 6)
+            if($currentMonth <= 6)
                 $monthDaysCount = 31;
-            elseif($currentMonth+1 == 12 and !JalaliDate::date('L', $from, false))
+            elseif($currentMonth == 12 and !JalaliDate::date('L', $from, false))
                 $monthDaysCount = 29;
-            $endMonth = JalaliDate::mktime(23, 59, 59, $currentMonth+1, $monthDaysCount, $currentYear);
+            $endMonth = JalaliDate::mktime(23, 59, 59, $currentMonth, $monthDaysCount, $currentYear);
             $to = $endMonth;
         }
 

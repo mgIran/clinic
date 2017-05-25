@@ -73,7 +73,7 @@ class UsersPublicController extends Controller
     {
         Yii::app()->user->logout();
         Yii::app()->user->setState('clinic',null);
-        $this->redirect(array('//'));
+        $this->redirect(Yii::app()->createAbsoluteUrl('//'));
     }
 
     /**
