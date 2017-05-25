@@ -24,7 +24,7 @@
                 <?php echo CHtml::label('از', 'from');?>
                 <?php $this->widget('ext.PDatePicker.PDatePicker', array(
                     'id'=>'from',
-                    'value' => isset($_POST['from_altField'])?$_POST['from_altField']:false,
+                    'value' => $from,
                     'options'=>array(
                         'format'=>'DD MMMM YYYY',
                         'onShow'=>"js:function(){ $('.datepicker-plot-area').width($('#from').parent().width()) }"
@@ -35,7 +35,7 @@
                 <?php echo CHtml::label('تا', 'to');?>
                 <?php $this->widget('ext.PDatePicker.PDatePicker', array(
                     'id'=>'to',
-                    'value' => isset($_POST['to_altField'])?$_POST['to_altField']:false,
+                    'value' => $to,
                     'options'=>array(
                         'format'=>'DD MMMM YYYY',
                         'onShow'=>"js:function(){ $('.datepicker-plot-area').width($('#to').parent().width()) }"
@@ -61,31 +61,40 @@
                 <div class="calendar">
                     <div class="row">
                         <?php
-                        $monthDiff=JalaliDate::date('m', $_POST['to_altField'], false)-JalaliDate::date('m', $_POST['from_altField'], false);
-                        $currentMonth=JalaliDate::date('m', $_POST['from_altField'], false);
+                        $months = array(
+                            'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
+                        );
+                        $monthDiff=JalaliDate::date('m', $to, false)-JalaliDate::date('m', $from, false);
+                        $currentMonth=JalaliDate::date('m', $from, false);
                         for($i=0;$i<=$monthDiff;$i++):
                             $monthDaysCount=30;
-                            $currentYear=JalaliDate::date('Y', $_POST['from_altField']+($i*30*24*60*60), false);
+                            $currentYear=JalaliDate::date('Y', $from+($i*30*24*60*60), false);
                             if($currentMonth <= 6)
                                 $monthDaysCount=31;
-                            elseif($currentMonth==12 and !JalaliDate::date('L', $_POST['from_altField'], false))
+                            elseif($currentMonth==12 and !JalaliDate::date('L', $from, false))
                                 $monthDaysCount=29;
                             ?>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <h4><?php echo JalaliDate::date('F', $_POST['from_altField']+($i*30*24*60*60))?></h4>
+                                <h4><?php echo $months[((int)$currentMonth -1)%13] ?></h4>
                                 <div class="week-days-name">
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,1,$currentYear));?></div>
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,2,$currentYear));?></div>
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,3,$currentYear));?></div>
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,4,$currentYear));?></div>
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,5,$currentYear));?></div>
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,6,$currentYear));?></div>
-                                    <div class="day"><?php echo JalaliDate::date('l', JalaliDate::mktime(0,0,0,$currentMonth,7,$currentYear));?></div>
+                                    <div class="day">شنبه</div>
+                                    <div class="day">یکشنبه</div>
+                                    <div class="day">دوشنبه</div>
+                                    <div class="day">سه شنبه</div>
+                                    <div class="day">چهار شنبه</div>
+                                    <div class="day">پنج شنبه</div>
+                                    <div class="day">جمعه</div>
                                 </div>
                                 <div class="days">
                                     <?php for($j=1;$j<=$monthDaysCount;$j++):
                                         $currentDay=JalaliDate::mktime(0,0,0,$currentMonth,$j,$currentYear);
-                                        if($currentDay < strtotime(date('Y/m/d 00:00', $_POST['from_altField'])) or $currentDay > strtotime(date('Y/m/d 00:00', $_POST['to_altField']))):?>
+                                        if($j == 1){
+                                            $diff = JalaliDate::date('w', JalaliDate::mktime(0,0,0,$currentMonth,1,$currentYear),false);
+                                            for($k = 0;$k < $diff;$k++){
+                                                echo '<div class="day disabled"></div>';
+                                            }
+                                        }
+                                        if($currentDay < strtotime(date('Y/m/d 00:00', $from)) or $currentDay > strtotime(date('Y/m/d 00:00', $to))):?>
                                             <div class="day disabled">
                                         <?php else:?>
                                             <div class="day<?php echo key_exists($currentDay, $days)?' active':'';?>">
