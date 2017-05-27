@@ -65,7 +65,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'columns'=>array(
         array(
             'name' => 'user_id',
-            'value' => '$data->user->userDetails->showName'
+            'value' => '$data->user && $data->user->userDetails?$data->user->userDetails->showName:"حذف شده"'
         ),
         array(
             'name' => 'time',
@@ -81,7 +81,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name' => 'clinic_checked_number',
             'value' => function($data){
-                return Controller::parseNumbers($data->clinic_checked_number);
+                return $data->clinic_checked_number?Controller::parseNumbers($data->clinic_checked_number):'';
             }
         ),
         array(

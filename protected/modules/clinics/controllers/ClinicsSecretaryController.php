@@ -12,7 +12,7 @@ class ClinicsSecretaryController extends Controller
     {
         return array(
             'backend' => array(
-                'doctors', 'visits', 'clinicChecked', 'clinicVisited',
+                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve',
             )
         );
     }
@@ -69,7 +69,6 @@ class ClinicsSecretaryController extends Controller
             ]);
             Yii::app()->end();
         }
-
         $this->render('visits', array(
             'model' => $model,
             'doctorID' => $doctorID,
@@ -98,6 +97,14 @@ class ClinicsSecretaryController extends Controller
             echo CJSON::encode(['status' => true]);
         else
             echo CJSON::encode(['status' => false, 'msg' => 'متاسفانه مشکلی در اعمال تغییرات بوجو آمده است! لطفا مجددا بررسی فرمایید.']);
+    }
+
+    public function actionRemoveReserve($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $model = Visits::model()->findByPk($id);
+        $model->status = Visits::STATUS_DELETED;
+        @$model->save();
     }
 
     /**

@@ -136,10 +136,11 @@ class Visits extends CActiveRecord
         $criteria->compare('status', $this->status);
         $criteria->compare('tracking_code', $this->tracking_code, true);
         $criteria->compare('clinic_checked_number', $this->clinic_checked_number);
+        $criteria->addCondition('status > 0');
 
         if($this->date){
             $toDay = strtotime(date("Y/m/d", $this->date) . " 00:00");
-            $toNight = $toDay + 24 * 60 * 60;
+            $toNight = $toDay + 24 * 60 * 60-1;
             $criteria->addBetweenCondition('date', $toDay, $toNight);
         }
         $criteria->order = 't.date ,t.time, t.status DESC, t.clinic_checked_number';
@@ -183,7 +184,7 @@ class Visits extends CActiveRecord
     public function getGenerateNewVisitNumber()
     {
         $toDay = strtotime(date("Y/m/d", $this->date) . " 00:00");
-        $toNight = $toDay + 24 * 60 * 60;
+        $toNight = $toDay + 24 * 60 * 60-1;
         $lastNumber = Yii::app()->db->createCommand()
             ->select('MAX(clinic_checked_number)')
             ->from($this->tableName())
@@ -207,8 +208,8 @@ class Visits extends CActiveRecord
     public static function getAllVisits($clinic, $doctor, $date, $time, $status = false, $statusOperator = '>=')
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
-        $toNight = $toDay + 24 * 60 * 60;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight)';
+        $toNight = $toDay + 24 * 60 * 60-1;
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND status>0 AND (date BETWEEN :toDay AND :toNight)';
         $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight);
         if($time){
             $where .= "  AND time = :time";
@@ -240,8 +241,8 @@ class Visits extends CActiveRecord
     public static function getNowVisit($clinic, $doctor, $date, $time)
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
-        $toNight = $toDay + 24 * 60 * 60;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND (date BETWEEN :toDay AND :toNight) AND status = :checked_status';
+        $toNight = $toDay + 24 * 60 * 60 -1;
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND status>0 AND (date BETWEEN :toDay AND :toNight) AND status = :checked_status';
         $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':checked_status' => Visits::STATUS_CLINIC_CHECKED);
         if($time){
             $where .= "  AND time = :time";

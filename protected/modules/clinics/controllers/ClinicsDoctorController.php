@@ -12,7 +12,7 @@ class ClinicsDoctorController extends Controller
     {
         return array(
             'backend' => array(
-                'expertises', 'schedules', 'leaves', 'removeLeaves', 'visits', 'removeVisit', 'clinicChecked', 'clinicVisited',
+                'expertises', 'schedules', 'leaves', 'removeLeaves', 'visits', 'removeReserve', 'clinicChecked', 'clinicVisited',
             )
         );
     }
@@ -238,6 +238,14 @@ class ClinicsDoctorController extends Controller
             $this->redirect(isset($_POST['returnUrl'])?$_POST['returnUrl']:array('admin'));
     }
 
+    public function actionRemoveReserve($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $model = Visits::model()->findByPk($id);
+        $model->status = Visits::STATUS_DELETED;
+        @$model->save();
+    }
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

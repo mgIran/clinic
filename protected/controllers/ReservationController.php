@@ -102,20 +102,21 @@ class ReservationController extends Controller
         if($from && $to){
             $user = Users::model()->findByPk(Yii::app()->user->reservation['doctorID']);
             $criteria = new CDbCriteria();
-            $criteria->addCondition('clinic_id = :clinic_id');
-            $criteria->params[':clinic_id'] = Yii::app()->user->reservation['clinicID'];
+            $criteria->compare('clinic_id',Yii::app()->user->reservation['clinicID']);
             /* @var $schedules DoctorSchedules[] */
             $schedules = $user->doctorSchedules($criteria);
             $leaves = $user->doctorLeaves($criteria);
             $weekDays = CHtml::listData($schedules, 'week_day', 'week_day');
             $leaveDays = CHtml::listData($leaves, 'id', 'date');
+            $from = strtotime(date('Y/m/d 00:00',$from));
+            $to = strtotime(date('Y/m/d 23:59',$to));
             $daysCount = ($to - $from) / (60 * 60 * 24);
             $days = array();
             for($i = 0;$i <= $daysCount;$i++){
-                $dayTimestamp = strtotime(date('Y/m/d 00:00', strtotime(date('Y/m/d 00:00', $from)) + ($i * (60 * 60 * 24))));
+                $dayTimestamp = strtotime(date('Y/m/d 00:00', $from + ($i * (60 * 60 * 24))));
                 if(in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)){
                     if(!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)){
-                        if($dayTimestamp > time()){
+                        if($dayTimestamp >= $from){
                             foreach($schedules as $schedule)
                                 if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
                                     $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
