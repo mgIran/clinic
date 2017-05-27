@@ -79,6 +79,7 @@ class Users extends CActiveRecord
             array('email, national_code', 'unique', 'on' => 'insert, create, OAuthInsert, update, reserve_register'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
+            array('mobile', 'checkUnique', 'on' => 'reserve_register'),
             array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
             array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update'),
             array('email', 'length', 'max' => 255),
@@ -111,6 +112,16 @@ class Users extends CActiveRecord
         $record = Users::model()->findByAttributes(array('email' => $this->email));
         if(!$bCrypt->verify($this->$attribute, $record->password))
             $this->addError($attribute, 'کلمه عبور فعلی اشتباه است');
+    }
+
+    /**
+     * Check this username is exist in database or not
+     */
+    public function checkUnique($attribute, $params)
+    {
+        $record = UserDetails::model()->countByAttributes(array('mobile' => $this->mobile));
+        if($record)
+            $this->addError($attribute, 'تلفن همراه تکراری می باشد.');
     }
 
     /**

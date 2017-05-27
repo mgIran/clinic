@@ -808,7 +808,7 @@ CREATE TABLE `ym_site_setting` (
 -- Records of ym_site_setting
 -- ----------------------------
 INSERT INTO `ym_site_setting` VALUES ('1', 'site_title', 'عنوان سایت', 'رزرواسیون ویزیت پزشک');
-INSERT INTO `ym_site_setting` VALUES ('2', 'default_title', 'عنوان پیش فرض صفحات', 'پزشک یار');
+INSERT INTO `ym_site_setting` VALUES ('2', 'default_title', 'عنوان پیش فرض صفحات', 'ویزیت 365');
 INSERT INTO `ym_site_setting` VALUES ('3', 'keywords', 'کلمات کلیدی سایت', '');
 INSERT INTO `ym_site_setting` VALUES ('4', 'site_description', 'شرح وبسایت', '');
 INSERT INTO `ym_site_setting` VALUES ('6', 'commission', 'کمیسیون سایت', '0');

@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a class="navbar-brand" href="#"><img src="<?php echo Yii::app()->theme->baseUrl.'/svg/logo.svg';?>" alt="<?php echo Yii::app()->name;?>"><h1>پزشک یار<small>رزرو اینترنتی ویزیت پزشک</small></h1></a>
+            <a class="navbar-brand" href="#"><img src="<?php echo Yii::app()->theme->baseUrl.'/svg/logo.svg';?>" alt="<?php echo Yii::app()->name;?>"><h1>ویزیت <span><?= Controller::parseNumbers('365') ?></span><small>رزرو اینترنتی ویزیت پزشک</small></h1></a>
         </div>
         <div class="collapse navbar-collapse" id="mobile-navbar">
             <ul class="nav navbar-nav">

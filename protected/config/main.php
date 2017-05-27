@@ -3,7 +3,7 @@ return array(
 	//'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
 	//'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
 	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'پزشک یار',
+	'name'=>'ویزیت 365',
 	'timeZone' => 'Asia/Tehran',
 	'theme' => 'abound',
 	'sourceLanguage' => '00',
@@ -148,13 +148,13 @@ return array(
 			'Password' => '@#visit1396',
 		),
 		'mailTheme'=>
-			'<div style="border: 1px solid #dadada; border-radius: 4px;display: block;overflow: hidden;" ><h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #18b29e;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">پزشک یار<span style="font-size: 14px;color:#f0f0f0"> - رزرو اینترنتی پزشک</span></h2>
+			'<div style="border: 1px solid #dadada; border-radius: 4px;display: block;overflow: hidden;" ><h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #18b29e;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">ویزیت 365<span style="font-size: 14px;color:#f0f0f0"> - رزرو اینترنتی پزشک</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">
                 <div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;padding:15px;">{MessageBody}</div>
              </div>
              <div style="font-size: 8pt;color: #bbb;text-align: right;font-family: tahoma;padding: 15px;">
                 <a href="' .((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/about">درباره</a> | <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/help">راهنما</a>
-                <span style="float: left;"> همهٔ حقوق برای پزشک یار محفوظ است. ©‏ {CurrentYear} </span>
+                <span style="float: left;"> همهٔ حقوق برای ویزیت 365 محفوظ است. ©‏ {CurrentYear} </span>
              </div></div>',
 	),
 );

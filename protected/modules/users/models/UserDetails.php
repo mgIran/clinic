@@ -44,7 +44,7 @@ class UserDetails extends CActiveRecord
 			array('address', 'length', 'max'=>1000),
 			array('avatar', 'length', 'max'=>255),
 			array('phone, mobile', 'numerical', 'integerOnly' => true),
-			array('mobile', 'unique'),
+			array('mobile', 'unique', 'on' => 'insert'),
 			array('doctor_resume', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
