@@ -104,7 +104,24 @@ class ClinicsSecretaryController extends Controller
         Yii::app()->theme = 'frontend';
         $model = Visits::model()->findByPk($id);
         $model->status = Visits::STATUS_DELETED;
-        @$model->save();
+        if($model->save()){
+            $send = false;
+            if($model->date > strtotime(date('Y/m/d 23:59', time()))){
+                $send = true;
+                $date = JalaliDate::date('Y/m/d', $model->date);
+                $time = $model->time == 'am'?'صبح':'بعدازظهر';
+                $message = "نوبت شما با کدرهگیری {$model->tracking_code} که در تاریخ {$date} نوبت {$time} رزرو شده بود، توسط منشی لغو گردید.";
+            }elseif($model->date == strtotime(date('Y/m/d 00:00', time()))){
+                $send = true;
+                $time = $model->time == 'am'?'صبح':'بعدازظهر';
+                $message = "نوبت شما با کدرهگیری {$model->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، توسط منشی لغو گردید.";
+            }
+
+            if($send && $model->user && $model->user->userDetails && $model->user->userDetails->mobile){
+                $phone = $model->user->userDetails->mobile;
+                Notify::SendSms($message, $phone);
+            }
+        }
     }
 
     /**

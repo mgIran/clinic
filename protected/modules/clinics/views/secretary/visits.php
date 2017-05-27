@@ -89,7 +89,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'template'=>'{visited} {check} {delete}',
             'buttons' => array(
                 'delete' => array(
-                    'label' => 'حذف نوبت',
+                    'label' => 'لغو نوبت',
                     'imageUrl' => '',
                     'options' => array(
                         'class' => 'btn btn-danger btn-sm',
