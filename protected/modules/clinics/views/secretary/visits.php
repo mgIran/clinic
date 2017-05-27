@@ -2,24 +2,36 @@
 /* @var $this ClinicsDoctorController */
 /* @var $model Visits */
 /* @var $form CActiveForm */
+/* @var $today boolean */
 ?>
-<h3>لیست نوبت های امروز<?= (isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1?'&nbsp;<small>(نوبت صبح)</small>':'&nbsp;<small>(نوبت بعدازظهر)</small>') ?></h3>
-<p class="description">
-    <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
-        <?php
-        if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
-            echo '<i class="icon-check"></i>';
-        ?>
-        نوبت صبح
-    </a>
-    <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
-        <?php
-        if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
-            echo '<i class="icon-check"></i>';
-        ?>
-        نوبت بعدازظهر
-    </a>
-</p>
+<?php
+if($today):
+    ?>
+    <h3>لیست نوبت های امروز<?= (isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1?'&nbsp;<small>(نوبت صبح)</small>':'&nbsp;<small>(نوبت بعدازظهر)</small>') ?></h3>
+    <p class="description">
+        <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
+            <?php
+            if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
+                echo '<i class="icon-check"></i>';
+            ?>
+            نوبت صبح
+        </a>
+        <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
+            <?php
+            if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
+                echo '<i class="icon-check"></i>';
+            ?>
+            نوبت بعدازظهر
+        </a>
+    </p>
+<?php
+else:
+?>
+    <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
+    <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>
+    <?php
+endif;
+?>
 <div class="container-fluid well">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span> نوبت
@@ -33,9 +45,15 @@
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <b>نوبت های ویزیت شده:</b> <span id="visited"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_VISITED)) ?></span> نوبت
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span></h3>
-    </div>
+    <?php
+    if($today):
+    ?>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span></h3>
+        </div>
+    <?php
+    endif;
+    ?>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -95,7 +113,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         'class' => 'btn btn-danger btn-sm',
                         'style' => 'margin-top: 5px'
                     ),
-                    'url' => 'Yii::app()->controller->createUrl("doctor/removeReserve/".$data->id)',
+                    'url' => 'Yii::app()->controller->createUrl("secretary/removeReserve/".$data->id)',
                     'visible' => '$data->status < 3'
                 ),
                 'check' => array(

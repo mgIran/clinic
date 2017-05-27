@@ -5,6 +5,28 @@
 ?>
 <h3>لیست پزشکان</h3>
 <p class="description">جهت مدیریت نوبت های هر پزشک، لطفا از جدول زیر اقدام فرمایید.</p>
+<div class="form well">
+    <?php
+    echo CHtml::form();
+    ?>
+    <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
+        <label>انتخاب تاریخ نمایش</label>
+        <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+            'id' => 'date',
+            'value' => isset($_POST['date_altField'])?$_POST['date_altField']:null,
+            'htmlOptions' => array(
+                'autocomplete' => 'off'
+            ),
+            'options' => array(
+                'format' => 'YYYY/MM/DD',
+            )
+        )); ?>
+    </div>
+    <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
+    <?php
+    echo CHtml::endForm();
+    ?>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'doctors-grid',
@@ -41,7 +63,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'buttons' => array(
                 'view' => array(
                     'label' => 'نمایش نوبت ها',
-                    'url' => 'Yii::app()->controller->createUrl("secretary/visits/".$data->user_id."/?Visits[time]=".$data->getNowTime())',
+                    'url' => isset($_POST['date_altField'])?
+                        'Yii::app()->controller->createUrl("secretary/visits/".$data->user_id."/?date='.$_POST['date_altField'].'")':
+                        'Yii::app()->controller->createUrl("secretary/visits/".$data->user_id."/?Visits[time]=".$data->getNowTime())',
                 )
             )
         ),

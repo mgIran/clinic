@@ -65,7 +65,10 @@
         <?php
         if($visitsExists):
             echo CHtml::hiddenField('visitsExists',true);
-            echo CHtml::link('نمایش نوبت ها',array('/clinics/doctor/visits/?leaves=true&date='.$model->date),array('class' => 'btn btn-info'));
+            echo CHtml::submitButton('لغو نوبت ها و افزودن مرخصی',array('class' => 'btn btn-success', 'style' => 'margin-bottom:10px'));
+            echo CHtml::link('نمایش نوبت ها',array('/clinics/doctor/visits/?leaves=true&date='.$model->date),array('class' => 'btn btn-info','style' => 'margin-bottom:10px'));
+            echo '<div class="clearfix"></div>';
+            echo CHtml::link('انصراف',array('/clinics/doctor/leaves'),array('class' => 'btn btn-danger'));
         else:
             echo CHtml::submitButton('افزودن مرخصی',array('class' => 'btn btn-success'));
         endif;

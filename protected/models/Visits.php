@@ -119,10 +119,11 @@ class Visits extends CActiveRecord
      * models according to data in model fields.
      * - Pass data provider to CGridView, CListView or any similar widget.
      *
+     * @param $mode string
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search()
+    public function search($mode = null)
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -140,15 +141,17 @@ class Visits extends CActiveRecord
 
         if($this->date){
             $toDay = strtotime(date("Y/m/d", $this->date) . " 00:00");
-            $toNight = $toDay + 24 * 60 * 60-1;
+            $toNight = $toDay + 24 * 60 * 60 - 1;
             $criteria->addBetweenCondition('date', $toDay, $toNight);
         }
         $criteria->order = 't.date ,t.time, t.status DESC, t.clinic_checked_number';
-//        var_dump($criteria);exit;
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'pagination' => array('pageSize' => 50)
-        ));
+        if($mode == 'array')
+            return $this->findAll($criteria);
+        else
+            return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+                'pagination' => array('pageSize' => 50)
+            ));
     }
 
     /**

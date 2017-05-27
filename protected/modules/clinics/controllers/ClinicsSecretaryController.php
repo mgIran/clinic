@@ -47,6 +47,10 @@ class ClinicsSecretaryController extends Controller
 
     public function actionVisits($id)
     {
+        $date = false;
+        if(isset($_GET['date']))
+            $date = $_GET['date'];
+
         Yii::app()->theme = 'frontend';
         $doctorID = $id;
         $clinicID = Yii::app()->user->clinic->id;
@@ -57,7 +61,13 @@ class ClinicsSecretaryController extends Controller
             $model->attributes = $_GET['Visits'];
         $model->clinic_id = $clinicID;
         $model->doctor_id = $doctorID;
-        $model->date = time();
+        $model->date = $date?$date:time();
+        $today = $date?false:true;
+        if(!$date){
+            if(!$model->time)
+                $model->time = date('H') < 12?1:2;
+        }else
+            $model->time = null;
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
@@ -72,6 +82,7 @@ class ClinicsSecretaryController extends Controller
         $this->render('visits', array(
             'model' => $model,
             'doctorID' => $doctorID,
+            'today' => $today
         ));
     }
 

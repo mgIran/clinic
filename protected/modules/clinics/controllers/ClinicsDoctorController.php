@@ -191,15 +191,36 @@ class ClinicsDoctorController extends Controller
             if($model->validate()){
                 $visits = new Visits('search');
                 $startDate = $model->date;
-                $endDate = $startDate + 24 * 60 * 60;
+                $endDate = $startDate + 24 * 60 * 60 - 1;
                 $criteria = new CDbCriteria();
                 $criteria->compare('clinic_id', $clinicID);
                 $criteria->compare('doctor_id', $userID);
                 $criteria->addBetweenCondition('date', $startDate, $endDate);
+                $criteria->addCondition('status > 0');
                 $visitsExists = $visits->findAll($criteria);
                 if(isset($_POST['visitsExists']) && $_POST['visitsExists'] == true){
-
-                    $flag = false;
+                    $visitsArray = $visits->search('array');
+                    foreach($visitsArray as $item){
+                        $item->status = Visits::STATUS_DELETED;
+                        if($item->save()){
+                            $send = false;
+                            if($item->date > strtotime(date('Y/m/d 23:59', time()))){
+                                $send = true;
+                                $date = JalaliDate::date('Y/m/d', $item->date);
+                                $time = $item->time == 'am'?'صبح':'بعدازظهر';
+                                $message = "نوبت شما با کدرهگیری {$item->tracking_code} که در تاریخ {$date} نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
+                            }elseif($item->date == strtotime(date('Y/m/d 00:00', time()))){
+                                $send = true;
+                                $time = $item->time == 'am'?'صبح':'بعدازظهر';
+                                $message = "نوبت شما با کدرهگیری {$item->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
+                            }
+                            if($send && $item->user && $item->user->userDetails && $item->user->userDetails->mobile){
+                                $phone = $item->user->userDetails->mobile;
+                                Notify::SendSms($message, $phone);
+                            }
+                        }
+                    }
+                    $flag = true;
                 }elseif($visitsExists)
                     $flag = false;
             }
@@ -261,7 +282,7 @@ class ClinicsDoctorController extends Controller
             }
         }
     }
-    
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
