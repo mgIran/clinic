@@ -1,1 +1,1 @@
-&copy; <?php echo date('Y');?> <strong>Pezeshkyar</strong>. All rights reserved.
+&copy; <?php echo date('Y');?> <strong>Visit 365</strong>. All rights reserved.

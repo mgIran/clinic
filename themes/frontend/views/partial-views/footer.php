@@ -1,11 +1,10 @@
 <div class="footer">
     <div class="container">
         <ul class="nav navbar-nav">
-            <li><a href="#">درباره ما</a></li>
-            <li><a href="#">تماس با ما</a></li>
-            <li><a href="#">راهنما</a></li>
-            <li><a href="#">شرایط و ضوابط</a></li>
-            <li><a href="#">حریم خصوصی</a></li>
+            <li><a href="<?= Yii::app()->createUrl('/about') ?>">درباره ما</a></li>
+            <li><a href="<?= Yii::app()->createUrl('/contactus') ?>">تماس با ما</a></li>
+            <li><a href="<?= Yii::app()->createUrl('/help') ?>">راهنما</a></li>
+<!--            <li><a href="--><?//= Yii::app()->createUrl('/terms') ?><!--">شرایط و ضوابط</a></li>-->
         </ul>
         <ul class="navbar-socials">
             <li><a href="#"><i class="facebook-icon"></i></a></li>
