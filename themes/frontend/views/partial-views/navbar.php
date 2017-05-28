@@ -12,7 +12,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="<?php echo Yii::app()->createUrl('/site');?>">صفحه اصلی</a></li>
                 <li><a href="<?php echo Yii::app()->createUrl('/about');?>">درباره ما</a></li>
-                <li><a href="<?php echo Yii::app()->createUrl('/contact');?>">تماس با ما</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('/contactUs');?>">تماس با ما</a></li>
                 <?php
                 if(Yii::app()->user->isGuest):
                     ?>
