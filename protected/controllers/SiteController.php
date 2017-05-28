@@ -102,7 +102,7 @@ class SiteController extends Controller
     {
         Yii::import('pages.models.*');
         Yii::app()->theme = 'frontend';
-        $this->layout = '//layouts/index';
+        $this->layout = '//layouts/public';
         $model = Pages::model()->findByPk(1);
         $this->render('//site/pages/page', array('model' => $model));
     }
