@@ -38,7 +38,7 @@ class ReservationController extends Controller
     public function actionSearch($id)
     {
         Yii::app()->theme = 'frontend';
-        $this->layout = 'public';
+        $this->layout = '//layouts/public';
 
         $clinicPersonnel = new ClinicPersonnels('getDoctorsByExp');
         $clinicPersonnel->unsetAttributes();

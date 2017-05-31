@@ -253,7 +253,7 @@ class UsersPublicController extends Controller
 
         if ($model) {
             if ($model->status == 'pending') {
-                if (time() <= $model->create_date + 259200) {
+                if (time() <= (double)$model->create_date + 259200) {
                     $model->updateByPk($model->id, array('status' => 'active'));
                     Yii::app()->user->setFlash('success', 'حساب کاربری شما فعال گردید.');
                     $login = new UserLoginForm('OAuth');
@@ -618,6 +618,8 @@ class UsersPublicController extends Controller
             $model->attributes = $_POST['Users'];
             $model->status = 'pending';
             $model->create_date = time();
+            $pwd = $model->password;
+            $username = $model->email;
             if ($model->save()) {
                 $token = md5($model->id . '#' . $model->password . '#' . $model->email . '#' . $model->create_date);
                 $model->updateByPk($model->id, array('verification_token' => $token));
@@ -627,6 +629,14 @@ class UsersPublicController extends Controller
                 $message .= '</div>';
                 $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
                 Mailer::mail($model->email, 'ثبت نام در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
+                // Send Sms
+                $siteName = Yii::app()->name;
+                $message = "ثبت نام شما در سایت {$siteName} با موفقیت انجام شد.
+نام کاربری: {$username}
+کلمه عبور: {$pwd}";
+                $phone = $model->userDetails->mobile;
+                if($phone)
+                    Notify::SendSms($message, $phone);
                 if (isset($_POST['ajax'])) {
                     echo CJSON::encode(array('status' => true, 'msg' => 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد. لطفا Inbox و Spam پست الکترونیکی خود را چک کنید.'));
                     Yii::app()->end();

@@ -206,7 +206,8 @@ class ClinicsManageController extends Controller
 			$userModel->status = 'pending';
 			$userModel->create_date = time();
 			$userModel->password = $userModel->generatePassword();
-			if($userModel->save()){
+			$pwd = $userModel->password;
+			if($userModel->save() && !$userModel->hasErrors()){
 				$token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
 				$userModel->updateByPk($userModel->id, array('verification_token' => $token));
 				$message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت ' . Yii::app()->name . ' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
@@ -220,7 +221,14 @@ class ClinicsManageController extends Controller
 				$message .= '</div>';
 				$message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
 				@Mailer::mail($model->email, 'ایجاد حساب کاربری', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
-
+				// Send Sms
+				$siteName = Yii::app()->name;
+				$message = "ثبت نام شما در سایت {$siteName} با موفقیت انجام شد.
+نام کاربری: {$userModel->mobile}
+کلمه عبور: {$pwd}";
+				$phone = $userModel->mobile;
+				if($phone)
+					Notify::SendSms($message, $phone);
 				$model->scenario = 'insert';
 				$model->post = $_POST['ClinicPersonnels']['post'];
 				$model->user_id = $userModel->id;
@@ -233,6 +241,7 @@ class ClinicsManageController extends Controller
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}else{
 				$model->addErrors($userModel->errors);
+				$userModel->delete();
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 		}
@@ -262,7 +271,7 @@ class ClinicsManageController extends Controller
 			$userModel->scenario = 'update';
 			$userModel->attributes = $_POST['ClinicPersonnels'];
 			$userModel->loadPropertyValues($_POST['ClinicPersonnels']);
-			if($userModel->save()){
+			if($userModel->save() && !$userModel->hasErrors()){
 				if($model->post != 3 && $model->post != 2)
 					$model->expertise = null;
 				if($model->save()){
@@ -273,6 +282,7 @@ class ClinicsManageController extends Controller
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}else{
 				$model->addErrors($userModel->errors);
+				$userModel->delete();
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 		}

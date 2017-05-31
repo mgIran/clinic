@@ -251,7 +251,6 @@ class Users extends CActiveRecord
 
     public function afterSave()
     {
-        parent::afterSave();
         if($this->isNewRecord){
             $model = new UserDetails;
             $model->user_id = $this->id;
@@ -259,7 +258,7 @@ class Users extends CActiveRecord
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;
             $model->mobile = $this->mobile;
-            if(!@$model->save())
+            if(!$model->save())
                 $this->addErrors($model->errors);
         }elseif($this->scenario == 'update'){
             $model = UserDetails::model()->findByPk($this->id);
@@ -270,6 +269,7 @@ class Users extends CActiveRecord
             if(!@$model->save())
                 $this->addErrors($model->errors);
         }
+        parent::afterSave();
         return true;
     }
 
