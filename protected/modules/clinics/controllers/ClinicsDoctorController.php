@@ -11,7 +11,7 @@ class ClinicsDoctorController extends Controller
     public static function actionsType()
     {
         return array(
-            'backend' => array(
+            'frontend' => array(
                 'expertises', 'schedules', 'leaves', 'removeLeaves', 'visits', 'removeReserve', 'clinicChecked', 'clinicVisited',
             )
         );
@@ -23,7 +23,7 @@ class ClinicsDoctorController extends Controller
     public function filters()
     {
         return array(
-            'accessControl', // perform access control for CRUD operations
+            'checkAccess', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
         );
     }

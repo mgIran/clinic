@@ -11,7 +11,7 @@ class ClinicsManageController extends Controller
 	public static function actionsType()
 	{
 		return array(
-			'backend' => array(
+			'frontend' => array(
 				'view', 'create', 'update', 'admin', 'delete', 'upload',
 				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
 			)
@@ -24,7 +24,7 @@ class ClinicsManageController extends Controller
 	public function filters()
 	{
 		return array(
-			'accessControl', // perform access control for CRUD operations
+			'checkAccess', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
@@ -201,12 +201,12 @@ class ClinicsManageController extends Controller
 			$model->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel = new Users();
 			$userModel->attributes = $_POST['ClinicPersonnels'];
+			$userModel->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel->role_id = $_POST['ClinicPersonnels']['post'];
 			$userModel->status = 'pending';
 			$userModel->create_date = time();
 			$userModel->password = $userModel->generatePassword();
 			if($userModel->save()){
-
 				$token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
 				$userModel->updateByPk($userModel->id, array('verification_token' => $token));
 				$message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت ' . Yii::app()->name . ' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
@@ -254,12 +254,14 @@ class ClinicsManageController extends Controller
 		$model = $this->loadPersonnelModel($clinic, $person);
 		$model->scenario = 'update_personnel';
 		$model->loadPropertyValues();
+		$model->user->loadPropertyValues();
 		if(isset($_POST['ClinicPersonnels'])){
 			$model->post = $_POST['ClinicPersonnels']['post'];
 			$model->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel = Users::model()->findByPk($model->user_id);
 			$userModel->scenario = 'update';
 			$userModel->attributes = $_POST['ClinicPersonnels'];
+			$userModel->loadPropertyValues($_POST['ClinicPersonnels']);
 			if($userModel->save()){
 				if($model->post != 3 && $model->post != 2)
 					$model->expertise = null;

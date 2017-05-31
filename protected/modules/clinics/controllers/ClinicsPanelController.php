@@ -12,11 +12,11 @@ class ClinicsPanelController extends Controller
     {
         return array(
             'frontend' => array(
-                'enter'
+                'enter',
+                'personnel',
+                'index',
+                'removeVisit'
             ),
-            'backend' => array(
-                'index','removeVisit'
-            )
         );
     }
 
@@ -26,7 +26,7 @@ class ClinicsPanelController extends Controller
     public function filters()
     {
         return array(
-            'accessControl', // perform access control for CRUD operations
+            'checkAccess', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
         );
     }
@@ -48,6 +48,29 @@ class ClinicsPanelController extends Controller
                 $this->redirect(Yii::app()->createUrl("/clinics/secretary/visits/".$doctors[0]->user_id."/?Visits[time]=".$doctors[0]->getNowTime()));
             $this->redirect(array('/clinics/secretary/doctors'));
         }
+
+        $personnel = new ClinicPersonnels();
+        $personnel->unsetAttributes();
+        if(isset($_GET['ClinicPersonnels']))
+            $personnel->attributes = $_GET['ClinicPersonnels'];
+        $personnel->clinic_id = $clinic->id;
+        if(Yii::app()->user->roles == 'clinicAdmin'){
+            $personnel->post = [4,3];
+        }
+        elseif(Yii::app()->user->roles == 'doctor'){
+            $personnel->post = 4;
+        }
+
+        $this->render('index', array(
+            'clinic' => $clinic,
+            'personnel' => $personnel,
+        ));
+    }
+
+    public function actionPersonnel($clinic = null)
+    {
+        Yii::app()->theme = 'frontend';
+        $clinic = Yii::app()->user->getState('clinic');
 
         $personnel = new ClinicPersonnels();
         $personnel->unsetAttributes();

@@ -63,6 +63,25 @@ class Users extends CActiveRecord
     public $type;
 
     /**
+     * @param array $values
+     */
+    public function loadPropertyValues($values = array())
+    {
+        if(isset($values) && $values){
+            $this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:null;
+            $this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:null;
+            $this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:null;
+            $this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:null;
+        }
+        elseif($this){
+            $this->first_name = $this->userDetails->first_name;
+            $this->last_name = $this->userDetails->last_name;
+            $this->phone = $this->userDetails->phone;
+            $this->mobile = $this->userDetails->mobile;
+        }
+    }
+
+    /**
      * @return array validation rules for model attributes.
      */
     public function rules()

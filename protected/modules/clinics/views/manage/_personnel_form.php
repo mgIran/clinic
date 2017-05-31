@@ -32,7 +32,7 @@
     <div class="clearfix"></div>
 
 
-    <div id="expertises" class="form-group col-lg-10 col-md-10 col-sm-10 col-xs-12">
+    <div id="expertises" class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <?php echo $form->labelEx($model,'expertise'); ?>
         <div class="clearfix"></div>
         <select class="selectpicker" data-live-search="true" name="<?= CHtml::activeName($model,'expertise') ?>[]" multiple>
@@ -42,7 +42,7 @@
                 ?>
                     <optgroup label="<?= CHtml::encode($item->title)?>">
                         <option value="<?= $item->id ?>"<?php
-                        if(in_array($item->id, $model->expertise))
+                        if($model->expertise && in_array($item->id, $model->expertise))
                             echo ' selected';
                         ?>><?= CHtml::encode($item->title)?></option>
                         <?php
@@ -57,7 +57,7 @@
                 else:
                 ?>
                     <option value="<?= $item->id ?>"<?php
-                    if(in_array($item->id, $model->expertise))
+                    if($model->expertise && in_array($item->id, $model->expertise))
                         echo ' selected';
                     ?>><?= CHtml::encode($item->title)?></option>
                 <?php
