@@ -37,10 +37,17 @@ class ClinicsPanelController extends Controller
     public function actionIndex($clinic = null)
     {
         Yii::app()->theme = 'frontend';
+        $clinic = Yii::app()->user->getState('clinic');
+
         if(Yii::app()->user->roles == 'secretary'){
+            $doctors = ClinicPersonnels::model()->findAllByAttributes(array(
+                'clinic_id' => $clinic->id,
+                'post' => [2,3]
+            ));
+            if(count($doctors) == 1)
+                $this->redirect(Yii::app()->createUrl("/clinics/secretary/visits/".$doctors[0]->user_id."/?Visits[time]=".$doctors[0]->getNowTime()));
             $this->redirect(array('/clinics/secretary/doctors'));
         }
-        $clinic = Yii::app()->user->getState('clinic');
 
         $personnel = new ClinicPersonnels();
         $personnel->unsetAttributes();

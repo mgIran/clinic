@@ -25,6 +25,7 @@
  * @property UserRoles $role
  * @property ClinicPersonnels $clinicPersonnels
  * @property Clinics[] $clinics
+ * @property int $clinicsCount
  * @property Clinics $clinic
  * @property Expertises[] $expertises
  * @property DoctorSchedules[] $doctorSchedules
@@ -139,6 +140,7 @@ class Users extends CActiveRecord
             'addresses' => array(self::HAS_MANY, 'ShopAddresses', 'user_id', 'on' => 'addresses.deleted = 0'),
             'clinicPersonnels' => array(self::HAS_MANY, 'ClinicPersonnels', 'user_id'),
             'clinics' => array(self::MANY_MANY, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
+            'clinicsCount' => array(self::STAT, 'Clinics', '{{clinic_personnels}}(user_id, clinic_id)'),
             'expertises' => array(self::MANY_MANY, 'Expertises', '{{doctor_expertises}}(doctor_id, expertise_id)'),
             'doctorSchedules' => array(self::HAS_MANY, 'DoctorSchedules', 'doctor_id', 'order' => 'doctorSchedules.week_day'),
             'doctorLeaves' => array(self::HAS_MANY, 'DoctorLeaves', 'doctor_id', 'order' => 'doctorLeaves.date'),

@@ -70,7 +70,7 @@
     </div>
     <div class="content">
         <div class="top-bar">
-            <?php if(isset(Yii::app()->user->clinic)):?>
+            <?php if(isset(Yii::app()->user->clinic) && Yii::app()->user->clinicCount > 1):?>
                 <div class="pull-right">
                     <a href="<?= $this->createUrl('/clinics/panel') ?>"><h5><?php echo Yii::app()->user->clinic->clinic_name;?></h5></a>
                     <a title="خروج از <?= CHtml::encode('"'.Yii::app()->user->clinic->clinic_name.'"'); ?>" href="<?php echo Yii::app()->createUrl('/clinics/panel/leave');?>" class="btn btn-danger btn-sm">خروج از <?= CHtml::encode('"'.Yii::app()->user->clinic->clinic_name.'"'); ?></a>

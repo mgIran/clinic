@@ -91,7 +91,14 @@ class UsersPublicController extends Controller
         $user = Users::model()->findByPk(Yii::app()->user->id);
         $criteria = new CDbCriteria();
         $criteria->select = 'clinics_clinics.post as post, clinics.*';
-        $clinics = new CArrayDataProvider($user->clinics($criteria));
+        $clinics = $user->clinics($criteria);
+        if(count($clinics) == 1)
+        {
+            $this->redirect(array('/clinics/panel/enter/'.$clinics[0]->id));
+        }
+        $clinics = new CArrayDataProvider($clinics,array(
+            'pagination' => false
+        ));
         $this->render('dashboard', array(
             'clinics' => $clinics,
             'user' => $user,
