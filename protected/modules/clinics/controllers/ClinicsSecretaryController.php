@@ -61,7 +61,7 @@ class ClinicsSecretaryController extends Controller
             $model->attributes = $_GET['Visits'];
         $model->clinic_id = $clinicID;
         $model->doctor_id = $doctorID;
-        $model->date = $date?$date:time();
+//        $model->date = $date?$date:time();
         $today = $date?false:true;
         if(!$date){
             if(!$model->time)

@@ -55,6 +55,8 @@ class Visits extends CActiveRecord
         self::STATUS_CLINIC_VISITED => 'ویزیت شده',
     ];
 
+    public $userNameFilter;
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -70,7 +72,7 @@ class Visits extends CActiveRecord
             array('tracking_code', 'default', 'value' => self::generateTrackingCode(), 'on' => 'insert'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, user_id, clinic_id, doctor_id, expertise_id, check_date, date, create_date, time, status, tracking_code, clinic_checked_number', 'safe', 'on' => 'search'),
+            array('userNameFilter, user_id, clinic_id, doctor_id, expertise_id, check_date, date, create_date, time, status, tracking_code, clinic_checked_number', 'safe', 'on' => 'search'),
         );
     }
 
@@ -97,6 +99,7 @@ class Visits extends CActiveRecord
         return array(
             'id' => 'ID',
             'user_id' => 'کاربر',
+            'userNameFilter' => 'بیمار',
             'clinic_id' => 'بیمارستان / درمانگاه / مطب',
             'doctor_id' => 'پزشک',
             'expertise_id' => 'تخصص',
@@ -134,10 +137,15 @@ class Visits extends CActiveRecord
         $criteria->compare('clinic_id', $this->clinic_id, true);
         $criteria->compare('doctor_id', $this->doctor_id, true);
         $criteria->compare('time', $this->time, true);
-        $criteria->compare('status', $this->status);
+        $criteria->compare('t.status', $this->status);
         $criteria->compare('tracking_code', $this->tracking_code, true);
         $criteria->compare('clinic_checked_number', $this->clinic_checked_number);
-        $criteria->addCondition('status > 0');
+        $criteria->addCondition('t.status > 0');
+        if($this->userNameFilter){
+            $criteria->addCondition('userDetails.first_name LIKE :userNameFilter OR userDetails.last_name LIKE :userNameFilter');
+            $criteria->params[':userNameFilter'] = "%{$this->userNameFilter}%";
+            $criteria->with = array('user', 'user.userDetails');
+        }
 
         if($this->date){
             $toDay = strtotime(date("Y/m/d", $this->date) . " 00:00");

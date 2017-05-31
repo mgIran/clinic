@@ -82,7 +82,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'pagerCssClass' => 'text-center blank',
     'columns'=>array(
         array(
-            'name' => 'user_id',
+            'name' => 'userNameFilter',
             'value' => '$data->user && $data->user->userDetails?$data->user->userDetails->showName:"حذف شده"'
         ),
         array(
