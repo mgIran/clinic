@@ -35,14 +35,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'parent_id'); ?>
-		<?php echo $form->dropDownList($model,'parent_id',
-			CHtml::listData(Expertises::model()->findAll('parent_id IS NULL'), 'id' , 'title')
-			,array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'parent_id'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'icon',array('class'=> 'block')); ?>
 		<?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
 			'id' => 'uploaderIcon',
@@ -70,9 +62,25 @@
 		<div class="uploader-message error"></div>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'parent_id'); ?>
+		<?php echo $form->dropDownList($model,'parent_id',
+			CHtml::listData(Expertises::model()->findAll('parent_id IS NULL'), 'id' , 'title'),array(
+				'class'=>'selectpicker',
+				'data-live-search' => true
+			)); ?>
+		<?php echo $form->error($model,'parent_id'); ?>
+	</div>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class'=>'btn btn-success')); ?>
 	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
 
 <?php $this->endWidget(); ?>
 

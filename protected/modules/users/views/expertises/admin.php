@@ -21,7 +21,11 @@ $this->menu=array(
 	'itemsCssClass'=>'table',
 	'columns'=>array(
 		'title',
-		'والد',
+		array(
+			'name' => 'parent_id',
+			'value' => '$data->parent?$data->parent->title:null',
+			'filter' => CHtml::listData(Expertises::model()->findAll('parent_id IS NULL'),'id','title')
+		),
 		array(
 			'class'=>'CButtonColumn',
             'template'=>'{update} {delete}'

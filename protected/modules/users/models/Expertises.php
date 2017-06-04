@@ -88,6 +88,7 @@ class Expertises extends CActiveRecord
 			'description' => 'توضیح کوتاه',
 			'icon' => 'آیکون',
 			'parent_id' => 'والد',
+			'parent' => 'والد',
 		);
 	}
 
@@ -115,6 +116,7 @@ class Expertises extends CActiveRecord
 		$criteria->compare('icon',$this->icon,true);
 		$criteria->compare('parent_id',$this->parent_id,true);
 		$criteria->order='id DESC';
+		$criteria->addCondition('parent_id IS NOT NULL');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
