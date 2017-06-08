@@ -920,14 +920,39 @@ input[type="text"].date-input{
     margin-bottom: 70px;
 }
 .expertise-items .expertise-item{
-    width:20%;
+    border: 1px solid transparent;
+    width:16.66666666%;
+    padding: 15px 5px 0;
     float: right;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.expertise-items a{
+    display: inline-block;
+    width: 100%;
 }
 .expertise-items span{
-    border:4px solid #00a0dc;
     display: inline-block;
-    padding: 15px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.expertise-item:hover{
+    background-color: #fdfdfd;
+    border: 1px solid #f0f0f0;
+}
+.expertise-item:hover h3{
+    color: #505050;
 }
 .expertise-items img,
 .expertise-items svg{
@@ -940,6 +965,11 @@ input[type="text"].date-input{
 .expertise-items h3{
     font-size: 18px;
     color: #a0a0a0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 .expertise-items a,
 .expertise-items a span,

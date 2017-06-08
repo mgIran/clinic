@@ -11,7 +11,10 @@ class ClinicsManageController extends Controller
 	public static function actionsType()
 	{
 		return array(
-			'frontend' => array(
+//			'frontend' => array(
+////				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
+//			),
+			'backend' => array(
 				'view', 'create', 'update', 'admin', 'delete', 'upload',
 				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
 			)
@@ -176,6 +179,8 @@ class ClinicsManageController extends Controller
 			$model->user_id = $_POST['ClinicPersonnels']['user_id'];
 			$model->post = $_POST['ClinicPersonnels']['post'];
 			if($model->save()){
+				$model->user->status = 'active';
+				$model->user->save(false);
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 				$this->redirect(Yii::app()->user->type == 'user'?array('/clinics/panel/'):
 					array('manage/adminPersonnel/' . $model->clinic_id));
@@ -203,7 +208,7 @@ class ClinicsManageController extends Controller
 			$userModel->attributes = $_POST['ClinicPersonnels'];
 			$userModel->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel->role_id = $_POST['ClinicPersonnels']['post'];
-			$userModel->status = 'pending';
+			$userModel->status = 'active';
 			$userModel->create_date = time();
 			$userModel->password = $userModel->generatePassword();
 			$pwd = $userModel->password;

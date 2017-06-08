@@ -15,6 +15,7 @@ class SiteController extends Controller
                 'about',
                 'contactUs',
                 'help',
+                'transactions',
             ),
             'backend' => array(
                 'transactions'
@@ -50,7 +51,7 @@ class SiteController extends Controller
         Yii::app()->theme = "frontend";
         $this->layout = "public";
 
-        $expertises = Expertises::model()->findAll('id <= 10');
+        $expertises = Expertises::model()->findAll();
 
         $this->render('index', array(
             'expertises' => $expertises,
@@ -121,5 +122,20 @@ class SiteController extends Controller
         $this->layout = '//layouts/public';
         $model = Pages::model()->findByPk(6);
         $this->render('//site/pages/page', array('model' => $model));
+    }
+
+    public function actionTransactions()
+    {
+        Yii::app()->theme = 'abound';
+        $this->layout = '//layouts/main';
+
+        $model = new UserTransactions('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['UserTransactions']))
+            $model->attributes = $_GET['UserTransactions'];
+
+        $this->render('transactions', array(
+            'model' => $model,
+        ));
     }
 }

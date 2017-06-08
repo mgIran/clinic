@@ -41,7 +41,7 @@
 			'model' => $model,
 			'name' => 'icon',
 			'maxFiles' => 1,
-			'maxFileSize' => 0.5, //MB
+			'maxFileSize' => 1.5, //MB
 			'url' => Yii::app()->createUrl('/users/expertises/upload'),
 			'deleteUrl' => Yii::app()->createUrl('/users/expertises/deleteUpload'),
 			'acceptedFiles' => '.jpg, .jpeg, .png, .svg',
@@ -62,6 +62,9 @@
 		<div class="uploader-message error"></div>
 	</div>
 
+	<?php
+	if($model->isNewRecord || $model->parent):
+	?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'parent_id'); ?>
 		<?php echo $form->dropDownList($model,'parent_id',
@@ -71,6 +74,9 @@
 			)); ?>
 		<?php echo $form->error($model,'parent_id'); ?>
 	</div>
+	<?php
+	endif;
+	?>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class'=>'btn btn-success')); ?>
 	</div>

@@ -128,9 +128,8 @@ class UsersExpertisesController extends Controller
         $iconsUrl = Yii::app()->createAbsoluteUrl('/uploads/expertises');
 
 		$this->performAjaxValidation($model);
-
         $icon = array();
-        if (!is_null($model->icon))
+        if (!is_null($model->icon) && file_exists($iconsDIR . $model->icon))
             $icon = array(
                 'name' => $model->icon,
                 'src' => $iconsUrl . '/' . $model->icon,
@@ -156,7 +155,6 @@ class UsersExpertisesController extends Controller
             } else
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
-
 		$this->render('update',array(
 			'model'=>$model,
             'icon' => $icon,

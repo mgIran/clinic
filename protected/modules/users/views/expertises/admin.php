@@ -27,8 +27,17 @@ $this->menu=array(
 			'filter' => CHtml::listData(Expertises::model()->findAll('parent_id IS NULL'),'id','title')
 		),
 		array(
+			'header' => 'آیکون',
+			'value' => '$data->icon && file_exists(Yii::getPathOfAlias("webroot")."/uploads/expertises/".$data->icon)?"دارد":"ندارد"',
+		),
+		array(
 			'class'=>'CButtonColumn',
-            'template'=>'{update} {delete}'
+            'template'=>'{update} {delete}',
+			'buttons' => array(
+				'delete' => [
+					'visible' => '$data->parent'
+				]
+			)
 		),
 	),
 )); ?>

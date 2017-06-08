@@ -4,8 +4,7 @@
 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/persian-date.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/persian-datepicker-0.4.5.min.js');
-
-$this->renderPartial('_svg_icons');
+//$this->renderPartial('_svg_icons');
 ?>
 
 <div class="big-image-container">
@@ -77,83 +76,33 @@ $this->renderPartial('_svg_icons');
     <div class="container">
         <h2>همین حالا شروع کنید<small>جهت رزرو نوبت، یکی از تخصص های زیر را انتخاب کنید</small></h2>
         <div class="expertise-items">
-            <?php for($i=0;$i<2;$i++):?>
-                <div class="row">
-                    <?php for($j=0;$j<5;$j++):?>
-                        <div class="expertise-item">
-                            <a href="<?php echo $this->createUrl('/reservation/search/'.$expertises[$i*5+$j]->id);?>"><span><svg><use xlink:href="#<?php echo $expertises[$i*5+$j]->icon;?>-icon"></use></svg></span><h3><?php echo $expertises[$i*5+$j]->title;?></h3></a>
-                        </div>
-                    <?php endfor;?>
+            <?php
+            foreach($expertises as $expertise):
+                if(!$expertise->icon || !file_exists(Yii::getPathOfAlias('webroot').'/uploads/expertises/'.$expertise->icon))
+                    break;
+                ?>
+                <div class="expertise-item">
+                    <a href="<?php echo $this->createUrl('/reservation/search/'.$expertise->id);?>">
+                        <span style="background-image: url('<?= Yii::app()->baseUrl."/uploads/expertises/".$expertise->icon ?>')"></span>
+                        <h3><?php echo $expertise->title;?></h3>
+                    </a>
                 </div>
-            <?php endfor;?>
+            <?php
+            endforeach;
+            ?>
+<!--            --><?php //for($i=0;$i<3;$i++):?>
+<!--                <div class="row">-->
+<!--                    --><?php //for($j=0;$j<6;$j++):?>
+<!--                        <div class="expertise-item">-->
+<!--                            <a href="--><?php //echo $this->createUrl('/reservation/search/'.$expertises[$i*6+$j]->id);?><!--">-->
+<!--                                <span style="background-image: "></span>-->
+<!--                                <h3>--><?php //echo $expertises[$i*6+$j]->title;?><!--</h3>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    --><?php //endfor;?>
+<!--                </div>-->
+<!--            --><?php //endfor;?>
         </div>
-<!--        <div class="content">-->
-<!--            <div class="col-lg-5 col-md-5 col-sm-5 hidden-xs image">-->
-<!--                <img src="--><?php //echo Yii::app()->baseUrl."/uploads/nurse.jpg";?><!--">-->
-<!--            </div>-->
-<!--            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 form-container">-->
-<!--                <h2>همین حالا شروع کنید<small>جهت رزرو نوبت، فرم زیر را پر کنید</small></h2>-->
-<!--                <form>-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-<!--                            <div class="dropdown">-->
-<!--                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">بیمارستان<i class="green-white-arrow-icon"></i></button>-->
-<!--                                <ul class="dropdown-menu">-->
-<!--                                    <li><a href="#">نکوئی</a></li>-->
-<!--                                    <li><a href="#">کامکار</a></li>-->
-<!--                                    <li><a href="#">امام رضا (ع)</a></li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-<!--                            <div class="dropdown">-->
-<!--                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">درمانگاه<i class="green-white-arrow-icon"></i></button>-->
-<!--                                <ul class="dropdown-menu">-->
-<!--                                    <li><a href="#">نکوئی</a></li>-->
-<!--                                    <li><a href="#">کامکار</a></li>-->
-<!--                                    <li><a href="#">امام رضا (ع)</a></li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-<!--                            <div class="dropdown">-->
-<!--                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">تخصص پزشک<i class="green-white-arrow-icon"></i></button>-->
-<!--                                <ul class="dropdown-menu">-->
-<!--                                    <li><a href="#">قلب و عروق</a></li>-->
-<!--                                    <li><a href="#">مغز و اعصاب</a></li>-->
-<!--                                    <li><a href="#">اطفال</a></li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-<!--                            <div class="dropdown">-->
-<!--                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">نام پزشک<i class="green-white-arrow-icon"></i></button>-->
-<!--                                <ul class="dropdown-menu">-->
-<!--                                    <li><a href="#">دکتر یار احمدی</a></li>-->
-<!--                                    <li><a href="#">دکتر کهندانی</a></li>-->
-<!--                                    <li><a href="#">دکتر رضایی</a></li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-<!--                            <input type="text" class="date-input" id="from-date" placeholder="از تاریخ">-->
-<!--                            <input type="hidden" id="from-date_altField">-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-<!--                            <input type="text" class="date-input" id="to-date" placeholder="تا تاریخ">-->
-<!--                            <input type="hidden" id="to-date_altField">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="row">-->
-<!--                        <input type="button" class="submit-button" value="جستجو">-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
 
