@@ -48,8 +48,8 @@ class ClinicPersonnels extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('email, role_id, first_name, last_name, national_code, clinic_id, user_id, post', 'required', 'on' => 'add_personnel'),
-			array('email, first_name, last_name, national_code, clinic_id, user_id, post', 'required', 'on' => 'update_personnel'),
+			array('role_id, first_name, last_name, clinic_id, user_id, post, mobile', 'required', 'on' => 'add_personnel'),
+			array('first_name, last_name, clinic_id, user_id, post, mobile', 'required', 'on' => 'update_personnel'),
 			array('clinic_id, user_id, post', 'required'),
 			array('clinic_id, user_id', 'length', 'max' => 10),
 			array('email', 'email', 'on' => 'add_personnel, update_personnel'),

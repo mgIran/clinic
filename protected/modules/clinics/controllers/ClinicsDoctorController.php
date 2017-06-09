@@ -189,20 +189,20 @@ class ClinicsDoctorController extends Controller
             $model->doctor_id = $userID;
             $model->clinic_id = $clinicID;
             if($model->validate()){
-                $visits = new Visits('search');
                 $startDate = $model->date;
                 $endDate = $startDate + 24 * 60 * 60 - 1;
                 $criteria = new CDbCriteria();
                 $criteria->compare('clinic_id', $clinicID);
                 $criteria->compare('doctor_id', $userID);
                 $criteria->addBetweenCondition('date', $startDate, $endDate);
-                $criteria->addCondition('status > 0');
-                $visitsExists = $visits->findAll($criteria);
+                $criteria->addCondition('status > 1');
+                $visitsExists = Visits::model()->findAll($criteria);
                 if(isset($_POST['visitsExists']) && $_POST['visitsExists'] == true){
-                    $visitsArray = $visits->search('array');
-                    foreach($visitsArray as $item){
+                    $nowTime = date('a', time());
+                    foreach($visitsExists as $item){
+                        $lastStatus = $item->status;
                         $item->status = Visits::STATUS_DELETED;
-                        if($item->save()){
+                        if($item->save() && $lastStatus == Visits::STATUS_ACCEPTED){
                             $send = false;
                             if($item->date > strtotime(date('Y/m/d 23:59', time()))){
                                 $send = true;
@@ -210,9 +210,11 @@ class ClinicsDoctorController extends Controller
                                 $time = $item->time == 'am'?'صبح':'بعدازظهر';
                                 $message = "نوبت شما با کدرهگیری {$item->tracking_code} که در تاریخ {$date} نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
                             }elseif($item->date == strtotime(date('Y/m/d 00:00', time()))){
-                                $send = true;
-                                $time = $item->time == 'am'?'صبح':'بعدازظهر';
-                                $message = "نوبت شما با کدرهگیری {$item->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
+                                if($nowTime == 'am' || ($nowTime == 'pm' && $item->time == 'pm')){
+                                    $send = true;
+                                    $time = $item->time == 'am'?'صبح':'بعدازظهر';
+                                    $message = "نوبت شما با کدرهگیری {$item->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
+                                }
                             }
                             if($send && $item->user && $item->user->userDetails && $item->user->userDetails->mobile){
                                 $phone = $item->user->userDetails->mobile;

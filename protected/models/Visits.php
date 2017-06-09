@@ -49,7 +49,7 @@ class Visits extends CActiveRecord
 
     public $statusLabels = [
         self::STATUS_DELETED => 'حذف شده',
-        self::STATUS_PENDING => 'در انتظار تایید',
+        self::STATUS_PENDING => 'در انتظار پرداخت',
         self::STATUS_ACCEPTED => 'تایید شده',
         self::STATUS_CLINIC_CHECKED => 'حضور در مطب',
         self::STATUS_CLINIC_VISITED => 'ویزیت شده',
@@ -140,7 +140,10 @@ class Visits extends CActiveRecord
         $criteria->compare('t.status', $this->status);
         $criteria->compare('tracking_code', $this->tracking_code, true);
         $criteria->compare('clinic_checked_number', $this->clinic_checked_number);
-        $criteria->addCondition('t.status > 0');
+        if(!Yii::app()->user->isGuest && !Yii::app()->user->type == 'admin')
+            $criteria->addCondition('t.status > 1');
+        if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin')
+            $criteria->addCondition('t.status > 0');
         if($this->userNameFilter){
             $criteria->addCondition('userDetails.first_name LIKE :userNameFilter OR userDetails.last_name LIKE :userNameFilter');
             $criteria->params[':userNameFilter'] = "%{$this->userNameFilter}%";
@@ -220,7 +223,7 @@ class Visits extends CActiveRecord
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60-1;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND status>0 AND (date BETWEEN :toDay AND :toNight)';
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND status>1 AND (date BETWEEN :toDay AND :toNight)';
         $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight);
         if($time){
             $where .= "  AND time = :time";
@@ -253,7 +256,7 @@ class Visits extends CActiveRecord
     {
         $toDay = strtotime(date("Y/m/d", $date) . " 00:00");
         $toNight = $toDay + 24 * 60 * 60 -1;
-        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND status>0 AND (date BETWEEN :toDay AND :toNight) AND status = :checked_status';
+        $where = 'clinic_id = :clinic_id AND doctor_id = :doctor_id AND status>1 AND (date BETWEEN :toDay AND :toNight) AND status = :checked_status';
         $params = array(':clinic_id' => $clinic, ':doctor_id' => $doctor, ':toDay' => $toDay, ':toNight' => $toNight, ':checked_status' => Visits::STATUS_CLINIC_CHECKED);
         if($time){
             $where .= "  AND time = :time";

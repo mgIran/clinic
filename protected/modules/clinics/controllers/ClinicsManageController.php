@@ -212,7 +212,8 @@ class ClinicsManageController extends Controller
 			$userModel->create_date = time();
 			$userModel->password = $userModel->generatePassword();
 			$pwd = $userModel->password;
-			if($userModel->save() && !$userModel->hasErrors()){
+			$saved = $userModel->save();
+			if($saved && !$userModel->hasErrors()){
 				$token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
 				$userModel->updateByPk($userModel->id, array('verification_token' => $token));
 				$message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت ' . Yii::app()->name . ' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
@@ -246,7 +247,8 @@ class ClinicsManageController extends Controller
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}else{
 				$model->addErrors($userModel->errors);
-				$userModel->delete();
+				if($saved)
+					$userModel->delete();
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 		}
