@@ -264,8 +264,9 @@ class ClinicsDoctorController extends Controller
     public function actionRemoveReserve($id)
     {
         $model = Visits::model()->findByPk($id);
+        $lastStatus = $model->status;
         $model->status = Visits::STATUS_DELETED;
-        if($model->save()){
+        if($model->save() && $lastStatus == Visits::STATUS_ACCEPTED){
             $send = false;
             if($model->date > strtotime(date('Y/m/d 23:59', time()))){
                 $send = true;

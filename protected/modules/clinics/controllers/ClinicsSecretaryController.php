@@ -28,7 +28,7 @@ class ClinicsSecretaryController extends Controller
         );
     }
 
-    
+
     public function actionDoctors()
     {
         Yii::app()->theme = 'frontend';
@@ -38,7 +38,7 @@ class ClinicsSecretaryController extends Controller
         if(isset($_GET['ClinicPersonnels']))
             $model->attributes = $_GET['ClinicPersonnels'];
         $model->clinic_id = $clinicID;
-        $model->post = [2,3];
+        $model->post = [2, 3];
 
         $this->render('doctors', array(
             'model' => $model
@@ -75,7 +75,7 @@ class ClinicsSecretaryController extends Controller
                 'accepted' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time, Visits::STATUS_ACCEPTED)),
                 'checked' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)),
                 'visited' => Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time, Visits::STATUS_CLINIC_VISITED)),
-                'visiting' => Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)),
+                'visiting' => Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID, $model->date, $model->time)),
             ]);
             Yii::app()->end();
         }
@@ -116,24 +116,22 @@ class ClinicsSecretaryController extends Controller
         $model = Visits::model()->findByPk($id);
         $lastStatus = $model->status;
         $model->status = Visits::STATUS_DELETED;
-        if($model->save()){
-            if($lastStatus == Visits::STATUS_ACCEPTED){
-                $send = false;
-                if($model->date > strtotime(date('Y/m/d 23:59', time()))){
-                    $send = true;
-                    $date = JalaliDate::date('Y/m/d', $model->date);
-                    $time = $model->time == 'am'?'صبح':'بعدازظهر';
-                    $message = "نوبت شما با کدرهگیری {$model->tracking_code} که در تاریخ {$date} نوبت {$time} رزرو شده بود، توسط منشی لغو گردید.";
-                }elseif($model->date == strtotime(date('Y/m/d 00:00', time()))){
-                    $send = true;
-                    $time = $model->time == 'am'?'صبح':'بعدازظهر';
-                    $message = "نوبت شما با کدرهگیری {$model->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، توسط منشی لغو گردید.";
-                }
+        if($model->save() && $lastStatus == Visits::STATUS_ACCEPTED){
+            $send = false;
+            if($model->date > strtotime(date('Y/m/d 23:59', time()))){
+                $send = true;
+                $date = JalaliDate::date('Y/m/d', $model->date);
+                $time = $model->time == 'am'?'صبح':'بعدازظهر';
+                $message = "نوبت شما با کدرهگیری {$model->tracking_code} که در تاریخ {$date} نوبت {$time} رزرو شده بود، توسط منشی لغو گردید.";
+            }elseif($model->date == strtotime(date('Y/m/d 00:00', time()))){
+                $send = true;
+                $time = $model->time == 'am'?'صبح':'بعدازظهر';
+                $message = "نوبت شما با کدرهگیری {$model->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، توسط منشی لغو گردید.";
+            }
 
-                if($send && $model->user && $model->user->userDetails && $model->user->userDetails->mobile){
-                    $phone = $model->user->userDetails->mobile;
-                    Notify::SendSms($message, $phone);
-                }
+            if($send && $model->user && $model->user->userDetails && $model->user->userDetails->mobile){
+                $phone = $model->user->userDetails->mobile;
+                Notify::SendSms($message, $phone);
             }
         }
     }
@@ -153,7 +151,8 @@ class ClinicsSecretaryController extends Controller
         return $model;
     }
 
-    public function actionMonitoring(){
+    public function actionMonitoring()
+    {
         $clinicID = Yii::app()->user->clinic->id;
         $clinicID = Yii::app()->user->clinic->id;
     }
