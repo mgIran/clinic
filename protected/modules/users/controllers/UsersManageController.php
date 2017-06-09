@@ -23,6 +23,7 @@ class UsersManageController extends Controller
                 'admin',
                 'delete',
                 'userTransactions',
+                'transactions'
             )
         );
     }
@@ -157,6 +158,21 @@ class UsersManageController extends Controller
 
         $this->render('user_transactions', array(
             'model' => $model
+        ));
+    }
+
+    public function actionTransactions()
+    {
+        Yii::app()->theme = 'abound';
+        $this->layout = '//layouts/main';
+
+        $model = new UserTransactions('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['UserTransactions']))
+            $model->attributes = $_GET['UserTransactions'];
+
+        $this->render('admin_transactions', array(
+            'model' => $model,
         ));
     }
 

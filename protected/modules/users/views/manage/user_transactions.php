@@ -4,15 +4,13 @@
 
 $this->menu=array(
     array('label'=>'مدیرت کاربران', 'url'=>array($model->user->role_id == 2?'adminPublishers':'admin')),
-    array('label'=>'نمایش کتابخانه کاربر', 'url'=>array("userLibrary",'id'=>$model->user_id)),
-    array('label'=>'بازگشت به اطلاعات کاربر', 'url'=>array('view', 'id' => $model->user_id))
 );
 
 ?>
 
 <div class="transparent-form">
     <h3>تراکنش ها</h3>
-    <p class="description">لیست تراکنش های <?= $model->user->fa_name ?></p>
+    <p class="description">لیست تراکنش های <?= $model->user->userDetails->getShowName() ?></p>
     <?php
     echo CHtml::beginForm($this->route,'GET',array('class' => 'form-inline form'));
     ?>
@@ -51,7 +49,6 @@ $this->menu=array(
         'pagerCssClass' => 'blank',
         'itemsCssClass' => 'table',
         'columns' => array(
-            'id',
             array(
                 'header' => 'تاریخ تراکنش',
                 'value' => 'JalaliDate::date(\'d F Y - H:i\', $data->date)',
