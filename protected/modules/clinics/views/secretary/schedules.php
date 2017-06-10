@@ -1,12 +1,13 @@
 <?php
 /* @var $this ClinicsManageController */
 /* @var $model DoctorSchedules[] */
+/* @var $doctor Users */
 /* @var $form CActiveForm */
 /* @var $errors [] */
 ?>
 <!--    <a href="--><?//= $this->createUrl('secretary/doctors/?action=leaves') ?><!--" class="btn btn-info pull-left">بازگشت به لیست پزشکان</a>-->
 <!--    <div class="clearfix"></div>-->
-    <h3>مدیریت برنامه زمانی نوبت دهی</h3>
+    <h3>مدیریت برنامه زمانی نوبت دهی <?= $doctor->userDetails->getShowName() ?></h3>
     <p class="description">جهت تعیین برنامه زمانی نوبت گیری در این کلینیک، لطفا جدول هفتگی زیر را پر کنید.</p>
 <?php $this->renderPartial('//partial-views/_flashMessage') ?>
 <?php

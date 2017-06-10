@@ -15,17 +15,19 @@ if($action == 'visits'){
     $desc = 'جهت مدیریت مرخصی های هر پزشک، لطفا از جدول زیر اقدام فرمایید.';
     $viewBtn = array(
         'label' => 'مدیریت مرخصی ها',
-        'url' => isset($_POST['date_altField'])?
-            'Yii::app()->controller->createUrl("secretary/leaves/".$data->user_id)':
-            'Yii::app()->controller->createUrl("secretary/leaves/".$data->user_id)',
+        'url' => 'Yii::app()->controller->createUrl("secretary/leaves/".$data->user_id)',
     );
 }elseif($action == 'schedules'){
     $desc = 'جهت مدیریت برنامه زمانی هر پزشک، لطفا از جدول زیر اقدام فرمایید.';
     $viewBtn = array(
         'label' => 'مدیریت برنامه زمانی',
-        'url' => isset($_POST['date_altField'])?
-            'Yii::app()->controller->createUrl("secretary/schedules/".$data->user_id)':
-            'Yii::app()->controller->createUrl("secretary/schedules/".$data->user_id)',
+        'url' => 'Yii::app()->controller->createUrl("secretary/schedules/".$data->user_id)',
+    );
+}elseif($action == 'expertises'){
+    $desc = 'جهت مدیریت تخصص های هر پزشک، لطفا از جدول زیر اقدام فرمایید.';
+    $viewBtn = array(
+        'label' => 'مدیریت تخصص ها',
+        'url' => 'Yii::app()->controller->createUrl("secretary/expertises/".$data->user_id)',
     );
 }
 ?>

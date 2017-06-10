@@ -12,7 +12,7 @@ class ClinicsSecretaryController extends Controller
     {
         return array(
             'frontend' => array(
-                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve', 'schedules', 'leaves','removeLeaves',
+                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve', 'schedules', 'expertises', 'leaves', 'removeLeaves',
             )
         );
     }
@@ -156,6 +156,7 @@ class ClinicsSecretaryController extends Controller
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
+
     /**
      * @param $id
      * @return DoctorLeaves
@@ -167,6 +168,45 @@ class ClinicsSecretaryController extends Controller
         if($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer $clinic the Clinic ID of the model to be loaded
+     * @param integer $person the User ID of the model to be loaded
+     * @return ClinicPersonnels the loaded model
+     * @throws CHttpException
+     */
+    public function loadPersonnelModel($clinic, $person)
+    {
+        $model = ClinicPersonnels::model()->findByAttributes(array('clinic_id' => $clinic, 'user_id' => $person));
+        if($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
+
+    public function actionExpertises($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = $id;
+        $clinicID = Yii::app()->user->clinic->id;
+        $model = $this->loadPersonnelModel($clinicID, $userID);
+        $model->loadPropertyValues();
+        if(isset($_POST['ClinicPersonnels'])){
+            $model->loadPropertyValues($_POST['ClinicPersonnels']);
+            if($model->post != 3 && $model->post != 2)
+                $model->expertise = null;
+            if($model->save()){
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            }else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
+        $this->render('expertises', array(
+            'model' => $model
+        ));
     }
 
     /**
@@ -221,6 +261,7 @@ class ClinicsSecretaryController extends Controller
 
         $this->render('schedules', array(
             'model' => $model,
+            'doctor' => $user,
             'errors' => $errors
         ));
     }
@@ -230,6 +271,8 @@ class ClinicsSecretaryController extends Controller
         Yii::app()->theme = 'frontend';
         $userID = $id;
         $clinicID = Yii::app()->user->clinic->id;
+        $user = Users::model()->findByPk($userID);
+
         $visitsExists = false;
         // insert new leaves
         $model = new DoctorLeaves();
@@ -294,6 +337,7 @@ class ClinicsSecretaryController extends Controller
         $search->doctor_id = $userID;
         $this->render('leaves', array(
             'model' => $model,
+            'doctor' => $user,
             'search' => $search,
             'visitsExists' => $visitsExists
         ));
@@ -313,7 +357,7 @@ class ClinicsSecretaryController extends Controller
                 $this->redirect(isset($_POST['returnUrl'])?$_POST['returnUrl']:array('admin'));
         }
     }
-    
+
     public function actionMonitoring()
     {
         $clinicID = Yii::app()->user->clinic->id;

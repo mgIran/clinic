@@ -1,6 +1,7 @@
 <?php
 /* @var $this ClinicsDoctorController */
 /* @var $model DoctorLeaves */
+/* @var $doctor Users */
 /* @var $search DoctorLeaves */
 /* @var $form CActiveForm */
 /* @var $visitsExists string */
@@ -9,7 +10,7 @@
 <!--    <a href="--><?//= $this->createUrl('secretary/doctors/?action=leaves') ?><!--" class="btn btn-info pull-left">بازگشت به لیست پزشکان</a>-->
 <!--    <div class="clearfix"></div>-->
     <div class="col-lg-7 col-md-7 col-sm-7 col-ex-12">
-        <h3>مدیریت برنامه زمانی مرخصی ها</h3>
+        <h3>مدیریت مرخصی های <?= $doctor->userDetails->getShowName() ?></h3>
         <p class="description">مرخصی های آینده خود را از جدول زیر حذف کرده، یا از فرم بالا مرخصی جدید ثبت کنید.</p>
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
