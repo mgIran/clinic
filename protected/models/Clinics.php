@@ -76,7 +76,7 @@ class Clinics extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'clinic_name' => 'نام بیمارستان / درمانگاه / مطب',
+			'clinic_name' => 'نام مطب',
 			'town_id' => 'استان',
 			'place_id' => 'شهر',
 			'zip_code' => 'کدپستی',

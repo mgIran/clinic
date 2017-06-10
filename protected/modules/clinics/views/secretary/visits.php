@@ -114,7 +114,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         'style' => 'margin-top: 5px'
                     ),
                     'url' => 'Yii::app()->controller->createUrl("secretary/removeReserve/".$data->id)',
-                    'visible' => '$data->status < 3'
+                    'visible' => '$data->status < 3 && $data->status > 0'
                 ),
                 'check' => array(
                     'label' => 'حضور در کلینیک',

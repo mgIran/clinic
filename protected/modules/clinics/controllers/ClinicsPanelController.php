@@ -38,14 +38,11 @@ class ClinicsPanelController extends Controller
     {
         Yii::app()->theme = 'frontend';
         $clinic = Yii::app()->user->getState('clinic');
+        $doctors = Yii::app()->user->getState('doctors');
 
         if(Yii::app()->user->roles == 'secretary'){
-            $doctors = ClinicPersonnels::model()->findAllByAttributes(array(
-                'clinic_id' => $clinic->id,
-                'post' => [2,3]
-            ));
-            if(count($doctors) == 1)
-                $this->redirect(Yii::app()->createUrl("/clinics/secretary/visits/".$doctors[0]->user_id."/?Visits[time]=".$doctors[0]->getNowTime()));
+            if($doctors && count($doctors) == 1)
+                $this->redirect(Yii::app()->createUrl("/clinics/secretary/visits/".$doctors[0]."/?Visits[time]=".ClinicPersonnels::getNowTime()));
             $this->redirect(array('/clinics/secretary/doctors'));
         }
 
@@ -95,8 +92,18 @@ class ClinicsPanelController extends Controller
         $model = ClinicPersonnels::model()->find('clinic_id = :clinic_id AND user_id = :user_id', array(':clinic_id' => $id, ':user_id' => Yii::app()->user->id));
         $role = UserRoles::model()->findByPk($model->post);
 
+        $doctors = ClinicPersonnels::model()->findAllByAttributes(array(
+            'clinic_id' => $model->clinic_id,
+            'post' => [2,3]
+        ),array('select' => 'user_id'));
+        $doctorsArray = [];
+        foreach($doctors as $key=>$doctor){
+            $doctorsArray[$key] = $doctor->user_id;
+        }
+
         Yii::app()->user->setState('roles', $role->role);
         Yii::app()->user->setState('clinic', $model->clinic);
+        Yii::app()->user->setState('doctors', $doctorsArray);
 
         $this->redirect(array('/clinics/panel'));
     }

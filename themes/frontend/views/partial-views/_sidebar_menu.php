@@ -19,8 +19,10 @@
     <?php elseif(Yii::app()->user->roles == 'secretary'):?>
         <h5>منوی منشی</h5>
         <a title="داشبورد منشی" href="<?php echo Yii::app()->createUrl('/clinics/panel');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/panel')?' active':'';?>">داشبورد منشی</a>
+        <a title="مدیریت برنامه زمانی پزشکان" href="<?php echo Yii::app()->createUrl('/clinics/secretary/doctors?action=schedules');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/secretary/doctors?action=schedules')?' active':'';?>">مدیریت برنامه زمانی پزشکان</a>
+        <a title="مدیریت مرخصی های پزشکان" href="<?php echo Yii::app()->createUrl('/clinics/secretary/doctors?action=leaves');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/secretary/doctors?action=leaves')?' active':'';?>">مدیریت مرخصی های پزشکان</a>
         <a title="مدیریت نوبت های پزشکان" href="<?php echo Yii::app()->createUrl('/clinics/secretary/doctors');?>" class="list-group-item<?php echo (Yii::app()->request->pathInfo=='clinics/secretary/doctors')?' active':'';?>">مدیریت نوبت های پزشکان</a>
-<!--        <a title="مانیتورینگ نوبت ها" href="--><?php //echo Yii::app()->createUrl('/clinics/secretary/monitoring');?><!--" class="list-group-item--><?php //echo (Yii::app()->request->pathInfo=='clinics/secretary/monitoring')?' active':'';?><!--">مانیتورینگ نوبت ها</a>-->
+        <!--        <a title="مانیتورینگ نوبت ها" href="--><?php //echo Yii::app()->createUrl('/clinics/secretary/monitoring');?><!--" class="list-group-item--><?php //echo (Yii::app()->request->pathInfo=='clinics/secretary/monitoring')?' active':'';?><!--">مانیتورینگ نوبت ها</a>-->
     <?php endif;?>
 <?php endif;?>
 <h5>منوی کاربری</h5>

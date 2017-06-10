@@ -85,7 +85,7 @@ class ClinicPersonnels extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'clinic_id' => 'بیمارستان/درمانگاه/مطب',
+			'clinic_id' => 'مطب',
 			'user_id' => 'کاربر',
 			'post' => 'سمت',
 			'email' => 'ایمیل',
@@ -224,7 +224,7 @@ class ClinicPersonnels extends CActiveRecord
 	}
 
 
-	public function getNowTime(){
+	public static function getNowTime(){
 		return date('H')<12?1:2;
 	}
 }

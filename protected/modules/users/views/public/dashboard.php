@@ -19,8 +19,8 @@ endif;
 if($clinics):
 ?>
 <div class="transparent-form">
-    <h3>لیست بیمارستان ها / درمانگاه ها / مطب ها</h3>
-    <p class="description">لیست بیمارستان، درمانگاه یا مطب هایی که در آنها عضو هستید.</p>
+    <h3>لیست مطب ها</h3>
+    <p class="description">لیست مطب هایی که در آنها عضو هستید.</p>
 
     <?php $this->widget('zii.widgets.grid.CGridView', array(
         'id'=>'expertises-grid',
@@ -57,7 +57,7 @@ if($clinics):
                 'template'=>'{enter}',
                 'buttons'=>array(
                     'enter'=>array(
-                        'label'=>'ورود به بیمارستان / درمانگاه / مطب',
+                        'label'=>'ورود به مطب',
                         'url'=>'CHtml::normalizeUrl(array("/clinics/panel/enter", "id"=>$data->id))',
                         'options'=>array(
                             'class'=>'btn btn-info btn-sm'

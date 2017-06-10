@@ -22,7 +22,7 @@ $purifier=new CHtmlPurifier();
                 <?php endif;?>
                 <?php if($model->clinic):?>
                     <div class="clinic-items">
-                        <h4>اطلاعات بیمارستان / درمانگاه / مطب</h4>
+                        <h4>اطلاعات مطب</h4>
                         <div class="clinic-item">
                             <label>عنوان مطب:</label><span><?php echo $model->clinic->clinic_name;?></span>
                         </div>

@@ -52,7 +52,7 @@
                     <h4>اطلاعات نوبت</h4>
                     <div class="items">
                         <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">بیمارستان / درمانگاه / مطب</div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">مطب</div>
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7"><?php echo $model->clinic->clinic_name;?></div>
                         </div>
                         <div class="row">

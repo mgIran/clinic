@@ -4,9 +4,10 @@
 /* @var $form CActiveForm */
 /* @var $errors [] */
 ?>
-
+<!--    <a href="--><?//= $this->createUrl('secretary/doctors/?action=leaves') ?><!--" class="btn btn-info pull-left">بازگشت به لیست پزشکان</a>-->
+<!--    <div class="clearfix"></div>-->
     <h3>مدیریت برنامه زمانی نوبت دهی</h3>
-    <p class="description">جهت تعیین برنامه زمانی نوبت گیری خود در این کلینیک، لطفا جدول هفتگی زیر را پر کنید.</p>
+    <p class="description">جهت تعیین برنامه زمانی نوبت گیری در این کلینیک، لطفا جدول هفتگی زیر را پر کنید.</p>
 <?php $this->renderPartial('//partial-views/_flashMessage') ?>
 <?php
 $form = $this->beginWidget('CActiveForm', array(

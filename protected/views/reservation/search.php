@@ -19,7 +19,7 @@
                             <?php echo $form->textField($doctors,'doctor_name',array('placeholder'=>'پزشک')); ?>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <?php echo $form->textField($doctors,'clinic_name',array('placeholder'=>'بیمارستان / درمانگاه / مطب')); ?>
+                            <?php echo $form->textField($doctors,'clinic_name',array('placeholder'=>'مطب')); ?>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         'value'=>'$data->user->expertises[0]->title'
                     ),
                     array(
-                        'header'=>'بیمارستان / درمانگاه / مطب',
+                        'header'=>'مطب',
                         'value'=>'$data->clinic->clinic_name'
                     ),
                     array(

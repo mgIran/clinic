@@ -53,9 +53,9 @@
                 <div class="doctor-info">
                     <label>نام پزشک</label>
                     <span><?php echo $doctor->userDetails->getShowName();?></span>
-                    <label>نام بیمارستان/درمانگاه/مطب</label>
+                    <label>نام مطب</label>
                     <span><?php echo $clinic->clinic_name;?></span>
-                    <label>تلفن بیمارستان/درمانگاه/مطب</label>
+                    <label>تلفن مطب</label>
                     <span><?php echo $clinic->phone;?></span>
                 </div>
                 <div class="calendar">

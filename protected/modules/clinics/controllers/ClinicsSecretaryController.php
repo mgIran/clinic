@@ -12,7 +12,7 @@ class ClinicsSecretaryController extends Controller
     {
         return array(
             'frontend' => array(
-                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve',
+                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve', 'schedules', 'leaves','removeLeaves',
             )
         );
     }
@@ -32,8 +32,13 @@ class ClinicsSecretaryController extends Controller
     public function actionDoctors()
     {
         Yii::app()->theme = 'frontend';
+        $action = isset($_GET['action']) && !empty($_GET['action'])?$_GET['action']:'visits';
         $clinicID = Yii::app()->user->clinic->id;
-
+        if($action != 'visits'){
+            $doctors = Yii::app()->user->getState('doctors');
+            if($doctors && count($doctors) == 1)
+                $this->redirect(Yii::app()->createUrl("/clinics/secretary/{$action}/{$doctors[0]}/"));
+        }
         $model = new ClinicPersonnels('search');
         if(isset($_GET['ClinicPersonnels']))
             $model->attributes = $_GET['ClinicPersonnels'];
@@ -41,7 +46,8 @@ class ClinicsSecretaryController extends Controller
         $model->post = [2, 3];
 
         $this->render('doctors', array(
-            'model' => $model
+            'model' => $model,
+            'action' => $action
         ));
     }
 
@@ -150,7 +156,164 @@ class ClinicsSecretaryController extends Controller
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
+    /**
+     * @param $id
+     * @return DoctorLeaves
+     * @throws CHttpException
+     */
+    public function loadLeavesModel($id)
+    {
+        $model = DoctorLeaves::model()->findByPk($id);
+        if($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
 
+    /**
+     * @param $id
+     * @throws CDbException
+     */
+    public function actionSchedules($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = $id;
+        $clinicID = Yii::app()->user->clinic->id;
+        $user = Users::model()->findByPk($userID);
+        $model = $user->doctorSchedules(array('condition' => 'clinic_id = :clinic_id', 'params' => array(':clinic_id' => $clinicID)));
+        $temp = [];
+        foreach($model as $item)
+            $temp[$item->week_day] = $item;
+        $model = $temp;
+
+        $errors = [];
+
+        if(isset($_POST['DoctorSchedules'])){
+            $flag = true;
+            foreach($_POST['DoctorSchedules'] as $key => $values){
+                $row = DoctorSchedules::model()->findByAttributes(array(
+                    'clinic_id' => $clinicID,
+                    'doctor_id' => $userID,
+                    'week_day' => $key
+                ));
+                if(isset($values['week_day']) && $values['week_day'] == $key){
+                    if($row === null){
+                        $row = new DoctorSchedules();
+                        $row->clinic_id = $clinicID;
+                        $row->doctor_id = $userID;
+                        $row->week_day = $key;
+                    }
+                    $row->attributes = $values;
+                    if(!$row->save()){
+                        $flag = false;
+                        $errors[$key] = $row->errors['error'];
+                    }
+                    $model[$key] = $row;
+                }elseif($row !== null)
+                    $row->delete();
+            }
+
+            if($flag){
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            }else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
+        $this->render('schedules', array(
+            'model' => $model,
+            'errors' => $errors
+        ));
+    }
+
+    public function actionLeaves($id)
+    {
+        Yii::app()->theme = 'frontend';
+        $userID = $id;
+        $clinicID = Yii::app()->user->clinic->id;
+        $visitsExists = false;
+        // insert new leaves
+        $model = new DoctorLeaves();
+        if(isset($_POST['DoctorLeaves']) && isset($_POST['insert']) && $_POST['insert'] == true){
+            $flag = true;
+            $model->date = strtotime(date("Y/m/d", $_POST['DoctorLeaves']['date']) . " 00:00");
+            $model->doctor_id = $userID;
+            $model->clinic_id = $clinicID;
+            if($model->validate()){
+                $startDate = $model->date;
+                $endDate = $startDate + 24 * 60 * 60 - 1;
+                $criteria = new CDbCriteria();
+                $criteria->compare('clinic_id', $clinicID);
+                $criteria->compare('doctor_id', $userID);
+                $criteria->addBetweenCondition('date', $startDate, $endDate);
+                $criteria->addCondition('status > 1');
+                $visitsExists = Visits::model()->findAll($criteria);
+                if(isset($_POST['visitsExists']) && $_POST['visitsExists'] == true){
+                    $nowTime = date('a', time());
+                    foreach($visitsExists as $item){
+                        $lastStatus = $item->status;
+                        $item->status = Visits::STATUS_DELETED;
+                        if($item->save() && $lastStatus == Visits::STATUS_ACCEPTED){
+                            $send = false;
+                            if($item->date > strtotime(date('Y/m/d 23:59', time()))){
+                                $send = true;
+                                $date = JalaliDate::date('Y/m/d', $item->date);
+                                $time = $item->time == 'am'?'صبح':'بعدازظهر';
+                                $message = "نوبت شما با کدرهگیری {$item->tracking_code} که در تاریخ {$date} نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
+                            }elseif($item->date == strtotime(date('Y/m/d 00:00', time()))){
+                                if($nowTime == 'am' || ($nowTime == 'pm' && $item->time == 'pm')){
+                                    $send = true;
+                                    $time = $item->time == 'am'?'صبح':'بعدازظهر';
+                                    $message = "نوبت شما با کدرهگیری {$item->tracking_code} که برای امروز نوبت {$time} رزرو شده بود، بدلیل مرخصی پزشک لغو گردید.";
+                                }
+                            }
+                            if($send && $item->user && $item->user->userDetails && $item->user->userDetails->mobile){
+                                $phone = $item->user->userDetails->mobile;
+                                Notify::SendSms($message, $phone);
+                            }
+                        }
+                    }
+                    $flag = true;
+                }elseif($visitsExists)
+                    $flag = false;
+            }
+            if($flag){
+                if($model->save()){
+                    Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                    $this->refresh();
+                }else
+                    Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+            }else
+                Yii::app()->user->setFlash('warning', 'در این روز نوبت رزرو شده است. لطفا رزروها را مدیریت کرده و سپس مرخصی را ثبت کنید.');
+        }
+        // Get CActiveDataProvider for grid
+        $search = new DoctorLeaves('search');
+        $search->unsetAttributes();
+        if(isset($_POST['DoctorLeaves']) && !isset($_POST['insert']))
+            $search->attributes = $_POST['DoctorLeaves'];
+        $search->clinic_id = $clinicID;
+        $search->doctor_id = $userID;
+        $this->render('leaves', array(
+            'model' => $model,
+            'search' => $search,
+            'visitsExists' => $visitsExists
+        ));
+    }
+
+    public function actionRemoveLeaves($id)
+    {
+        if(isset($_GET['lid']) && !empty((int)$_GET['lid'])){
+            $lid = $_GET['lid'];
+            Yii::app()->theme = 'frontend';
+            $userID = $id;
+            $clinicID = Yii::app()->user->clinic->id;
+            $model = $this->loadLeavesModel($lid);
+            if($model->doctor_id == $userID && $model->clinic_id == $clinicID)
+                $model->delete();
+            if(!isset($_GET['ajax']))
+                $this->redirect(isset($_POST['returnUrl'])?$_POST['returnUrl']:array('admin'));
+        }
+    }
+    
     public function actionMonitoring()
     {
         $clinicID = Yii::app()->user->clinic->id;
