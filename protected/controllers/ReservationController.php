@@ -273,8 +273,17 @@ class ReservationController extends Controller
         $doctorSchedule = $model->doctor->doctorSchedules($criteria);
 
         Yii::app()->getModule('setting');
-        $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'));
+        $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'))->value;
 
+        $personnel = false;
+        if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user' && Yii::app()->user->roles != 'user'){
+            $personnel = ClinicPersonnels::model()->findByAttributes([
+                'clinic_id' => $model->clinic_id,
+                'user_id' => Yii::app()->user->getId(),
+            ]);
+            if($personnel)
+                $commission = 0;
+        }
         if(isset($_POST['Confirm'])){
             $model->status=Visits::STATUS_ACCEPTED;
             if($model->save())
@@ -321,6 +330,7 @@ class ReservationController extends Controller
             'model' => $model,
             'doctorSchedule' => $doctorSchedule[0],
             'commission' => $commission,
+            'personnel' => $personnel,
         ));
     }
 

@@ -4,6 +4,7 @@
 /* @var $doctorSchedule DoctorSchedules */
 /* @var $commission SiteSetting */
 /* @var $transaction UserTransactions */
+/* @var $personnel ClinicPersonnels */
 ?>
 
 <div class="inner-page">
@@ -26,6 +27,16 @@
     <div class="patient-info">
         <div class="container">
             <div class="row">
+                <?php
+                if($personnel):
+                    ?>
+                    <div class="alert alert-info">
+                        <b>ثبت توسط <?= $personnel->post_rel->name ?>:</b> <?= $personnel->user->userDetails->getShowName() ?><br>
+                        <b>کمیسیون سایت:</b> رایگان
+                    </div>
+                    <?php
+                endif;
+                ?>
                 <?php $this->renderPartial('//partial-views/_flashMessage');?>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 first">
                     <h4>اطلاعات بیمار</h4>
@@ -108,8 +119,8 @@
             <div class="price-info">
                 <?php echo CHtml::beginForm();?>
                     <?php if($model->status == Visits::STATUS_PENDING):?>
-                        <?php if($commission->value != 0):?>
-                            <h4>کمیسیون سایت: <span><?= Controller::parseNumbers(number_format($commission->value)) ?> <small>تومان</small></span></h4>
+                        <?php if($commission != 0):?>
+                            <h4>کمیسیون سایت: <span><?= Controller::parseNumbers(number_format($commission)) ?> <small>تومان</small></span></h4>
                             <?php echo CHtml::submitButton('پرداخت', array('class'=>'btn-red', 'name'=>'Payment'));?>
                         <?php else:?>
                             <span class="pull-right">جهت دریافت کد رهگیری لطفا اطلاعات فوق را تایید کنید.</span>
