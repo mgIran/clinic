@@ -12,7 +12,8 @@ class ClinicsDoctorController extends Controller
     {
         return array(
             'frontend' => array(
-                'expertises', 'schedules', 'leaves', 'removeLeaves', 'visits', 'removeReserve', 'clinicChecked', 'clinicVisited',
+//                'expertises', 
+                'schedules', 'leaves', 'removeLeaves', 'visits', 'removeReserve', 'clinicChecked', 'clinicVisited',
             )
         );
     }
@@ -76,8 +77,10 @@ class ClinicsDoctorController extends Controller
             if(!$model->time)
                 $model->time = date('H') < 12?1:2;
             $model->status = Visits::STATUS_CLINIC_CHECKED;
-        }else
+        }else{
             $model->time = null;
+            $model->status = [Visits::STATUS_ACCEPTED,Visits::STATUS_CLINIC_CHECKED,Visits::STATUS_CLINIC_VISITED];
+        }
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,

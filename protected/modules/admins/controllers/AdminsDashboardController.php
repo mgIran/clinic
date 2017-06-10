@@ -55,7 +55,7 @@ class AdminsDashboardController extends Controller
         $acceptedVisitsCount = Yii::app()->db->createCommand()
             ->select('COUNT(id)')
             ->from('{{visits}}')
-            ->where('status = 2')
+            ->where('status IN(2,3)')
             ->queryScalar();
         $visitedVisitsCount = Yii::app()->db->createCommand()
             ->select('COUNT(id)')

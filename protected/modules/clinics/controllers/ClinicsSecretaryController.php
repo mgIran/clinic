@@ -12,7 +12,8 @@ class ClinicsSecretaryController extends Controller
     {
         return array(
             'frontend' => array(
-                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve', 'schedules', 'expertises', 'leaves', 'removeLeaves',
+//                'expertises',
+                'doctors', 'visits', 'clinicChecked', 'clinicVisited', 'removeReserve', 'schedules', 'leaves', 'removeLeaves',
             )
         );
     }

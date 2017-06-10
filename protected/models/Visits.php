@@ -143,7 +143,7 @@ class Visits extends CActiveRecord
         if(!Yii::app()->user->isGuest && !Yii::app()->user->type == 'admin')
             $criteria->addCondition('t.status > 1');
         if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin')
-            $criteria->addCondition('t.status > 0');
+            $criteria->addCondition('t.status >= 0');
         if($this->userNameFilter){
             $criteria->addCondition('userDetails.first_name LIKE :userNameFilter OR userDetails.last_name LIKE :userNameFilter');
             $criteria->params[':userNameFilter'] = "%{$this->userNameFilter}%";

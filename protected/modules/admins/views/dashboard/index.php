@@ -40,6 +40,9 @@
         <p>
             <b>تعداد منشی ها: </b><?= Controller::parseNumbers(number_format($secCount))?> نفر
         </p>
+        <p>
+            <br>
+        </p>
     </div>
     <div class="panel-footer">
         <p>
