@@ -74,7 +74,10 @@ class ClinicsSecretaryController extends Controller
             if(!$model->time)
                 $model->time = date('H') < 12?1:2;
         }else
+        {
             $model->time = null;
+            $model->status = [Visits::STATUS_ACCEPTED,Visits::STATUS_CLINIC_CHECKED,Visits::STATUS_CLINIC_VISITED];
+        }
 
         if(Yii::app()->request->isAjaxRequest && !isset($_GET['ajax'])){
             echo CJSON::encode(['status' => true,
