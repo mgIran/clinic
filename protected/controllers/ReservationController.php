@@ -108,7 +108,9 @@ class ReservationController extends Controller
             $leaves = $user->doctorLeaves($criteria);
             $weekDays = CHtml::listData($schedules, 'week_day', 'week_day');
             $leaveDays = CHtml::listData($leaves, 'id', 'date');
+            $now = strtotime(date('Y/m/d 00:00',time()));
             $from = strtotime(date('Y/m/d 00:00',$from));
+            $fromIsToday = $now == $from?true:false;
             $to = strtotime(date('Y/m/d 23:59',$to));
             $daysCount = ($to - $from) / (60 * 60 * 24);
             $days = array();
@@ -117,18 +119,22 @@ class ReservationController extends Controller
                 if(in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)){
                     if(!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)){
                         if($dayTimestamp >= $from){
-                            foreach($schedules as $schedule)
+                            foreach($schedules as $key => $schedule)
                                 if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
-                                    $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
-                                    $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
-
-                                    if($AMVisitsCount != $schedule->visit_count_am)
-                                        if(!is_null($schedule->times['AM']))
+                                    $checkAM = true;
+                                    if($key===0 && $fromIsToday && date('a',time()) != 'am')
+                                        $checkAM = false;
+                                    if($checkAM && !is_null($schedule->times['AM'])){
+                                        $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
+                                        if($AMVisitsCount != $schedule->visit_count_am)
                                             $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
+                                    }
 
-                                    if($PMVisitsCount != $schedule->visit_count_pm)
-                                        if(!is_null($schedule->times['PM']))
+                                    if(!is_null($schedule->times['PM'])){
+                                        $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
+                                        if($PMVisitsCount != $schedule->visit_count_pm)
                                             $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
+                                    }
                                 }
                         }
                     }
@@ -179,13 +185,13 @@ class ReservationController extends Controller
 
         $user = new Users();
         $user->setScenario('reserve_register');
-        if (isset($_POST['Users'])) {
-            if (empty($_POST['Users']['mobile']))
+        if(isset($_POST['Users'])){
+            if(empty($_POST['Users']['mobile']))
                 Yii::app()->user->setFlash('failed', 'تلفن همراه نمی تواند خالی باشد.');
-            else {
+            else{
                 /* @var $existUser Users */
                 $existUser = Users::model()->find('national_code = :national_code', array(':national_code' => $_POST['Users']['national_code']));
-                if (!$existUser) {
+                if(!$existUser){
                     $user->email = $_POST['Users']['email'];
                     $user->national_code = $_POST['Users']['national_code'];
                     $user->role_id = UserRoles::model()->find('role = :role', array(':role' => 'user'))->id;
@@ -201,7 +207,7 @@ class ReservationController extends Controller
                     $pwd = $user->password;
                     $username = $user->national_code;
 
-                    if ($user->save()) {
+                    if($user->save()){
                         $userDetails = $user->userDetails;
                         $userDetails->user_id = $user->id;
                         $userDetails->first_name = $user->first_name;
@@ -217,30 +223,34 @@ class ReservationController extends Controller
                         if($phone)
                             Notify::SendSms($message, $phone);
 
-                        if ($userDetails->save()) {
-                            $time = (Yii::app()->user->reservation['time'] == 'am') ? Visits::TIME_AM : Visits::TIME_PM;
-                            $saveResult = $this->saveVisit($user->id, Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], Yii::app()->user->reservation['expertiseID'], Yii::app()->user->reservation['date'], $time, Visits::STATUS_PENDING);
+                        if($userDetails->save()){
+                            $existUser = $user;
                         }
                     }
-                } else {
+                }else{
                     $existUser->setScenario('reserve_register');
-                    if (!$existUser->userDetails->first_name)
+                    if(!$existUser->userDetails->first_name)
                         $existUser->userDetails->first_name = $_POST['Users']['first_name'];
-                    if (!$existUser->userDetails->last_name)
+                    if(!$existUser->userDetails->last_name)
                         $existUser->userDetails->last_name = $_POST['Users']['last_name'];
-                    if (!$existUser->email)
+                    if(!$existUser->email)
                         $existUser->email = $_POST['Users']['email'];
                     $existUser->save();
                     $existUser->userDetails->save();
+                }
 
-                    $time = (Yii::app()->user->reservation['time'] == 'am') ? Visits::TIME_AM : Visits::TIME_PM;
+                if($existUser){
+                    $time = (Yii::app()->user->reservation['time'] == 'am')?Visits::TIME_AM:Visits::TIME_PM;
                     $saveResult = $this->saveVisit($existUser->id, Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], Yii::app()->user->reservation['expertiseID'], Yii::app()->user->reservation['date'], $time, Visits::STATUS_PENDING);
                 }
             }
         }
 
-        if ($saveResult['saved']) {
-            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+        if($saveResult['saved']){
+            if(!isset($saveResult['status']) || (isset($saveResult['status']) && $saveResult['status'] == Visits::STATUS_PENDING))
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+            elseif(isset($saveResult['status']) && $saveResult['status'] == Visits::STATUS_ACCEPTED)
+                Yii::app()->user->setFlash('success', 'در این تاریخ قبلا رزرو ثبت شده است.');
             $this->redirect('checkout/' . $saveResult['modelID']);
         }
 
@@ -388,13 +398,12 @@ class ReservationController extends Controller
             'expertise_id' => $expertiseID,
             'date' => $date,
             'time' => $time,
-            'status' => $status
         ));
-
         if ($model) {
             return array(
                 'saved' => true,
                 'modelID' => $model->id,
+                'status' => $model->status,
             );
         } else {
             $model = new Visits();
