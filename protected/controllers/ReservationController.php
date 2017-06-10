@@ -306,7 +306,7 @@ class ReservationController extends Controller
         elseif(isset($_POST['Payment'])){
             $transaction = new UserTransactions();
             $transaction->user_id = $model->user_id;
-            $transaction->amount = (double)$commission->value;
+            $transaction->amount = $commission;
             $transaction->date = time();
             $transaction->gateway_name='زرین پال';
             if ($model->save()) {
@@ -372,13 +372,12 @@ class ReservationController extends Controller
             $doctorSchedule = $visit->doctor->doctorSchedules($criteria);
 
             Yii::app()->getModule('setting');
-            $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'));
-
+            $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'))->value;
             $visit->status = Visits::STATUS_ACCEPTED;
-            if($visit->save())
+            $reservation = Yii::app()->user->getState('reservation');
+            if($visit->save() && $reservation)
             {
                 Yii::app()->user->setFlash('success', 'پرداخت شما انجام و نوبت شما با موفقیت رزرو شد.');
-                $reservation = Yii::app()->user->getState('reservation');
                 $visitDate = JalaliDate::date('Y/m/d',$reservation['date']);
                 $visitTimeLabel = $reservation['time']=='am'?'صبح':'بعدازظهر';
                 $message = "نوبت شما با موفقیت رزرو شد.
@@ -390,11 +389,23 @@ class ReservationController extends Controller
                     Notify::SendSms($message, $phone);
                 Yii::app()->user->setState('reservation', null);
             }
+
+            $personnel = false;
+            if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user' && Yii::app()->user->roles != 'user'){
+                $personnel = ClinicPersonnels::model()->findByAttributes([
+                    'clinic_id' => $visit->clinic_id,
+                    'user_id' => Yii::app()->user->getId(),
+                ]);
+                if($personnel)
+                    $commission = 0;
+            }
+
             $this->render('checkout', array(
                 'model' => $visit,
                 'doctorSchedule' => $doctorSchedule[0],
                 'commission' => $commission,
                 'transaction' => $transaction,
+                'personnel' => $personnel,
             ));
         }
     }

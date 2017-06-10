@@ -13,7 +13,26 @@ $this->breadcrumbs=array(
 	'id'=>'visits-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
-	'itemsCssClass'=>'table',
+	'template' => '{items} {pager}',
+	'ajaxUpdate' => true,
+	'afterAjaxUpdate' => "function(id, data){
+		$('html, body').animate({
+			scrollTop: ($('#'+id).offset().top-130)
+		},1000);
+	}",
+	'pager' => array(
+		'header' => '',
+		'firstPageLabel' => '<<',
+		'lastPageLabel' => '>>',
+		'prevPageLabel' => '<',
+		'nextPageLabel' => '>',
+		'cssFile' => false,
+		'htmlOptions' => array(
+			'class' => 'pagination pagination-sm',
+		),
+	),
+	'pagerCssClass' => 'blank',
+	'itemsCssClass' => 'table',
 	'columns'=>array(
 		array(
 			'name'=>'user_id',
