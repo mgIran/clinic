@@ -40,7 +40,7 @@
     </div>
     <div class="col-lg-5 col-md-5 col-sm-5 col-ex-12">
     <h3>افزودن مرخصی جدید</h3>
-    <p class="description">جهت تعیین برنامه زمانی مرخص های خود در این کلینیک، لطفا تاریخ موردنظر را به جدول اضافه کنید.</p>
+    <p class="description">جهت تعیین برنامه زمانی مرخصی در این کلینیک، لطفا تاریخ موردنظر را به جدول اضافه کنید.</p>
     <?php $this->renderPartial('//partial-views/_flashMessage') ?>
     <div class="form well">
         <?php
