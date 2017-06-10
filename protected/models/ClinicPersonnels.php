@@ -39,6 +39,7 @@ class ClinicPersonnels extends CActiveRecord
 	public $national_code;
 
 	public $expertise;
+	public $count;
 
 	/**
 	 * @return array validation rules for model attributes.

@@ -100,7 +100,7 @@ class Visits extends CActiveRecord
             'id' => 'ID',
             'user_id' => 'کاربر',
             'userNameFilter' => 'بیمار',
-            'clinic_id' => 'مطب',
+            'clinic_id' => 'بیمارستان / درمانگاه / مطب',
             'doctor_id' => 'پزشک',
             'expertise_id' => 'تخصص',
             'date' => 'تاریخ مراجعه',
@@ -140,7 +140,7 @@ class Visits extends CActiveRecord
         $criteria->compare('t.status', $this->status);
         $criteria->compare('tracking_code', $this->tracking_code, true);
         $criteria->compare('clinic_checked_number', $this->clinic_checked_number);
-        if(!Yii::app()->user->isGuest && Yii::app()->user->type != 'admin')
+        if(!Yii::app()->user->isGuest && !Yii::app()->user->type == 'admin')
             $criteria->addCondition('t.status > 1');
         if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin')
             $criteria->addCondition('t.status > 0');
