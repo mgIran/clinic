@@ -42,34 +42,41 @@
     <div class="form well">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'doctor-schedules',
-            'enableAjaxValidation' => false
+            'id' => 'doctor-leaves',
+            'enableAjaxValidation' => false,
+            'enableClientValidation' => true,
+            'clientOptions' => array(
+                'validateOnSubmit' => true,
+            ),
         ));
         echo CHtml::hiddenField('insert',true);
         ?>
-        <div class="form-group col-lg-10 col-md-10 col-sm-10 col-ex-12 relative">
-            <?php echo $form->labelEx($model, 'date'); ?>
-            <?php $this->widget('ext.PDatePicker.PDatePicker', array(
-                'id' => 'date-picker',
-                'model' => $model,
-                'attribute' => 'date',
-                'htmlOptions' => array(
-                    'autocomplete' => 'off'
-                ),
-                'options' => array(
-                    'format' => 'YYYY/MM/DD',
-                )
-            )); ?>
-            <?php echo $form->error($model, 'date'); ?>
-        </div>
         <?php
         if($visitsExists):
             echo CHtml::hiddenField('visitsExists',true);
+            echo CHtml::activeHiddenField($model,'date');
             echo CHtml::submitButton('لغو نوبت ها و افزودن مرخصی',array('class' => 'btn btn-success', 'style' => 'margin-bottom:10px'));
-            echo CHtml::link('نمایش نوبت ها',array('/clinics/doctor/visits/?leaves=true&date='.$model->date),array('class' => 'btn btn-info','style' => 'margin-bottom:10px'));
+            echo CHtml::link('نمایش نوبت ها',array('/clinics/doctor/visits/?leaves=true&date='.$model->date),array('target' => '_blank','class' => 'btn btn-info','style' => 'margin-bottom:10px'));
             echo '<div class="clearfix"></div>';
             echo CHtml::link('انصراف',array('/clinics/doctor/leaves'),array('class' => 'btn btn-danger'));
         else:
+            ?>
+            <div class="form-group col-lg-10 col-md-10 col-sm-10 col-ex-12 relative">
+                <?php echo $form->labelEx($model, 'date'); ?>
+                <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                    'id' => 'date-picker',
+                    'model' => $model,
+                    'attribute' => 'date',
+                    'htmlOptions' => array(
+                        'autocomplete' => 'off'
+                    ),
+                    'options' => array(
+                        'format' => 'YYYY/MM/DD',
+                    )
+                )); ?>
+                <?php echo $form->error($model, 'date'); ?>
+            </div>
+        <?php
             echo CHtml::submitButton('افزودن مرخصی',array('class' => 'btn btn-success'));
         endif;
         ?>
@@ -78,3 +85,11 @@
         ?>
     </div>
 </div>
+<?php
+Yii::app()->clientScript->registerScript('confirm-form','
+    $("body").on("submit", "#doctor-leaves", function(e){
+        e.preventDefault();
+        if(confirm("آیا از ثبت این مرخصی اطمینان دارید؟"))
+            document.getElementById("doctor-leaves").submit();  
+    });
+',CClientScript::POS_READY);

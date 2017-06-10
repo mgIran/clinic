@@ -90,16 +90,14 @@ class Users extends CActiveRecord
         // will receive user inputs.
         return array(
             array('email, password', 'required', 'on' => 'insert,create'),
-            array('national_code, mobile, first_name, last_name', 'required', 'on' => 'reserve_register'),
             array('national_code', 'length', 'is' => 10, 'message'=>'کد ملی باید 10 رقم باشد.'),
             array('national_code, mobile', 'numerical', 'integerOnly' => true, 'message'=>'{attribute} باید عددی باشد.'),
             array('email', 'required', 'on' => 'update'),
             array('role_id', 'default', 'value' => 1),
             array('email', 'required', 'on' => 'email, OAuthInsert'),
-            array('email, national_code', 'unique', 'on' => 'insert, create, OAuthInsert, update, reserve_register'),
+            array('email, national_code', 'unique', 'on' => 'insert, create, OAuthInsert, update'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
-            array('mobile', 'checkUnique', 'on' => 'reserve_register'),
             array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
             array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update'),
             array('email', 'length', 'max' => 255),
@@ -107,6 +105,12 @@ class Users extends CActiveRecord
             array('status', 'length', 'max' => 8),
             array('create_date', 'length', 'max' => 20),
             array('type, first_name, last_name, phone, mobile, national_code', 'safe'),
+
+            // Reserve Register rules
+            array('national_code, mobile, first_name, last_name', 'required', 'on' => 'reserve_register'),
+            array('email', 'email', 'on' => 'reserve_register'),
+            array('email, national_code', 'unique', 'on' => 'reserve_register'),
+            array('mobile', 'checkUnique', 'on' => 'reserve_register'),
 
             // change password rules
             array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'change_password'),

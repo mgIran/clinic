@@ -45,14 +45,19 @@
     <div class="form well">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'doctor-schedules',
-            'enableAjaxValidation' => false
+            'id' => 'doctor-leaves',
+            'enableAjaxValidation' => false,
+            'enableClientValidation' => true,
+            'clientOptions' => array(
+                'validateOnSubmit' => true,
+            ),
         ));
         echo CHtml::hiddenField('insert',true);
         ?>
         <?php
         if($visitsExists):
             echo CHtml::hiddenField('visitsExists',true);
+            echo CHtml::activeHiddenField($model,'date');
             echo CHtml::submitButton('لغو نوبت ها و افزودن مرخصی',array('class' => 'btn btn-success', 'style' => 'margin-bottom:10px'));
             echo CHtml::link('نمایش نوبت ها',array('/clinics/secretary/visits/'.$search->doctor_id.'?leaves=true&date='.$model->date),array('class' => 'btn btn-info','style' => 'margin-bottom:10px'));
             echo '<div class="clearfix"></div>';
@@ -83,3 +88,11 @@
         ?>
     </div>
 </div>
+<?php
+Yii::app()->clientScript->registerScript('confirm-form','
+    $("body").on("submit", "#doctor-leaves", function(e){
+        e.preventDefault();
+        if(confirm("آیا از ثبت این مرخصی اطمینان دارید؟"))
+            document.getElementById("doctor-leaves").submit();  
+    });
+',CClientScript::POS_READY);
