@@ -87,7 +87,7 @@ class ReservationController extends Controller
             $from = $_POST['from_altField'];
             $to = $_POST['to_altField'];
         }else{
-            $from = time();
+            $from = strtotime(date('Y/m/d 00:00',time()));
             $currentMonth = JalaliDate::date('m', $from, false);
             $currentYear = JalaliDate::date('Y', $from, false);
             $monthDaysCount = 30;
@@ -122,7 +122,7 @@ class ReservationController extends Controller
                             foreach($schedules as $key => $schedule)
                                 if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
                                     $checkAM = true;
-                                    if($key===0 && $fromIsToday && date('a',time()) != 'am')
+                                    if($i===0 && $fromIsToday && date('a',time()) != 'am')
                                         $checkAM = false;
                                     if($checkAM && !is_null($schedule->times['AM'])){
                                         $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
