@@ -35,7 +35,7 @@ class ClinicsSecretaryController extends Controller
         Yii::app()->theme = 'frontend';
         $action = isset($_GET['action']) && !empty($_GET['action'])?$_GET['action']:'visits';
         $clinicID = Yii::app()->user->clinic->id;
-        if($action != 'visits'){
+        if(1){
             $doctors = Yii::app()->user->getState('doctors');
             if($doctors && count($doctors) == 1)
                 $this->redirect(Yii::app()->createUrl("/clinics/secretary/{$action}/{$doctors[0]}/"));
@@ -61,6 +61,9 @@ class ClinicsSecretaryController extends Controller
         Yii::app()->theme = 'frontend';
         $doctorID = $id;
         $clinicID = Yii::app()->user->clinic->id;
+
+        if(isset($_POST['Visits']['date']) && !empty($_POST['Visits']['date']))
+            $this->redirect(array('secretary/visits/'.$id.'?date=' . $_POST['Visits']['date']));
 
         $model = new Visits('search');
         $model->unsetAttributes();

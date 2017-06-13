@@ -27,32 +27,37 @@ if($today):
 <?php
 elseif(!isset($_GET['leaves'])):
     ?>
-    <div class="form well">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'doctor-schedules',
-            'enableAjaxValidation' => false
-        ));
-        ?>
-        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
-            <?php echo $form->labelEx($model, 'date'); ?>
-            <?php $this->widget('ext.PDatePicker.PDatePicker', array(
-                'id' => 'date-picker',
-                'model' => $model,
-                'attribute' => 'date',
-                'htmlOptions' => array(
-                    'autocomplete' => 'off'
-                ),
-                'options' => array(
-                    'format' => 'YYYY/MM/DD',
-                )
-            )); ?>
-            <?php echo $form->error($model, 'date'); ?>
+    <div class="form-group">
+        <button class="btn btn-default" data-toggle="collapse" data-target="#collapse">انتخاب تاریخ</button>
+    </div>
+    <div class="collapse" id="collapse">
+        <div class="form well">
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'doctor-schedules',
+                'enableAjaxValidation' => false
+            ));
+            ?>
+            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
+                <?php echo $form->labelEx($model, 'date'); ?>
+                <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                    'id' => 'date-picker',
+                    'model' => $model,
+                    'attribute' => 'date',
+                    'htmlOptions' => array(
+                        'autocomplete' => 'off'
+                    ),
+                    'options' => array(
+                        'format' => 'YYYY/MM/DD',
+                    )
+                )); ?>
+                <?php echo $form->error($model, 'date'); ?>
+            </div>
+            <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
+            <?php
+            $this->endWidget();
+            ?>
         </div>
-        <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
-        <?php
-        $this->endWidget();
-        ?>
     </div>
     <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
     <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>

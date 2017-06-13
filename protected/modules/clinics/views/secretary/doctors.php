@@ -34,7 +34,7 @@ if($action == 'visits'){
 <h3>لیست پزشکان</h3>
     <p class="description"><?= $desc ?></p>
 <?php
-if($action == 'visits'):
+if($action == -1):
 ?>
     <div class="form well">
         <?php

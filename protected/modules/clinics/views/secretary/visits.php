@@ -4,6 +4,38 @@
 /* @var $form CActiveForm */
 /* @var $today boolean */
 ?>
+<div class="form-group">
+    <button class="btn btn-default" data-toggle="collapse" data-target="#collapse">انتخاب تاریخ</button>
+</div>
+<div class="collapse" id="collapse">
+    <div class="form well">
+        <?php
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'doctor-schedules',
+            'enableAjaxValidation' => false
+        ));
+        ?>
+        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
+            <?php echo $form->labelEx($model, 'date'); ?>
+            <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                'id' => 'date-picker',
+                'model' => $model,
+                'attribute' => 'date',
+                'htmlOptions' => array(
+                    'autocomplete' => 'off'
+                ),
+                'options' => array(
+                    'format' => 'YYYY/MM/DD',
+                )
+            )); ?>
+            <?php echo $form->error($model, 'date'); ?>
+        </div>
+        <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
+        <?php
+        $this->endWidget();
+        ?>
+    </div>
+</div>
 <?php
 if($today):
     ?>
@@ -25,11 +57,11 @@ if($today):
         </a>
     </p>
 <?php
-else:
-?>
+elseif(!isset($_GET['leaves'])):
+    ?>
     <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
     <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>
-    <?php
+    <?
 endif;
 ?>
 <div class="container-fluid well">
@@ -122,7 +154,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         'class' => 'btn btn-info btn-sm checked-clinic',
                         'style' => 'margin-top: 5px'
                     ),
-                    'url' => 'Yii::app()->controller->createUrl("doctor/clinicChecked/".$data->id)',
+                    'url' => 'Yii::app()->controller->createUrl("secretary/clinicChecked/".$data->id)',
                     'visible' => '$data->status == 2'
                 ),
                 'visited' => array(
@@ -130,7 +162,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                     'options' => array(
                         'class' => 'btn btn-success btn-sm visited-clinic',
                     ),
-                    'url' => 'Yii::app()->controller->createUrl("doctor/clinicVisited/".$data->id)',
+                    'url' => 'Yii::app()->controller->createUrl("secretary/clinicVisited/".$data->id)',
                     'visible' => '$data->status == 3'
                 )
             )
