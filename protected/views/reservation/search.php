@@ -51,8 +51,14 @@
                         'value'=>'$data->user->expertises[0]->title'
                     ),
                     array(
-                        'header'=>'مطب',
-                        'value'=>'$data->clinic->clinic_name'
+                        'header'=>'روزهای حضور در مطب',
+                        'value'=>function($data){
+                            /* @var $data ClinicPersonnels */
+                            $html=[];
+                            foreach($data->user->doctorSchedules as $schedule)
+                                $html[] = DoctorSchedules::$weekDays[$schedule->week_day];
+                           return implode('، ', $html);
+                        }
                     ),
                     array(
                         'header'=>'عملیات',
@@ -65,7 +71,7 @@
                             $html .= CHtml::hiddenField('Reservation[doctor_id]', $data->user_id);
                             $html .= CHtml::hiddenField('Reservation[clinic_id]', $data->clinic_id);
                             $html .= CHtml::hiddenField('Reservation[expertise_id]', $data->user->expertises[0]->id);
-                            $html .= CHtml::link('پروفایل دکتر', Yii::app()->createUrl('/users/' . $data->user_id . '/clinic/' . $data->clinic_id), array('class' => 'btn btn-danger btn-sm', 'target' => '_blank'));
+                            $html .= CHtml::link('پروفایل دکتر و اطلاعات مطب', Yii::app()->createUrl('/users/' . $data->user_id . '/clinic/' . $data->clinic_id), array('class' => 'btn btn-danger btn-sm', 'style' => 'width:auto', 'target' => '_blank'));
                             $html .= CHtml::endForm();
                             return $html;
                         },
