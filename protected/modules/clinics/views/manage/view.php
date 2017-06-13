@@ -19,7 +19,6 @@ $this->menu = array(
 <?php $this->widget('zii.widgets.CDetailView', array(
     'data'=>$model,
     'attributes'=>array(
-        'clinic_name',
         array(
             'label' => 'استان',
             'name' => 'town.name',
