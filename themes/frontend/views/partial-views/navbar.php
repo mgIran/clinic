@@ -11,6 +11,7 @@
         <div class="collapse navbar-collapse" id="mobile-navbar">
             <ul class="nav navbar-nav">
                 <li><a href="<?php echo Yii::app()->createUrl('/site');?>">صفحه اصلی</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('/reservation/follow');?>">پیگیری نوبت</a></li>
                 <li><a href="<?php echo Yii::app()->createUrl('/about');?>">درباره ما</a></li>
                 <li><a href="<?php echo Yii::app()->createUrl('/contactus');?>">تماس با ما</a></li>
                 <?php

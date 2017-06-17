@@ -15,6 +15,7 @@ class ReservationController extends Controller
                 'selectTime',
                 'info',
                 'checkout',
+                'follow',
             ),
             'backend'=>array(
                 'admin',
@@ -84,9 +85,19 @@ class ReservationController extends Controller
                 Yii::app()->user->setFlash('failed', 'تاریخ های انتخاب شده اشتباه است.');
                 $flag = false;
             }
-            $from = $_POST['from_altField'];
-            $to = $_POST['to_altField'];
-        }else{
+            elseif($_POST['from_altField'] < strtotime(date('Y/m/d 00:00',time())) || $_POST['to_altField'] < strtotime(date('Y/m/d 00:00',time())))
+            {
+                Yii::app()->user->setFlash('failed', 'تاریخ ها معتبر نمی باشند.');
+                $flag = false;
+            }
+            else{
+                $flag = true;
+                $from = $_POST['from_altField'];
+                $to = $_POST['to_altField'];
+            }
+        }else
+            $flag = false;
+        if(!$flag){
             $from = strtotime(date('Y/m/d 00:00',time()));
             $currentMonth = JalaliDate::date('m', $from, false);
             $currentYear = JalaliDate::date('Y', $from, false);
@@ -98,7 +109,6 @@ class ReservationController extends Controller
             $endMonth = JalaliDate::mktime(23, 59, 59, $currentMonth, $monthDaysCount, $currentYear);
             $to = $endMonth;
         }
-
         if($from && $to){
             $user = Users::model()->findByPk(Yii::app()->user->reservation['doctorID']);
             $criteria = new CDbCriteria();
@@ -140,7 +150,6 @@ class ReservationController extends Controller
                     }
                 }
             }
-
             $renderOutput = array(
                 'days' => $days,
                 'doctor' => $user,
@@ -309,6 +318,8 @@ class ReservationController extends Controller
             $transaction->amount = $commission;
             $transaction->date = time();
             $transaction->gateway_name='زرین پال';
+            $transaction->model_name='Visits';
+            $transaction->model_id= $model->id;
             if ($model->save()) {
                 $gateway = new ZarinPal();
                 $gateway->callback_url = Yii::app()->getBaseUrl(true) . '/reservation/verifyPayment/'.$id;
@@ -465,6 +476,58 @@ class ReservationController extends Controller
         $model=Visits::model()->findByPk($id);
 
         $this->render('view', array(
+            'model'=>$model,
+        ));
+    }
+
+    public function actionFollow($id = null)
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = 'public';
+        $model=null;
+        if($id)
+        {
+            $model=Visits::model()->findByAttributes(array('tracking_code' => $id));
+            if($model === null)
+            {
+                if(!Yii::app()->request->isAjaxRequest)
+                    Yii::app()->user->setFlash("failed", "نوبتی با این کد رهگیری یافت نشد! لطفا مجددا بررسی و تلاش کنید.");
+                else{
+                    echo CJSON::encode([
+                        'status' => false,
+                        'message' => "نوبتی با این کد رهگیری یافت نشد! لطفا مجددا بررسی و تلاش کنید."
+                    ]);
+                    Yii::app()->end();
+                }
+            }else{
+                $transaction = UserTransactions::model()->findByAttributes(array(
+                    'model_name' => 'Visits',
+                    'model_id' => $model->id
+                ));
+                $criteria = new CDbCriteria();
+                $criteria->addCondition('clinic_id = :id');
+                $criteria->params[':id'] = $model->clinic_id;
+                $doctorSchedule = $model->doctor->doctorSchedules($criteria);
+
+                Yii::app()->getModule('setting');
+                $commission = SiteSetting::model()->find('name = :name', array(':name' => 'commission'))->value;
+                $this->beginClip('view-visit');
+                $this->renderPartial('_view',array(
+                    'model' => $model,
+                    'doctorSchedule' => $doctorSchedule[0],
+                    'commission' => $commission,
+                    'transaction' => $transaction
+                ));
+                $this->endClip();
+                echo CJSON::encode([
+                    'status' => true,
+                    'html' => $this->clips['view-visit']
+                ]);
+                Yii::app()->end();
+            }
+        }
+
+        $this->render('follow', array(
             'model'=>$model,
         ));
     }

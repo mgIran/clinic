@@ -1146,6 +1146,15 @@ input[type="text"].date-input{
     bottom: 0;
     display: none;
 }
+.loading-container .overly{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    background-color: rgba(255,255,255,0.3);
+}
 .loading-container .spinner {
     margin: 0 auto;
     width: 70px;
@@ -1153,17 +1162,17 @@ input[type="text"].date-input{
     z-index: 2;
     position: absolute;
     top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 .loading-container .spinner > div {
     width: 13px;
     height: 13px;
-    background-color: #999;
+    background-color: #18b29e;
 
     border-radius: 100%;
     display: inline-block;

@@ -7,6 +7,7 @@ class SendSMS extends CComponent
     public $username = '9160336621';
     public $password = '665d43';
     public $lineNumber = '30004554554153';
+    public $messagePostfix = 'http://visit365.ir';
 
     private $_client;
     private $_invalid_numbers=array();
@@ -81,7 +82,8 @@ class SendSMS extends CComponent
      * @return $this
      */
     public function AddMessage($message){
-        $this->_messages[] = $message;
+        $this->_messages[] = $message.($this->messagePostfix?"
+$this->messagePostfix":'');
         return $this;
     }
 
