@@ -112,6 +112,8 @@ class UsersManageController extends Controller
     public function actionDelete($id)
     {
         $model = $this->loadModel($id);
+        if($model->status == 'deleted')
+            $model->delete();
         $model->updateByPk($model->id, array('status' => 'deleted'));
 
         // if AJAX request (triggered by deletion via admin grid views), we should not redirect the browser
