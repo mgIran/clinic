@@ -204,7 +204,7 @@ class ClinicsManageController extends Controller
 		$model->clinic_id = $clinic;
 		if(isset($_POST['ClinicPersonnels'])){
 			$model->loadPropertyValues($_POST['ClinicPersonnels']);
-			$userModel = new Users();
+			$userModel = new Users('add_personnel');
 			$userModel->attributes = $_POST['ClinicPersonnels'];
 			$userModel->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel->role_id = $_POST['ClinicPersonnels']['post'];
@@ -235,7 +235,6 @@ class ClinicsManageController extends Controller
 				$phone = $userModel->mobile;
 				if($phone)
 					Notify::SendSms($message, $phone);
-				$model->scenario = 'insert';
 				$model->post = $_POST['ClinicPersonnels']['post'];
 				$model->user_id = $userModel->id;
 				if($model->post != 3 && $model->post != 2)

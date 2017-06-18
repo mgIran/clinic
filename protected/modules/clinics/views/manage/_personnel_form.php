@@ -34,7 +34,6 @@
 
     <div id="expertises" class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <?php echo $form->labelEx($model,'expertise'); ?>
-        <div class="clearfix"></div>
         <select class="selectpicker" data-live-search="true" name="<?= CHtml::activeName($model,'expertise') ?>[]" multiple>
             <?php
             foreach(Expertises::model()->findAll('parent_id IS NULL') as $item):
@@ -120,6 +119,11 @@
 </div><!-- form -->
 
 <?
+Yii::app()->clientScript->registerCss('style','
+    .form-group{
+        clear:both;
+    }
+');
 Yii::app()->clientScript->registerScript('hide-exps','
     if($("#ClinicPersonnels_post").val() == 2 || $("#ClinicPersonnels_post").val() == 3)
         $("#expertises").show();
