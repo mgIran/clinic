@@ -26,6 +26,7 @@
                     'id'=>'from',
                     'value' => $from,
                     'options'=>array(
+                        'maxDate' => (strtotime(date('Y/m/d 00:00',time()))-1)*1000,
                         'format'=>'DD MMMM YYYY',
                         'onShow'=>"js:function(){ $('.datepicker-plot-area').width($('#from').parent().width()) }"
                     ),
@@ -37,6 +38,7 @@
                     'id'=>'to',
                     'value' => $to,
                     'options'=>array(
+                        'maxDate' => (strtotime(date('Y/m/d 00:00',time()))-1)*1000,
                         'format'=>'DD MMMM YYYY',
                         'onShow'=>"js:function(){ $('.datepicker-plot-area').width($('#to').parent().width()) }"
                     ),
@@ -92,16 +94,19 @@
                                 <div class="days">
                                     <?php for($j=1;$j<=$monthDaysCount;$j++):
                                         $currentDay=JalaliDate::mktime(0,0,0,$currentMonth,$j,$currentYear);
+                                        $isHoliday = Holidays::model()->findByAttributes(['date' => $currentDay]);
+                                        $fri = (int)JalaliDate::date('N', $currentDay, false) == 7?:false;
                                         if($j == 1){
                                             $diff = JalaliDate::date('w', JalaliDate::mktime(0,0,0,$currentMonth,1,$currentYear),false);
                                             for($k = 0;$k < $diff;$k++){
                                                 echo '<div class="day disabled"></div>';
                                             }
                                         }
-                                        if($currentDay < strtotime(date('Y/m/d 00:00', $from)) or $currentDay > strtotime(date('Y/m/d 00:00', $to))):?>
-                                            <div class="day disabled">
+
+                                        if($currentDay < strtotime(date('Y/m/d 00:00', $from)) or $currentDay > strtotime(date('Y/m/d 00:00', $to)) || $isHoliday || $fri):?>
+                                            <div class="day disabled<?= $isHoliday || $fri?" holiday":""?>">
                                         <?php else:?>
-                                            <div class="day<?php echo key_exists($currentDay, $days)?' active':'';?>">
+                                                <div class="day<?php echo key_exists($currentDay, $days)?' active':'';?>">
                                         <?php endif;?>
                                             <?php if(key_exists($currentDay, $days)):?>
                                                 <?php echo $this->parseNumbers($j);?>
@@ -114,6 +119,9 @@
                                                 <?php endif;?>
                                             <?php else:?>
                                                 <?php echo $this->parseNumbers($j);?>
+                                                <?php
+                                                if($isHoliday) echo '<small>'.$isHoliday->title.'</small>';
+                                                ?>
                                             <?php endif;?>
                                         </div>
                                     <?php endfor;?>

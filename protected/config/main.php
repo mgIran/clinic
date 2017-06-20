@@ -36,6 +36,7 @@ return array(
 		'pages',
 		'tickets',
 		'places',
+		'holidays',
 	),
 
 	// application components

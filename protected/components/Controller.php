@@ -96,6 +96,15 @@ class Controller extends AuthController
                     'url' => array('/reservation/admin')
                 ),
                 array(
+                    'label' => 'تعطیلات<span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'items' => array(
+                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/holidays/manage/admin')),
+                        array('label' => 'افزودن', 'url' => Yii::app()->createUrl('/holidays/manage/create')),
+                    )
+                ),
+                array(
                     'label' => 'مطب ها<span class="caret"></span>',
                     'url' => '#',
                     'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),

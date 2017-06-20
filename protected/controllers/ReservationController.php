@@ -126,26 +126,28 @@ class ReservationController extends Controller
             $days = array();
             for($i = 0;$i <= $daysCount;$i++){
                 $dayTimestamp = strtotime(date('Y/m/d 00:00', $from + ($i * (60 * 60 * 24))));
-                if(in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)){
-                    if(!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)){
-                        if($dayTimestamp >= $from){
-                            foreach($schedules as $key => $schedule)
-                                if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
-                                    $checkAM = true;
-                                    if($i===0 && $fromIsToday && date('a',time()) != 'am')
-                                        $checkAM = false;
-                                    if($checkAM && !is_null($schedule->times['AM'])){
-                                        $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
-                                        if($AMVisitsCount != $schedule->visit_count_am)
-                                            $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
-                                    }
+                if((int)Holidays::model()->countByAttributes(['date' => $dayTimestamp]) ===0){
+                    if(in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)){
+                        if(!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)){
+                            if($dayTimestamp >= $from){
+                                foreach($schedules as $key => $schedule)
+                                    if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
+                                        $checkAM = true;
+                                        if($i===0 && $fromIsToday && date('a',time()) != 'am')
+                                            $checkAM = false;
+                                        if($checkAM && !is_null($schedule->times['AM'])){
+                                            $AMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
+                                            if($AMVisitsCount != $schedule->visit_count_am)
+                                                $days[$dayTimestamp]['AM'] = $schedule->times['AM'];
+                                        }
 
-                                    if(!is_null($schedule->times['PM'])){
-                                        $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
-                                        if($PMVisitsCount != $schedule->visit_count_pm)
-                                            $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
+                                        if(!is_null($schedule->times['PM'])){
+                                            $PMVisitsCount = Visits::getAllVisits(Yii::app()->user->reservation['clinicID'], Yii::app()->user->reservation['doctorID'], $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
+                                            if($PMVisitsCount != $schedule->visit_count_pm)
+                                                $days[$dayTimestamp]['PM'] = $schedule->times['PM'];
+                                        }
                                     }
-                                }
+                            }
                         }
                     }
                 }

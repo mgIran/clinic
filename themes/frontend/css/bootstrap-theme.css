@@ -1114,6 +1114,10 @@ input[type="text"].date-input{
     font-size: 13px;
     font-weight: bold;
     line-height:15px;
+    overflow: hidden;
+}
+.calendar .days .day.holiday small{
+    line-height:14px;
 }
 .calendar .day:nth-child(7n){
     margin-left: 1%;
@@ -1133,6 +1137,10 @@ input[type="text"].date-input{
 .calendar .days .day.disabled{
     color: #aaa;
     cursor: default;
+}
+.calendar .days .day.disabled.holiday{
+    color: #ff0042 !important;
+    background: rgba(255, 0, 66, 0.03);
 }
 .calendar .week-days-name{
     font-weight: bold;
