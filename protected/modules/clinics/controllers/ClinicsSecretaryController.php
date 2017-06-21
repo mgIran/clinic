@@ -57,6 +57,8 @@ class ClinicsSecretaryController extends Controller
         $date = false;
         if(isset($_GET['date']))
             $date = $_GET['date'];
+        if(isset($_GET['print']) && $_GET['print']==true)
+            $this->layout = '//layouts/print';
 
         Yii::app()->theme = 'frontend';
         $doctorID = $id;

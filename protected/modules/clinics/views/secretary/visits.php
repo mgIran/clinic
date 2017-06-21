@@ -3,95 +3,117 @@
 /* @var $model Visits */
 /* @var $form CActiveForm */
 /* @var $today boolean */
+$print=false;
+if(isset($_GET['print']) && $_GET['print']==true)
+    $print = true;
+$query= '';
+if(isset($_GET['Visits']['time']))
+    $query = '&Visits[time]='.$_GET['Visits']['time'];
 ?>
-<div class="form-group">
-    <button class="btn btn-default" data-toggle="collapse" data-target="#collapse">انتخاب تاریخ</button>
-</div>
-<div class="collapse" id="collapse">
-    <div class="form well">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'doctor-schedules',
-            'enableAjaxValidation' => false
-        ));
-        ?>
-        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
-            <?php echo $form->labelEx($model, 'date'); ?>
-            <?php $this->widget('ext.PDatePicker.PDatePicker', array(
-                'id' => 'date-picker',
-                'model' => $model,
-                'attribute' => 'date',
-                'htmlOptions' => array(
-                    'autocomplete' => 'off'
-                ),
-                'options' => array(
-                    'format' => 'YYYY/MM/DD',
-                )
-            )); ?>
-            <?php echo $form->error($model, 'date'); ?>
+<?php
+if(!$print):
+?>
+    <div class="form-group">
+        <button class="btn btn-default" data-toggle="collapse" data-target="#collapse">انتخاب تاریخ</button>
+        <a class="btn btn-danger pull-left" href="<?= $this->createUrl("secretary/visits/{$doctorID}/?print=true{$query}") ?>">
+            <i class="icon-print"></i>
+            پرینت
+        </a>
+    </div>
+    <div class="collapse" id="collapse">
+        <div class="form well">
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'doctor-schedules',
+                'enableAjaxValidation' => false
+            ));
+            ?>
+            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-ex-12 relative">
+                <?php echo $form->labelEx($model, 'date'); ?>
+                <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                    'id' => 'date-picker',
+                    'model' => $model,
+                    'attribute' => 'date',
+                    'htmlOptions' => array(
+                        'autocomplete' => 'off'
+                    ),
+                    'options' => array(
+                        'format' => 'YYYY/MM/DD',
+                    )
+                )); ?>
+                <?php echo $form->error($model, 'date'); ?>
+            </div>
+            <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
+            <?php
+            $this->endWidget();
+            ?>
         </div>
-        <?php echo CHtml::submitButton('نمایش',array('class' => 'btn btn-success')) ?>
-        <?php
-        $this->endWidget();
-        ?>
-    </div>
-</div>
-<?php
-if($today):
-    ?>
-    <h3>لیست نوبت های امروز<?= (isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1?'&nbsp;<small>(نوبت صبح)</small>':'&nbsp;<small>(نوبت بعدازظهر)</small>') ?></h3>
-    <p class="description">
-        <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
-            <?php
-            if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
-                echo '<i class="icon-check"></i>';
-            ?>
-            نوبت صبح
-        </a>
-        <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
-            <?php
-            if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
-                echo '<i class="icon-check"></i>';
-            ?>
-            نوبت بعدازظهر
-        </a>
-    </p>
-<?php
-elseif(!isset($_GET['leaves'])):
-    ?>
-    <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
-    <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>
-    <?
-endif;
-?>
-<div class="container-fluid well">
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span> نوبت
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>نوبت های تایید شده امروز:</b> <span id="accepted"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_ACCEPTED)) ?></span> نوبت
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>نوبت های حضور یافته در مطب:</b> <span id="checked"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)) ?></span> نوبت
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <b>نوبت های ویزیت شده:</b> <span id="visited"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_VISITED)) ?></span> نوبت
     </div>
     <?php
     if($today):
-    ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span></h3>
-        </div>
+        ?>
+        <h3>لیست نوبت های امروز<?= (isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1?'&nbsp;<small>(نوبت صبح)</small>':'&nbsp;<small>(نوبت بعدازظهر)</small>') ?></h3>
+        <p class="description">
+            <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=1') ?>" class="btn btn-default btn-sm">
+                <?php
+                if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 1)
+                    echo '<i class="icon-check"></i>';
+                ?>
+                نوبت صبح
+            </a>
+            <a href="<?= $this->createUrl('secretary/visits/'.$doctorID.'/?Visits[time]=2') ?>" class="btn btn-default btn-sm">
+                <?php
+                if(isset($_GET['Visits']['time']) && $_GET['Visits']['time'] == 2)
+                    echo '<i class="icon-check"></i>';
+                ?>
+                نوبت بعدازظهر
+            </a>
+        </p>
     <?php
+    elseif(!isset($_GET['leaves'])):
+        ?>
+        <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
+        <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>
+        <?
     endif;
     ?>
-</div>
+    <div class="container-fluid well">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <b>مجموع نوبت های امروز:</b> <span id="all"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span> نوبت
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <b>نوبت های تایید شده امروز:</b> <span id="accepted"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_ACCEPTED)) ?></span> نوبت
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <b>نوبت های حضور یافته در مطب:</b> <span id="checked"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_CHECKED)) ?></span> نوبت
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <b>نوبت های ویزیت شده:</b> <span id="visited"><?= Controller::parseNumbers(Visits::getAllVisits(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time, Visits::STATUS_CLINIC_VISITED)) ?></span> نوبت
+        </div>
+        <?php
+        if($today):
+        ?>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3 class="text-danger"><b>شماره نوبت مراجعه به پزشک:</b> <span id="visiting"><?= Controller::parseNumbers(Visits::getNowVisit(Yii::app()->user->clinic->id, $doctorID,$model->date, $model->time)) ?></span></h3>
+            </div>
+        <?php
+        endif;
+        ?>
+    </div>
+<?php
+else:
+    ?>
+    <div class="container">
+    <h3>لیست نوبت های <?= JalaliDate::date('Y/m/d',$model->date) ?></h3>
+    <p class="description">لیست افرادی که در این تاریخ نوبت گرفته اند.</p>
+    <?php
+endif;
+?>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'visits-grid',
     'dataProvider'=>$model->search(),
-    'filter'=>$model,
+    'filter'=> ($print?null:$model),
     'itemsCssClass'=>'table',
     'template' => '{items} {pager}',
     'ajaxUpdate' => true,
@@ -114,29 +136,35 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'pagerCssClass' => 'text-center blank',
     'columns'=>array(
         array(
+            'header' => 'بیمار',
             'name' => 'userNameFilter',
             'value' => '$data->user && $data->user->userDetails?$data->user->userDetails->showName:"حذف شده"'
         ),
         array(
-            'name' => 'time',
+            'header' => 'نوبت روز',
             'value' => '$data->timeLabel',
             'filter' => CHtml::activeDropDownList($model, 'time', $model->timeLabels, array('id' => 'Visits_time', 'prompt' => ''))
         ),
         array(
-            'name' => 'status',
+            'header' => 'وضعیت',
             'value' => '$data->statusLabel',
-            'filter' => $model->statusLabels
+            'filter' => false
         ),
-        'tracking_code',
         array(
-            'name' => 'clinic_checked_number',
+            'header' => 'کدرهگیری',
+            'value' => function($data){
+                return $data->tracking_code;
+            }
+        ),
+        array(
+            'header' => 'شماره نوبت',
             'value' => function($data){
                 return $data->clinic_checked_number?Controller::parseNumbers($data->clinic_checked_number):'';
             }
         ),
         array(
             'class'=>'CButtonColumn',
-            'template'=>'{visited} {check} {delete}',
+            'template'=>$print?'':'{visited} {check} {delete}',
             'buttons' => array(
                 'delete' => array(
                     'label' => 'لغو نوبت',
@@ -170,49 +198,57 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ),
 ));
 
-Yii::app()->clientScript->registerScript('checked-clinic','
-    $("body").on("click", ".checked-clinic, .visited-clinic", function(e){
-        var $this = $(this);
-        e.preventDefault();
-        $.ajax({
-            url: $this.attr("href"),
-            dataType: "JSON",
-            type: "POST",
-            beforeSend: function(){
-                
-            },
-            success: function(data){
-                if(data.status)
-                    reloadStatistics();
-                else
-                    alert(data.msg);
-            }
-        });
-    });
-    $("body").on("change", "#Visits_time", function(e){
-        reloadStatistics();
-    });
-    setInterval(function () {
-        reloadStatistics();
-    }, 15000);
-    
-    function reloadStatistics(){
-        $.ajax({
-            url: window.location,
-            data: {Visits: {time: $("#Visits_time").val()}},
-            dataType: "JSON",
-            type: "GET",
-            beforeSend: function(){},
-            success: function(data){
-                $.fn.yiiGridView.update("visits-grid");
-                if(data.status){
-                    $("#all").text(data.all);
-                    $("#accepted").text(data.accepted);
-                    $("#checked").text(data.checked);
-                    $("#visited").text(data.visited);
-                    $("#visiting").text(data.visiting);
+if($print)
+    echo '</div>';
+
+if($print)
+    Yii::app()->clientScript->registerScript('print', '
+        window.print();
+    ',CClientScript::POS_LOAD);
+else
+    Yii::app()->clientScript->registerScript('checked-clinic','
+        $("body").on("click", ".checked-clinic, .visited-clinic", function(e){
+            var $this = $(this);
+            e.preventDefault();
+            $.ajax({
+                url: $this.attr("href"),
+                dataType: "JSON",
+                type: "POST",
+                beforeSend: function(){
+                    
+                },
+                success: function(data){
+                    if(data.status)
+                        reloadStatistics();
+                    else
+                        alert(data.msg);
                 }
-            }
+            });
         });
-    }
-');
+        $("body").on("change", "#Visits_time", function(e){
+            reloadStatistics();
+        });
+        setInterval(function () {
+            reloadStatistics();
+        }, 15000);
+        
+        function reloadStatistics(){
+            $.ajax({
+                url: window.location,
+                data: {Visits: {time: $("#Visits_time").val()}},
+                dataType: "JSON",
+                type: "GET",
+                beforeSend: function(){},
+                success: function(data){
+                    $.fn.yiiGridView.update("visits-grid");
+                    if(data.status){
+                        $("#all").text(data.all);
+                        $("#accepted").text(data.accepted);
+                        $("#checked").text(data.checked);
+                        $("#visited").text(data.visited);
+                        $("#visiting").text(data.visiting);
+                    }
+                }
+            });
+        }
+    ');
