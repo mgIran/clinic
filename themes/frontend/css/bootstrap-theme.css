@@ -792,6 +792,9 @@ input[type="text"].date-input{
 .table > tbody > tr > td{
     color: #8b8b8b;
 }
+.page{
+    min-height: 80vh !important;
+}
 .page-help{
     background: #f9f9f9;
     padding: 30px 0;
