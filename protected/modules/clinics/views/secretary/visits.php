@@ -8,7 +8,9 @@ if(isset($_GET['print']) && $_GET['print']==true)
     $print = true;
 $query= '';
 if(isset($_GET['Visits']['time']))
-    $query = '&Visits[time]='.$_GET['Visits']['time'];
+    $query .= '&Visits[time]='.$_GET['Visits']['time'];
+if(isset($_GET['date']))
+    $query .= '&date='.$_GET['date'];
 ?>
 <?php
 if(!$print):
