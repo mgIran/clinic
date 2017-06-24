@@ -2238,3 +2238,22 @@ tr.disable .row-overlay{
     left:0;
     bottom:0;
 }
+
+.reservation-steps{
+    width: 100%;
+}
+.reservation-steps .container-fluid .steps{
+    overflow: visible;
+}
+.reservation-steps .container-fluid .steps > li{
+    text-align: center;
+    width: 20%;
+}
+.reservation-steps .container-fluid .steps > li > a > div{
+    display: block;
+    margin: 0 auto;
+    float: none;
+}
+.table-container{
+    margin-top: 0;
+}
