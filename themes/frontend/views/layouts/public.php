@@ -21,11 +21,11 @@
 
     $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
     $cs->registerCssFile($baseUrl.'/css/bootstrap-rtl.min.css');
-    $cs->registerCssFile($baseUrl.'/css/bootstrap-theme.css?3.8');
-    $cs->registerCssFile($baseUrl.'/css/responsive-theme.css?3.8');
+    $cs->registerCssFile($baseUrl.'/css/bootstrap-theme.css?4');
+    $cs->registerCssFile($baseUrl.'/css/responsive-theme.css?4');
 
     $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js', CClientScript::POS_END);
-    $cs->registerScriptFile($baseUrl.'/js/jquery.script.js?3.8', CClientScript::POS_END);
+    $cs->registerScriptFile($baseUrl.'/js/jquery.script.js?4', CClientScript::POS_END);
     ?>
 </head>
 <body>
