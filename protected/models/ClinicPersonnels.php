@@ -188,6 +188,7 @@ class ClinicPersonnels extends CActiveRecord
 	public function loadPropertyValues($values = array())
 	{
 		if(isset($values) && $values){
+			$this->role_id = isset($values['post']) && !empty($values['post'])?$values['post']:null;
 			$this->email = isset($values['email']) && !empty($values['email'])?$values['email']:null;
 			$this->first_name = isset($values['first_name']) && !empty($values['first_name'])?$values['first_name']:null;
 			$this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:null;
@@ -197,6 +198,7 @@ class ClinicPersonnels extends CActiveRecord
 			$this->expertise = isset($values['expertise']) && !empty($values['expertise'])?$values['expertise']:null;
 		}
 		elseif($this->user){
+            $this->role_id = $this->user->role_id;
 			$this->email = $this->user->email;
 			$this->first_name = $this->user->userDetails->first_name;
 			$this->last_name = $this->user->userDetails->last_name;

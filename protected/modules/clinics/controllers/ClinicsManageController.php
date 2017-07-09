@@ -212,38 +212,41 @@ class ClinicsManageController extends Controller
 			$userModel->create_date = time();
 			$userModel->password = $userModel->generatePassword();
 			$pwd = $userModel->password;
-			$saved = $userModel->save();
-			if($saved && !$userModel->hasErrors()){
-				$token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
-				$userModel->updateByPk($userModel->id, array('verification_token' => $token));
-				$message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت ' . Yii::app()->name . ' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
-				$message .= '<strong>نام کاربری: </strong>' . $userModel->email . '<br>';
-				$message .= '<strong>کلمه عبور: </strong>' . $userModel->generatePassword() . '<br>';
-				$message .= 'به دلایل امنیتی لطفا در اسرع وقت از طریق داشبورد حساب کاربری خود نسبت به تغییر کلمه عبور اقدام فرمایید.<br>';
-				$message .= 'برای فعال کردن حساب کاربری خود در ' . Yii::app()->name . ' بر روی لینک زیر کلیک کنید:';
-				$message .= '</div>';
-				$message .= '<div style="text-align: right;font-size: 9pt;">';
-				$message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '</a>';
-				$message .= '</div>';
-				$message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
-				@Mailer::mail($model->email, 'ایجاد حساب کاربری', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
-				// Send Sms
-				$siteName = Yii::app()->name;
-				$message = "ثبت نام شما در سایت {$siteName} با موفقیت انجام شد.
-نام کاربری: {$userModel->mobile}
-کلمه عبور: {$pwd}";
-				$phone = $userModel->mobile;
-				if($phone)
-					Notify::SendSms($message, $phone);
+			$saved = $userModel->save() && !$userModel->hasErrors();
+			if($saved){
 				$model->post = $_POST['ClinicPersonnels']['post'];
 				$model->user_id = $userModel->id;
 				if($model->post != 3 && $model->post != 2)
 					$model->expertise = null;
 				if($model->save()){
+					// send email
+					if($userModel->email){
+						$token = md5($userModel->id . '#' . $userModel->password . '#' . $userModel->email . '#' . $userModel->create_date);
+						$userModel->updateByPk($userModel->id, array('verification_token' => $token));
+						$message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>حساب کاربری شما در وبسایت ' . Yii::app()->name . ' ایجاد گردید.<br>اطلاعات حساب کاربری شما به شرح زیر است:<br>';
+						$message .= '<strong>نام کاربری: </strong>' . $userModel->email . '<br>';
+						$message .= '<strong>کلمه عبور: </strong>' . $userModel->generatePassword() . '<br>';
+						$message .= 'به دلایل امنیتی لطفا در اسرع وقت از طریق داشبورد حساب کاربری خود نسبت به تغییر کلمه عبور اقدام فرمایید.<br>';
+						$message .= '</div>';
+//					@Mailer::mail($model->email, 'ایجاد حساب کاربری', $message, Yii::app()->params['noReplyEmail']);
+					}
+					// Send Sms
+					$siteName = Yii::app()->name;
+					$message = "ثبت نام شما در سایت {$siteName} با موفقیت انجام شد.
+نام کاربری: {$userModel->mobile}
+کلمه عبور: {$pwd}";
+					$phone = $userModel->mobile;
+					if($phone)
+						Notify::SendSms($message, $phone);
+
 					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد. <span style="font-weight: 500;font-size: 18px">کلمه عبور کاربر: ' . $userModel->generatePassword() . '</span>');
 					$this->redirect(array('manage/updatePersonnel/' . $model->clinic_id . '/' . $model->user_id));
-				}else
+				}else{
+                    $userModel->delete();
+					echo '<meta charset="utf-8">';
+					var_dump($model->errors);exit;
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+				}
 			}else{
 				$model->addErrors($userModel->errors);
 				if($saved)
