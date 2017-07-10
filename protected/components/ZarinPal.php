@@ -19,7 +19,7 @@ class ZarinPal extends CComponent
     public function request($amount, $description, $email = null, $mobile = '0')
     {
         try {
-            @$client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
+            @$client = new SoapClient('https://www.zarin.link/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
             $result = $client->PaymentRequest(
                 [
                     'MerchantID'  => $this->_merchant_id,
@@ -43,7 +43,7 @@ class ZarinPal extends CComponent
         $this->_authority = $authority;
         if ($_GET['Status'] == 'OK') {
             try {
-                @$client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
+                @$client = new SoapClient('https://www.zarin.link/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
                 @$result = $client->PaymentVerification(
                     [
                         'MerchantID' => $this->_merchant_id,
@@ -63,7 +63,7 @@ class ZarinPal extends CComponent
 
     public function getRedirectUrl($zaringate = false)
     {
-        $url = 'https://www.zarinpal.com/pg/StartPay/'.$this->_authority;
+        $url = 'https://www.zarin.link/pg/StartPay/'.$this->_authority;
         $url .=  ($zaringate) ? '/ZarinGate' : '';
 
         return $url;
