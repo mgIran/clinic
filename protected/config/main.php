@@ -44,6 +44,13 @@ return array(
 //		'yexcel' => array(
 //			'class' => 'ext.yexcel.Yexcel'
 //		),
+        'session' => array(
+            'class' => 'YmDbHttpSession',
+            'autoStart' => false,
+            'connectionID' => 'db',
+            'sessionTableName' => 'ym_sessions',
+            'timeout' => 1800
+        ),
 		'userCounter' => array(
 			'class' => 'application.components.UserCounter',
 			'tableUsers' => 'ym_counter_users',
@@ -69,6 +76,7 @@ return array(
 			'showScriptName'=>false,
 			'appendParams'=>true,
 			'rules'=>array(
+				'api/<action:\w+>'=>'api/<action>',
 				'<action:(about|contactus|help|publishers|search)>' => 'site/<action>',
 				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded|login|register)>' => 'users/public/<action>',
 				'clinics/manage/<action:(updatePersonnel|removePersonnel)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
