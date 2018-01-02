@@ -18,6 +18,8 @@ return array(
 		'application.components.*',
 		'ext.yiiSortableModel.models.*',
 		'application.modules.places.models.*',
+		'application.modules.users.models.*',
+		'application.modules.users.components.*'
 	),
 
 	'modules'=>array(
@@ -44,6 +46,14 @@ return array(
 //		'yexcel' => array(
 //			'class' => 'ext.yexcel.Yexcel'
 //		),
+        'JWT' => array(
+            'class' => 'ext.jwt.JWT',
+            'key' => base64_encode(md5('Rahbod-Visit365-1396')),
+        ),
+        'JWS' => array(
+            'class' => 'ext.jwt.JWT',
+            'key' => base64_encode(sha1('Rahbod-Visit365-1396')),
+        ),
         'session' => array(
             'class' => 'YmDbHttpSession',
             'autoStart' => false,

@@ -40,7 +40,7 @@ class UserLoginForm extends CFormModel
 			array('verification_field_value, verification_field', 'safe'),
 			array('verification_field_value', 'check', 'fields' => ['national_code', 'mobile', 'email']),
 			// authenticate_field needs to be authenticated
-			array('authenticate_field', 'authenticate','except' => 'OAuth'),
+			array('verification_field_value', 'authenticate','except' => 'OAuth'),
 		);
 	}
 

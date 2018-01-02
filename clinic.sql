@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50714
 Source Host           : localhost:3306
 Source Database       : clinic
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2017-05-11 14:15:09
+Date: 2018-01-01 18:49:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -159,11 +159,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '15');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457885');
+INSERT INTO `ym_counter_save` VALUES ('counter', '18');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2458119');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1492587000');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -178,7 +178,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1494495896');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1514739586');
 
 -- ----------------------------
 -- Table structure for ym_doctor_expertises
@@ -215,8 +215,8 @@ CREATE TABLE `ym_doctor_leaves` (
   PRIMARY KEY (`id`),
   KEY `doctor_id` (`doctor_id`),
   KEY `clinic_id` (`clinic_id`),
-  CONSTRAINT `ym_doctor_leaves_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `ym_doctor_leaves_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `ym_doctor_leaves_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `ym_doctor_leaves_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
@@ -295,7 +295,7 @@ CREATE TABLE `ym_pages` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`) USING BTREE,
   CONSTRAINT `ym_pages_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `ym_page_categories` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_pages
@@ -783,14 +783,22 @@ INSERT INTO `ym_places` VALUES ('443', 'خلجستان', '19', '[\"\\u062e\\u063
 DROP TABLE IF EXISTS `ym_sessions`;
 CREATE TABLE `ym_sessions` (
   `id` char(32) NOT NULL,
-  `expire` int(11) DEFAULT NULL,
-  `data` longblob,
+  `expire` int(11) DEFAULT NULL COMMENT 'تاریخ انقضا',
+  `data` longblob COMMENT 'اطلاعات',
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'شناسه کاربر',
+  `user_type` varchar(20) DEFAULT NULL COMMENT 'نوع کاربر',
+  `device_platform` varchar(20) DEFAULT NULL COMMENT 'پلتفرم دستگاه',
+  `device_ip` varchar(15) DEFAULT NULL COMMENT 'آی پی دستگاه',
+  `device_type` varchar(255) DEFAULT NULL COMMENT 'نوع دستگاه',
+  `refresh_token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_sessions
 -- ----------------------------
+INSERT INTO `ym_sessions` VALUES ('s5sf6mgtjpq59ttmdfrvmepe6a', '1508224111', 0x31616638386462666266346335333931323265373538643463383332383833375F5F69647C733A323A223434223B3161663838646266626634633533393132326537353864346338333238383337726F6C65737C733A393A22646576656C6F706572223B3161663838646266626634633533393132326537353864346338333238383337747970657C733A343A2275736572223B3161663838646266626634633533393132326537353864346338333238383337656D61696C7C733A32353A2279757365662E6D6F6261736865726940676D61696C2E636F6D223B3161663838646266626634633533393132326537353864346338333238383337757365726E616D657C733A303A22223B316166383864626662663463353339313232653735386434633833323838333766615F6E616D657C733A31393A22DB8CD988D8B3D98120D985D8A8D8B4D8B1DB8C223B3161663838646266626634633533393132326537353864346338333238383337656E5F6E616D657C733A31393A22DB8CD988D8B3D98120D985D8A8D8B4D8B1DB8C223B31616638386462666266346335333931323265373538643463383332383833375F5F7374617465737C613A363A7B733A353A22726F6C6573223B623A313B733A343A2274797065223B623A313B733A353A22656D61696C223B623A313B733A383A22757365726E616D65223B623A313B733A373A2266615F6E616D65223B623A313B733A373A22656E5F6E616D65223B623A313B7D, '44', 'user', 'web', '::1', '', 'llOr5z1WLiN21RWLZ06I8MHGpd6xTh1d9WVrXldpYxMCPHjOxP');
+INSERT INTO `ym_sessions` VALUES ('k2nmsn9ma9k2nq04avi8sp9v50', '1514741386', '', null, null, 'web', '::1', 'computer', 'yEwAUkUUNyHskxJb4Zky89ny6KbE5YBOFyZvWHbGv9wPr7QVmk');
 
 -- ----------------------------
 -- Table structure for ym_site_setting
@@ -898,7 +906,7 @@ CREATE TABLE `ym_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL COMMENT 'پست الکترونیک',
+  `email` varchar(255) DEFAULT NULL COMMENT 'پست الکترونیک',
   `role_id` int(10) unsigned DEFAULT NULL,
   `create_date` varchar(20) DEFAULT NULL,
   `status` enum('pending','active','blocked','deleted') DEFAULT 'pending',
@@ -1074,11 +1082,11 @@ CREATE TABLE `ym_visits` (
   KEY `clinic_id` (`clinic_id`),
   KEY `doctor_id` (`doctor_id`),
   KEY `expertise_id` (`expertise_id`),
-  CONSTRAINT `ym_visits_ibfk_4` FOREIGN KEY (`expertise_id`) REFERENCES `ym_expertises` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `ym_visits_ibfk_2` FOREIGN KEY (`clinic_id`) REFERENCES `ym_clinics` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+  CONSTRAINT `ym_visits_ibfk_3` FOREIGN KEY (`doctor_id`) REFERENCES `ym_users` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `ym_visits_ibfk_4` FOREIGN KEY (`expertise_id`) REFERENCES `ym_expertises` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_visits

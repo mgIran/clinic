@@ -150,4 +150,12 @@ class UserDetails extends CActiveRecord
         else
             return Yii::app()->theme->baseUrl.'/svg/default-user.svg';
 	}
+
+	public function getApiAvatar()
+	{
+		if ($this->avatar)
+			return Yii::app()->baseUrl . '/uploads/users/' . $this->avatar;
+		else
+			return '';
+	}
 }

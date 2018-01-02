@@ -121,6 +121,11 @@ class Users extends CActiveRecord
             array('password', 'required', 'on' => 'recover_password'),
             array('repeatPassword', 'compare', 'compareAttribute' => 'password', 'on' => 'recover_password', 'message' => 'کلمه های عبور همخوانی ندارند'),
 
+            // API rules
+            array('mobile, password', 'required', 'on' => 'app-register'),
+            array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile'),
+            array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
+
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('type, roleId, create_date, status, verification_token, change_password_request_count, email ,statusFilter, first_name, last_name, phone, mobile, national_code', 'safe', 'on' => 'search'),
