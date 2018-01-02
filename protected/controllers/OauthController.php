@@ -34,7 +34,7 @@ class OauthController extends ApiBaseController
             }else
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => false,
-                    'message' => $login->getError('verification_field_value')
+                    'message' => $login->getError('authenticate_field')
                 ]),
                     'application/json');
         }else
