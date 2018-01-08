@@ -78,7 +78,17 @@ class OauthController extends ApiBaseController
                             'access_token' => $access_token,
                             'token_type' => 'Bearer',
                             'expire_in' => Yii::app()->session->timeout,
-                        ]
+                        ],
+                        'user' => [
+                            'nationalCode' => strval($session->user->national_code),
+                            'firstName' => strval($session->user->userDetails->first_name),
+                            'lastName' => strval($session->user->userDetails->last_name),
+                            'mobile' => strval($session->user->userDetails->mobile),
+                            'email' => strval($session->user->email),
+                            'phone' => strval($session->user->userDetails->phone),
+                            'address' => strval($session->user->userDetails->address),
+                            'zipCode' => strval($session->user->userDetails->zip_code),
+                        ],
                     ]), 'application/json');
                 }else
                     $this->_sendResponse(200, CJSON::encode(['status' => false,
@@ -107,7 +117,17 @@ class OauthController extends ApiBaseController
                         'token_type' => 'Bearer',
                         'expire_in' => Yii::app()->session->timeout,
                         'refresh_token' => $refresh_token,
-                    ]
+                    ],
+                    'user' => [
+                        'nationalCode' => strval($session->user->national_code),
+                        'firstName' => strval($session->user->userDetails->first_name),
+                        'lastName' => strval($session->user->userDetails->last_name),
+                        'mobile' => strval($session->user->userDetails->mobile),
+                        'email' => strval($session->user->email),
+                        'phone' => strval($session->user->userDetails->phone),
+                        'address' => strval($session->user->userDetails->address),
+                        'zipCode' => strval($session->user->userDetails->zip_code),
+                    ],
                 ]), 'application/json');
             }else if($this->request['grant_type']=='revoke_token' && isset($this->request['access_token'])){
                 $access_token = $this->request['access_token'];

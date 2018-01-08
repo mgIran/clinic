@@ -10,8 +10,8 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + register, forgetPassword, getDoctors, getDates, doctorProfile',
-            'RestAuthControl + profile, editProfile',
+            'RestAccessControl + register, forgetPassword, getDoctors, getDates, doctorProfile, page',
+            'RestAuthControl + profile, editProfile, transactions, visits, userInfo',
         );
     }
 
@@ -55,65 +55,100 @@ class ApiController extends ApiBaseController
 
     public function actionGetDates()
     {
-        if(isset($this->request['clinic_id']) and isset($this->request['doctor_id'])) {
+        if (isset($this->request['clinic_id']) and isset($this->request['doctor_id'])) {
             $clinicID = $this->request['clinic_id'];
             $doctorID = $this->request['doctor_id'];
 
-            $from = strtotime(date('Y/m/d 00:00', time()));
-            $currentMonth = JalaliDate::date('m', $from, false);
-            $currentYear = JalaliDate::date('Y', $from, false);
-            $monthDaysCount = 30;
-            if ($currentMonth <= 6)
-                $monthDaysCount = 31;
-            elseif ($currentMonth == 12 and !JalaliDate::date('L', $from, false))
-                $monthDaysCount = 29;
-            $endMonth = JalaliDate::mktime(23, 59, 59, $currentMonth, $monthDaysCount, $currentYear);
-            $to = $endMonth;
+            $from = $to = null;
+            $flag = true;
+            $message = '';
+            if (isset($this->request['from']) and isset($this->request['to'])) {
+                $from = $this->request['from'];
+                $to = $this->request['to'];
+
+                if ($from == $to) {
+                    $message = 'تاریخ ها یکسان می باشند.';
+                    $flag = false;
+                } elseif ($from > $to) {
+                    $message = 'تاریخ های انتخاب شده اشتباه است.';
+                    $flag = false;
+                } elseif ($from < strtotime(date('Y/m/d 00:00', time())) || $to < strtotime(date('Y/m/d 00:00', time()))) {
+                    $message = 'تاریخ ها معتبر نمی باشند.';
+                    $flag = false;
+                } else
+                    $flag = true;
+
+                if(!$flag)
+                    $this->_sendResponse(200, CJSON::encode([
+                        'status' => false,
+                        'message' => $message,
+                    ]), 'application/json');
+            } else
+                $flag = false;
+
+            if (!$flag) {
+                $from = strtotime(date('Y/m/d 00:00', time()));
+                $currentMonth = JalaliDate::date('m', $from, false);
+                $currentYear = JalaliDate::date('Y', $from, false);
+                $monthDaysCount = 30;
+                if ($currentMonth <= 6)
+                    $monthDaysCount = 31;
+                elseif ($currentMonth == 12 and !JalaliDate::date('L', $from, false))
+                    $monthDaysCount = 29;
+                $endMonth = JalaliDate::mktime(23, 59, 59, $currentMonth, $monthDaysCount, $currentYear);
+                $to = $endMonth;
+            }
 
             $doctor = Users::model()->findByPk($doctorID);
             $criteria = new CDbCriteria();
-            $criteria->compare('clinic_id',$clinicID);
+            $criteria->compare('clinic_id', $clinicID);
             /* @var $schedules DoctorSchedules[] */
             $schedules = $doctor->doctorSchedules($criteria);
             $leaves = $doctor->doctorLeaves($criteria);
             $weekDays = CHtml::listData($schedules, 'week_day', 'week_day');
             $leaveDays = CHtml::listData($leaves, 'id', 'date');
-            $now = strtotime(date('Y/m/d 00:00',time()));
-            $from = strtotime(date('Y/m/d 00:00',$from));
-            $fromIsToday = $now == $from?true:false;
-            $to = strtotime(date('Y/m/d 23:59',$to));
+            $now = strtotime(date('Y/m/d 00:00', time()));
+            $from = strtotime(date('Y/m/d 00:00', $from));
+            $fromIsToday = $now == $from ? true : false;
+            $to = strtotime(date('Y/m/d 23:59', $to));
             $daysCount = ($to - $from) / (60 * 60 * 24);
             $days = array();
-            for($i = 0;$i <= $daysCount;$i++){
+            for ($i = 0; $i <= $daysCount; $i++) {
                 $dayTimestamp = strtotime(date('Y/m/d 00:00', $from + ($i * (60 * 60 * 24))));
-                if((int)Holidays::model()->countByAttributes(['date' => $dayTimestamp]) ===0){
-                    if(in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)){
-                        if(!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)){
-                            if($dayTimestamp >= $from){
-                                foreach($schedules as $key => $schedule)
-                                    if($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)){
+                if ((int)Holidays::model()->countByAttributes(['date' => $dayTimestamp]) === 0) {
+                    if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)) {
+                        if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
+                            if ($dayTimestamp >= $from) {
+                                foreach ($schedules as $key => $schedule)
+                                    if ($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
                                         $checkAM = true;
-                                        if($i===0 && $fromIsToday && date('a',time()) != 'am')
+                                        if ($i === 0 && $fromIsToday && date('a', time()) != 'am')
                                             $checkAM = false;
                                         $temp = [];
-                                        if($checkAM && !is_null($schedule->times['AM'])) {
+                                        $strTemp = "";
+                                        if ($checkAM && !is_null($schedule->times['AM'])) {
                                             $AMVisitsCount = Visits::getAllVisits($clinicID, $doctorID, $dayTimestamp, Visits::TIME_AM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
                                             if ($AMVisitsCount != $schedule->visit_count_am) {
                                                 $temp[$key]['date'] = $dayTimestamp;
                                                 $temp[$key]['AM'] = $schedule->times['AM'];
+                                                $strTemp = $schedule->times['AM'] . " صبح";
                                             }
                                             //$days[$dayTimestamp]['AM'] = $schedule->times['AM'];
                                         }
 
-                                        if(!is_null($schedule->times['PM'])){
+                                        if (!is_null($schedule->times['PM'])) {
                                             $PMVisitsCount = Visits::getAllVisits($clinicID, $doctorID, $dayTimestamp, Visits::TIME_PM, array(Visits::STATUS_PENDING, Visits::STATUS_DELETED), 'NOT IN');
-                                            if($PMVisitsCount != $schedule->visit_count_pm) {
+                                            if ($PMVisitsCount != $schedule->visit_count_pm) {
                                                 $temp[$key]['date'] = $dayTimestamp;
                                                 $temp[$key]['PM'] = $schedule->times['PM'];
+                                                if (isset($temp[$key]['AM']))
+                                                    $strTemp .= " / ";
+                                                $strTemp .= $schedule->times['PM'] . " بعدازظهر";
                                             }
-                                                //$days[$dayTimestamp]['PM'] = $schedule->times['PM'];
+                                            //$days[$dayTimestamp]['PM'] = $schedule->times['PM'];
                                         }
 
+                                        $temp[$key]['dateShow'] = str_replace('-', 'تا', $strTemp);
                                         $days[] = $temp[$key];
                                     }
                             }
@@ -139,7 +174,7 @@ class ApiController extends ApiBaseController
                 'from' => $from,
                 'to' => $to,
             ]), 'application/json');
-        }else
+        } else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Clinic ID and Doctor ID variables is required.']), 'application/json');
     }
 
@@ -150,15 +185,11 @@ class ApiController extends ApiBaseController
             Yii::import('pages.models.*');
             switch($this->request['name']){
                 case "about":
-                    $text = Pages::model()->findByPk(10)->summary;
+                    $text = Pages::model()->findByPk(1)->summary;
                     break;
 
                 case "help":
-                    $text = Pages::model()->findByPk(11)->summary;
-                    break;
-
-                case "contact":
-                    $text = Pages::model()->findByPk(12)->summary;
+                    $text = Pages::model()->findByPk(6)->summary;
                     break;
             }
 
@@ -288,8 +319,112 @@ class ApiController extends ApiBaseController
         } else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Doctor ID and Clinic ID variable is required.']), 'application/json');
     }
-    
+
     /** ------------------------------------------------- Authorized Api ------------------------------------------------ **/
+
+    public function actionUserInfo()
+    {
+        if (isset($this->request['user']) and isset($this->request['clinic_id']) and isset($this->request['doctor_id']) and isset($this->request['expertise_id']) and isset($this->request['date']) and isset($this->request['time'])) {
+            $userInfo = $this->request['user'];
+            $saveResult = false;
+            if (empty($userInfo['mobile']))
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'تلفن همراه نمی تواند خالی باشد.']), 'application/json');
+            else {
+                /* @var $existUser Users */
+                $existUser = Users::model()->find('national_code = :national_code', array(':national_code' => $userInfo['national_code']));
+                $existUser->setScenario('reserve_register');
+                if (!$existUser->userDetails->first_name)
+                    $existUser->userDetails->first_name = $userInfo['first_name'];
+                if (!$existUser->userDetails->last_name)
+                    $existUser->userDetails->last_name = $userInfo['last_name'];
+                if (!$existUser->userDetails->mobile)
+                    $existUser->userDetails->mobile = $userInfo['mobile'];
+                if (!$existUser->national_code)
+                    $existUser->national_code = $userInfo['national_code'];
+                if (!$existUser->email)
+                    $existUser->email = $userInfo['email'];
+                $existUser->save();
+                $existUser->userDetails->save();
+
+                if ($existUser) {
+                    $time = ($this->request['time'] == 'am') ? Visits::TIME_AM : Visits::TIME_PM;
+                    $saveResult = $this->saveVisit($existUser->id, $this->request['clinic_id'], $this->request['doctor_id'], $this->request['expertise_id'], $this->request['date'], $time, Visits::STATUS_PENDING);
+                }
+
+                if ($saveResult['saved']) {
+                    if (!isset($saveResult['status']) || (isset($saveResult['status']) && $saveResult['status'] == Visits::STATUS_PENDING))
+                        $this->_sendResponse(200, CJSON::encode([
+                            'status' => true,
+                            'message' => 'اطلاعات با موفقیت ثبت شد.',
+                            'modelID' => $saveResult['modelID']
+                        ]), 'application/json');
+                    elseif (isset($saveResult['status']) && $saveResult['status'] == Visits::STATUS_ACCEPTED)
+                        $this->_sendResponse(200, CJSON::encode([
+                            'status' => true,
+                            'message' => 'در این تاریخ قبلا رزرو ثبت شده است.',
+                            'modelID' => $saveResult['modelID']
+                        ]), 'application/json');
+                }
+            }
+        } else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'User, Clinic ID, Doctor ID, Expertise ID, Date and Time variables is required.']), 'application/json');
+    }
+
+    public function actionTransactions()
+    {
+        $model = new UserTransactions('search');
+        $model->unsetAttributes();
+        if (isset($_GET['UserTransactions']))
+            $model->attributes = $_GET['UserTransactions'];
+        $model->user_id = $this->user->id;
+
+        $transactions = [];
+        $sum = 0;
+        /* @var UserTransactions $transaction */
+        foreach($model->search()->getData() as $transaction) {
+            $sum += doubleval($transaction->amount);
+            $transactions[] = [
+                'amount' => doubleval($transaction->amount),
+                'date' => $transaction->date,
+                'gateway' => $transaction->gateway_name,
+                'code' => $transaction->token,
+            ];
+        }
+
+        $this->_sendResponse(200, CJSON::encode([
+            'status' => true,
+            'transactions' => $transactions,
+            'count' => count($transactions),
+            'sum' => doubleval($sum),
+        ]), 'application/json');
+    }
+
+    public function actionVisits()
+    {
+        $model = new Visits('search');
+        $model->unsetAttributes();
+        $model->user_id = $this->user->id;
+
+        $visits = [];
+        /* @var Visits $visit */
+        foreach($model->search()->getData() as $visit){
+            $visits[] = [
+                'clinic' => $visit->clinic->clinic_name,
+                'doctor' => $visit->doctor->userDetails->getShowName(),
+                'status' => $visit->statusLabels[$visit->status],
+                'createDate' => $visit->create_date ? $visit->create_date : '',
+                'date' => $visit->date ? $visit->date : '',
+                'visitDate' => $visit->check_date ? $visit->check_date : '',
+                'trackingCode' => $visit->tracking_code,
+            ];
+        }
+
+        $this->_sendResponse(200, CJSON::encode([
+            'status' => true,
+            'visits' => $visits,
+        ]), 'application/json');
+    }
+
     public function actionProfile()
     {
 //        $avatar = ($this->user->userDetails->avatar == '') ? Yii::app()->createAbsoluteUrl('/themes/frontend/images/default-user.png') : Yii::app()->createAbsoluteUrl('/uploads/users/avatar') . '/' . $this->user->userDetails->avatar;
@@ -310,376 +445,37 @@ class ApiController extends ApiBaseController
     {
         if(isset($this->request['profile'])){
             $profile = $this->request['profile'];
-            $profileFields = [
-                'name',
-                'national_code',
-                'phone',
-                'zip_code',
-                'address',
-            ];
 
-            foreach($profile as $key => $field)
-                if(!in_array($key, $profileFields))
-                    unset($profile[$key]);
+            /* @var $model UserDetails */
+            $model = UserDetails::model()->findByAttributes(array('user_id' => $this->user->id));
 
-            /* @var $detailsModel UserDetails */
-            $detailsModel = UserDetails::model()->findByAttributes(array('user_id' => $this->user->id));
-            $detailsModel->scenario = 'update_profile';
-            $detailsModel->attributes = $profile;
-            $detailsModel->fa_name = isset($profile['name'])?$profile['name']:$detailsModel->fa_name;
-            if($detailsModel->save())
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'اطلاعات با موفقیت ثبت شد.']), 'application/json');
+            $model->first_name = $profile['first_name'];
+            $model->last_name = $profile['last_name'];
+            $model->phone = $profile['phone'];
+            $model->mobile = $profile['mobile'];
+            $model->zip_code = $profile['zip_code'];
+            $model->address = $profile['address'];
+            $model->user->national_code = $profile['national_code'];
+
+            if ($model->save() and $model->user->save())
+                $this->_sendResponse(200, CJSON::encode([
+                    'status' => true,
+                    'message' => 'اطلاعات با موفقیت ثبت شد.',
+                    'user' => [
+                        'nationalCode' => strval($model->user->national_code),
+                        'firstName' => strval($model->first_name),
+                        'lastName' => strval($model->last_name),
+                        'mobile' => strval($model->mobile),
+                        'email' => strval($model->user->email),
+                        'phone' => strval($model->phone),
+                        'address' => strval($model->address),
+                        'zipCode' => strval($model->zip_code),
+                    ],
+                ]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
         }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Profile variable is required.']), 'application/json');
-    }
-
-    public function actionCredit()
-    {
-        if(isset($this->request['amount'])){
-            $this->active_gateway = strtolower(SiteSetting::getOption('gateway_active'));
-            if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
-                die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
-
-            $model = UserTransactions::model()->findByAttributes(array('user_id' => $this->user->id, 'status' => 'unpaid'));
-            if(!$model)
-                $model = new UserTransactions();
-            $model->user_id = $this->user->id;
-            $model->amount = $this->request['amount'];
-            $model->date = time();
-            if($model->save()){
-                $Amount = doubleval($model->amount);
-                $CallbackURL = Yii::app()->getBaseUrl(true) . '/users/credit/apiVerify?platform=mobile';
-                if($this->active_gateway == 'mellat'){
-                        $result = Yii::app()->mellat->PayRequest($Amount * 10, $model->id, $CallbackURL);
-                    if(!$result['error']){
-                        $ref_id = $result['responseCode'];
-                        $model->authority = $ref_id;
-                        $model->save(false);
-                        $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => Yii::app()->mellat->getRedirectUrl()]), 'application/json');
-                    }else
-                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'خطای بانکی: ' . Yii::app()->mellat->getResponseText($result['responseCode'])]), 'application/json');
-                }else if($this->active_gateway == 'zarinpal'){
-                    $siteName = Yii::app()->name;
-                    $description = "خرید اعتبار در وبسایت {$siteName}";
-                    $result = Yii::app()->zarinpal->PayRequest($Amount, $description, $CallbackURL);
-                    $model->authority = Yii::app()->zarinpal->getAuthority();
-                    $model->save(false);
-                    if($result->getStatus() == 100)
-                        $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => Yii::app()->zarinpal->getRedirectUrl()]), 'application/json');
-                    else
-                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'خطای بانکی: ' . Yii::app()->zarinpal->getError()]), 'application/json');
-                }
-            }else
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
-        }else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Amount variable is required.']), 'application/json');
-    }
-
-    public function actionBookmark()
-    {
-        if(isset($this->request['app_id'])){
-            $app = Apps::model()->findByPk($this->request['app_id']);
-            if($app === null)
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نرم افزار موردنظر یافت نشد.']), 'application/json');
-
-            $model = UserAppBookmark::model()->find('user_id = :user_id AND app_id = :app_id', array(
-                ':user_id' => $this->user->id,
-                ':app_id' => $this->request['app_id']
-            ));
-
-            if(!$model){
-                $model = new UserAppBookmark();
-                $model->app_id = $this->request['app_id'];
-                $model->user_id = $this->user->id;
-                if($model->save())
-                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => "{$app->title} با موفقیت نشان شد."]), 'application/json');
-                else
-                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
-            }else{
-                if(UserAppBookmark::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id'])))
-                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => "{$app->title} با موفقیت از نشان شده ها حذف گردید."]), 'application/json');
-                else
-                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
-            }
-        }else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID variable is required.']), 'application/json');
-    }
-
-    public function actionBookmarkList()
-    {
-        $list = [];
-        $criteria = new CDbCriteria;
-        $criteria->limit = 20;
-        $criteria->offset = 0;
-        // set LIMIT and OFFSET in Query
-        if(isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']){
-            $criteria->limit = $limit;
-            if(isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
-                $criteria->offset = $offset;
-        }
-        foreach($this->user->bookmarkedApps($criteria) as $app)
-            $list[] = [
-                'id' => intval($app->id),
-                'title' => $app->title,
-                'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
-                'developer' => $app->getDeveloperName(),
-                'rate' => floatval($app->rate),
-                'price' => (double)$app->price,
-                'hasDiscount' => $app->hasDiscount(),
-                'offPrice' => $app->hasDiscount()?doubleval($app->offPrice):0,
-            ];
-
-        if($list)
-            $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list), 'list' => $list]), 'application/json');
-        else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-    }
-
-    public function actionInstalledApps()
-    {
-        $list = [];
-        $criteria = new CDbCriteria;
-        $criteria->limit = 20;
-        $criteria->offset = 0;
-        // set LIMIT and OFFSET in Query
-        if(isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']){
-            $criteria->limit = $limit;
-            if(isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
-                $criteria->offset = $offset;
-        }
-        if($this->user->appBuys($criteria))
-            foreach($this->user->appBuys($criteria) as $appBuy){
-                $app = $appBuy->app;
-                $list[] = [
-                    'id' => intval($app->id),
-                    'title' => $app->title,
-                    'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
-                    'developer' => $app->getDeveloperName(),
-                    'rate' => floatval($app->rate),
-                    'price' => (double)$app->price,
-                    'hasDiscount' => $app->hasDiscount(),
-                    'offPrice' => $app->hasDiscount()?doubleval($app->offPrice):0,
-                    'package_name' => $app->lastPackage->package_name,
-                    'version_name' => $app->lastPackage->version,
-                    'version_code' => $app->lastPackage->version_code,
-                ];
-            }
-
-        if($list)
-            $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list), 'list' => $list]), 'application/json');
-        else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-    }
-
-    public function actionSaveComment()
-    {
-        if (isset($this->request['app_id']) and isset($this->request['text'])) {
-            Yii::import('comments.models.*');
-            /* @var Comment $comment */
-            $comment = new Comment();
-            $comment->owner_name = "Apps";
-            $comment->owner_id = $this->request['app_id'];
-            $comment->creator_id = $this->user->id;
-            $comment->comment_text = $this->request['text'];
-            $comment->create_time = time();
-            $comment->status = Comment::STATUS_NOT_APPROWED;
-            $criteria = new CDbCriteria;
-            $criteria->compare('owner_name', $comment->owner_name, true);
-            $criteria->compare('owner_id', $comment->owner_id);
-            $criteria->compare('parent_comment_id', $comment->parent_comment_id);
-            $criteria->compare('creator_id', $comment->creator_id);
-            $criteria->compare('user_name', $comment->user_name, false);
-            $criteria->compare('user_email', $comment->user_email, false);
-            $criteria->addCondition('create_time>:time');
-            $criteria->params[':time'] = time() - 30;
-            $model = Comment::model()->find($criteria);
-            if($model)
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'تا 30 ثانیه دیگر امکان ثبت نظر وجود ندارد.']), 'application/json');
-
-            if($comment->save())
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'نظر شما با موفقیت ثبت شد.']), 'application/json');
-            else
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
-        }else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Text variable is required.']), 'application/json');
-    }
-
-    public function actionSaveRate()
-    {
-        if (isset($this->request['app_id']) and isset($this->request['rate'])) {
-            $rate = (int)$this->request['rate'];
-            if(empty($rate) || $rate > 5 || $rate < 1)
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'مقدار امتیاز وارد شده نامعتبر است.']), 'application/json');
-            $rateModel = AppRatings::model()->findByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id']));
-            if($rateModel)
-                AppRatings::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id']));
-            $rateModel = new AppRatings();
-            $rateModel->app_id = $this->request['app_id'];
-            $rateModel->user_id = $this->user->id;
-            $rateModel->rate = $this->request['rate'];
-            if(@$rateModel->save())
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'امتیاز شما با موفقیت ثبت شد.']), 'application/json');
-            else
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
-        }else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Rate variable is required.']), 'application/json');
-    }
-
-    public function actionBuy()
-    {
-        if (isset($this->request['app_id']) and isset($this->request['payment_method'])) {
-            $userID = $this->user->id;
-            $id = $this->request['app_id'];
-            /* @var Apps $model */
-            $model = Apps::model()->findByPk($id);
-
-            $buy = AppBuys::model()->findByAttributes(array('user_id' => $userID, 'app_id' => $id));
-            if($buy)
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                    'hasError' => true,
-                    'code' => 600,
-                    'type' => 'both',
-                    'message' => 'این نرم افزار قبلا خریداری شده است.'
-                ]]), 'application/json');
-
-            // price with publisher discount or not
-            $basePrice = $model->hasDiscount() ? $model->offPrice : $model->price;
-
-            Yii::app()->getModule('users');
-            $user = Users::model()->findByPk($userID);
-            /* @var $user Users */
-            $price = $basePrice;
-            if ($model->developer_id != $userID) {
-                $siteName = Yii::app()->name;
-                $transaction = new UserTransactions();
-                $transaction->user_id = $userID;
-                $transaction->amount = $price;
-                $transaction->date = time();
-                $transaction->gateway_name = $this->active_gateway;
-                $transaction->model_name = 'Apps';
-                $transaction->model_id = $model->id;
-                $transaction->description = "پرداخت وجه جهت خرید نرم افزار {$model->title} در وبسایت {$siteName}";
-                if ($price !== 0) {
-                    if ($this->request['payment_method'] == 'credit'){
-                        if($user->userDetails->credit < $price)
-                            $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                                'hasError' => true,
-                                'code' => 610,
-                                'type' => 'credit',
-                                'message' => 'اعتبار فعلی شما کافی نیست!'
-                            ]]), 'application/json');
-
-                        $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $userID));
-                        $userDetails->setScenario('update-credit');
-                        $userDetails->credit = $userDetails->credit - $price;
-                        $userDetails->score = $userDetails->score + 1;
-
-                        $transaction->gateway_name = 'credit';
-                        $transaction->status = 'unpaid';
-                        @$transaction->save(false);
-                        if($userDetails->save()){
-                            $transaction->token = rand(125463, 984984);
-                            $transaction->status = 'paid';
-                            $transaction->save();
-
-                            $this->saveBuyInfo($model, $model->price, $price, $user, 'credit');
-                            $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
-                                'hasError' => false,
-                                'code' => 611,
-                                'type' => 'credit',
-                                'message' => 'خرید شما با موفقیت انجام شد.'
-                            ]]), 'application/json');
-                        }else
-                            $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                                'hasError' => true,
-                                'code' => 612,
-                                'type' => 'credit',
-                                'message' => 'در انجام عملیات خرید خطایی رخ داده است.'
-                            ]]), 'application/json');
-                    } elseif ($this->request['payment_method'] == 'gateway'){
-                        // Save payment
-                        if($transaction->save()){
-                            $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/apiVerify?platform=mobile&tr='.$transaction->id;
-                            if($this->active_gateway == 'mellat'){
-                                $result = Yii::app()->mellat->PayRequest($price * 10, $transaction->id, $CallbackURL);
-                                if(!$result['error']){
-                                    $ref_id = $result['responseCode'];
-                                    $transaction->authority = $ref_id;
-                                    $transaction->save(false);
-                                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
-                                        'hasError' => false,
-                                        'code' => 620,
-                                        'type' => 'gateway',
-                                        'url' => $this->createAbsoluteUrl('/api/gateway?rc=' . $result['responseCode'])
-                                    ]]), 'application/json');
-                                }else
-                                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                                        'hasError' => true,
-                                        'code' => 621,
-                                        'type' => 'gateway',
-                                        'message' => 'خطای بانکی: ' . Yii::app()->mellat->getResponseText($result['responseCode'])
-                                    ]]), 'application/json');
-                            }else if($this->active_gateway == 'zarinpal'){
-                                $result = Yii::app()->zarinpal->PayRequest(doubleval($price), $transaction->description, $CallbackURL);
-                                $transaction->setScenario('set-authority');
-                                $transaction->authority = Yii::app()->zarinpal->getAuthority();
-                                $transaction->save(false);
-                                if($result->getStatus() == 100)
-                                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
-                                        'hasError' => false,
-                                        'code' => 620,
-                                        'type' => 'gateway',
-                                        'url' => Yii::app()->zarinpal->getRedirectUrl()
-                                    ]]), 'application/json');
-                                else
-                                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                                        'hasError' => true,
-                                        'code' => 621,
-                                        'type' => 'gateway',
-                                        'message' => 'خطای بانکی: ' . $result->getError()
-                                    ]]), 'application/json');
-                            }
-                        }
-                    }
-                } else {
-                    $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $userID));
-                    $userDetails->setScenario('update-credit');
-                    $userDetails->score = $userDetails->score + 1;
-
-                    $transaction->gateway_name = 'credit';
-                    $transaction->status = 'unpaid';
-                    @$transaction->save(false);
-                    if($userDetails->save()){
-                        $transaction->token = rand(125463, 984984);
-                        $transaction->status = 'paid';
-                        $transaction->save();
-
-                        $this->saveBuyInfo($model, $model->price, $price, $user, 'credit');
-                        $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
-                            'hasError' => false,
-                            'code' => 601,
-                            'type' => 'both',
-                            'message' => 'خرید شما با موفقیت انجام شد.'
-                        ]]), 'application/json');
-                    }else
-                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                            'hasError' => true,
-                            'code' => 612,
-                            'type' => 'both',
-                            'message' => 'در انجام عملیات خرید خطایی رخ داده است.'
-                        ]]), 'application/json');
-                }
-            } else
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
-                    'hasError' => true,
-                    'code' => 602,
-                    'type' => 'both',
-                    'message' => 'شما توسعه دهندهاین نرم افزار هستید. امکان خرید وجود ندارد.'
-                ]]), 'application/json');
-        } else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Payment Method variables is required.']), 'application/json');
     }
 
     public function actionGateway(){
@@ -690,173 +486,40 @@ class ApiController extends ApiBaseController
         else throw new CHttpException(400, 'خطا در عملیات.');
     }
 
-    public function actionDownload()
+    /** ------------------------------------------------- Required functions ------------------------------------------------ **/
+
+    private function saveVisit($userID, $clinicID, $doctorID, $expertiseID, $date, $time, $status)
     {
-        if (isset($this->request['app_id'])) {
-            /* @var $model Apps */
-            $model = Apps::model()->findByPk($this->request['app_id']);
-            $fileName = null;
-            if ($model->lastPackage->file_name)
-                $fileName = $model->lastPackage->file_name;
-            $token = Yii::app()->JWT->encode($fileName);
-            if ($model->price == 0) {
-                $model->download += 1;
-                $model->setScenario('update-download');
-                $model->save();
+        $model = Visits::model()->findByAttributes(array(
+            'user_id' => $userID,
+            'clinic_id' => $clinicID,
+            'doctor_id' => $doctorID,
+            'expertise_id' => $expertiseID,
+            'date' => $date,
+            'time' => $time,
+        ));
+        if ($model) {
+            return array(
+                'saved' => true,
+                'modelID' => $model->id,
+                'status' => $model->status,
+            );
+        } else {
+            $model = new Visits();
+            $model->user_id = $userID;
+            $model->clinic_id = $clinicID;
+            $model->doctor_id = $doctorID;
+            $model->expertise_id = $expertiseID;
+            $model->date = $date;
+            $model->time = $time;
+            $model->status = $status;
 
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => $this->createAbsoluteUrl('/api/downloadFile?token='.$token)]), 'application/json');
-            } else {
-                $buy = AppBuys::model()->findByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id']));
-                if ($buy) {
-                    $model->download += 1;
-                    $model->setScenario('update-download');
-                    $model->save();
+            $result = $model->save();
 
-                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => $this->createAbsoluteUrl('/api/downloadFile?token='.$token)]), 'application/json');
-                } else
-                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'شما اجازه دسترسی به این فایل را ندارید.']), 'application/json');
-            }
-        } else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'AppID variable is required.']), 'application/json');
-    }
-
-    public function actionDownloadFile()
-    {
-        $ptArray = ['apk' => 'android', 'ipa' => 'ios', 'xap' => 'windowsphone'];
-        if(isset($_GET['token'])){
-            $fileName = Yii::app()->JWT->decode($_GET['token']);
-            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            if(key_exists($ext, $ptArray))
-                $this->download($fileName, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/'.$ptArray[$ext]);
+            return array(
+                'saved' => $result,
+                'modelID' => $result ? $model->id : null,
+            );
         }
-    }
-    
-    /**
-     * Save buy information
-     *
-     * @param $app Apps
-     * @param $basePrice string
-     * @param $price string
-     * @param $user Users
-     * @param $method string
-     * @param $transactionID string
-     * @return AppBuys
-     */
-    private function saveBuyInfo($app, $basePrice, $price, $user, $method, $transactionID = null)
-    {
-        $appTitle=$app->title;
-        $app->download += 1;
-        $app->setScenario('update-download');
-        $app->save();
-        $buy = new AppBuys();
-        $buy->app_id = $app->id;
-        $buy->user_id = $user->id;
-        $buy->date = time();
-        $buy->package_version = $app->lastPackage->version;
-        $buy->package_version_code = $app->lastPackage->version_code;
-        $buy->app_price = $basePrice;
-        $buy->discount_amount = $basePrice - $price;
-        $buy->pay_amount = $price;
-        $buy->developer_earn = 0;
-        if ($app->developer) {
-            $buy->developer_earn = $app->getDeveloperPortion($price);
-            $app->developer->userDetails->earning = $app->developer->userDetails->earning + $buy->developer_earn;
-            $app->developer->userDetails->dev_score = $app->developer->userDetails->dev_score + 1;
-            $app->developer->userDetails->save();
-        }
-        $buy->site_earn = $price - $buy->developer_earn;
-        $buy->save();
-
-        /* @var $transaction UserTransactions */
-        $transaction = null;
-        if (!is_null($transactionID))
-            $transaction = UserTransactions::model()->findByPk($transactionID);
-        $message =
-            '<p style="text-align: right;">'.(is_null($user->userDetails->fa_name)?'کاربر':$user->userDetails->fa_name).' عزیز، سلام<br>از اینکه از '.Yii::app()->name.' خرید کردید متشکریم. رسید خریدتان در زیر این صفحه آمده است.</p>
-            <p style="text-align: right;">برنامه برای دریافت روی دستگاهتان آماده است. چنانچه در دریافت برنامه به مشکلی برخورد کردید، لطفا ابتدا چک کنید که روی دستگاهتان وارد حساب کاربریتان شده باشید.در صورتی که مشکل از این نبود لطفا با ما تماس بگیرید: hyperapps.ir@gmail.com</p>
-            <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
-            <h4 style="text-align: right;">صورت حساب</h4>
-            <table style="font-size: 9pt;text-align: right;">
-                <tr>
-                    <td style="font-weight: bold;width: 120px;">تاریخ رسید</td>
-                    <td>' . JalaliDate::date('d F Y', $buy->date) . '</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;width: 120px;">زمان</td>
-                    <td>' . JalaliDate::date('H:i', $buy->date) . '</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;width: 120px;">به نام</td>
-                    <td>' . $user->email . '</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;width: 120px;">نام برنامه</td>
-                    <td>' . CHtml::encode($appTitle.' ('.$app->lastPackage->package_name.')') . '</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;width: 120px;">قیمت (با احتساب مالیات و عوارض)</td>
-                    <td>' . Controller::parseNumbers(number_format($price, 0)) . ' تومان</td>
-                </tr>';
-        if ($method == 'gateway')
-            $message .= '<tr>
-                    <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
-                    <td style="font-weight: bold;letter-spacing:4px">' . CHtml::encode($transaction->token) . ' </td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
-                    <td style="font-weight: bold;">درگاه بانک ملت </td>
-                </tr>';
-        elseif ($method == 'credit')
-            $message .= '<tr>
-                    <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
-                    <td>کسر از اعتبار</td>
-                </tr>';
-        $message .= '</table>';
-        Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message);
-        return $buy;
-    }
-
-    /**
-     * Download app file
-     *
-     * @param $fileName
-     * @param $filePath
-     * @param null $fakeFileName
-     * @throws CHttpException
-     */
-    protected function download($fileName, $filePath, $fakeFileName = null)
-    {
-        if (!$fakeFileName)
-            $fakeFileName = $fileName;
-        $realFileName = $fileName;
-        $fileName = $filePath . DIRECTORY_SEPARATOR . $realFileName;
-        if(!file_exists($fileName))
-            throw new CHttpException(404, 'فایل موردنظر وجود ندارد.');
-        switch (strtolower(pathinfo($fileName, PATHINFO_EXTENSION))) {
-            case 'apk':
-                $mimeType = 'application/vnd.android.package-archive';
-                break;
-
-            case 'xap':
-                $mimeType = 'application/x-silverlight-app';
-                break;
-
-            case 'ipa':
-                $mimeType = 'application/octet-stream';
-                break;
-        }
-
-        header('Pragma: public');    // required
-        header('Expires: 0');        // no cache
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($fileName)) . ' GMT');
-        header('Cache-Control: private', false);
-        header('Content-Type: ' . $mimeType);
-        header('Content-Disposition: attachment; filename="' . $fakeFileName . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize($fileName));    // provide file size
-        header('Connection: close');
-        echo readfile($fileName);
-        exit();
     }
 }
