@@ -445,14 +445,14 @@ class ApiController extends ApiBaseController
     {
         if(isset($this->request['profile'])){
             $allowed  = ['first_name', 'last_name', 'phone', 'zip_code', 'address', 'national_code'];
-            $profile = array_filter($this->request['profile'], function ($key) use ($allowed) {
-                    return in_array($key, $allowed);
-                },
-                ARRAY_FILTER_USE_KEY);
+            $profile = [];
+            foreach($this->request['profile'] as $key => $val)
+                if(in_array($key, $allowed))
+                    $profile[$key] = $val;
 
             /* @var $model UserDetails */
             $model = UserDetails::model()->findByAttributes(array('user_id' => $this->user->id));
-
+            $model->scenario = 'app-update';
             $model->attributes = $profile;
             $model->user->national_code = $profile['national_code'];
             $model->user->setScenario('app-update');
