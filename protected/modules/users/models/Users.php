@@ -263,6 +263,7 @@ class Users extends CActiveRecord
     {
         if($this->isNewRecord){
             $model = new UserDetails;
+            $model->scenario = $this->scenario;
             $model->user_id = $this->id;
             $model->first_name = $this->first_name;
             $model->last_name = $this->last_name;
@@ -272,6 +273,7 @@ class Users extends CActiveRecord
                 $this->addErrors($model->errors);
         }elseif($this->scenario == 'update'){
             $model = UserDetails::model()->findByPk($this->id);
+            $model->scenario = $this->scenario;
             $model->first_name = $this->first_name;
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;

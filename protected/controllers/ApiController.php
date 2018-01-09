@@ -449,14 +449,13 @@ class ApiController extends ApiBaseController
             foreach($this->request['profile'] as $key => $val)
                 if(in_array($key, $allowed))
                     $profile[$key] = $val;
-
             /* @var $model UserDetails */
-            $model = UserDetails::model()->findByAttributes(array('user_id' => $this->user->id));
+            $model = Users::model()->findByPk($this->user->id);
             $model->scenario = 'app-update';
             $model->attributes = $profile;
             $model->user->national_code = $profile['national_code'];
             $model->user->setScenario('app-update');
-
+            var_dump($model->save() and $model->user->save());exit;
             if ($model->save() and $model->user->save())
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => true,
