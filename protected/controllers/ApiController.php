@@ -444,16 +444,16 @@ class ApiController extends ApiBaseController
     public function actionEditProfile()
     {
         if(isset($this->request['profile'])){
-            $profile = $this->request['profile'];
+            $allowed  = ['first_name', 'last_name', 'phone', 'zip_code', 'address', 'national_code'];
+            $profile = array_filter($this->request['profile'], function ($key) use ($allowed) {
+                    return in_array($key, $allowed);
+                },
+                ARRAY_FILTER_USE_KEY);
 
             /* @var $model UserDetails */
             $model = UserDetails::model()->findByAttributes(array('user_id' => $this->user->id));
 
-            $model->first_name = $profile['first_name'];
-            $model->last_name = $profile['last_name'];
-            $model->phone = $profile['phone'];
-            $model->zip_code = $profile['zip_code'];
-            $model->address = $profile['address'];
+            $model->attributes = $profile;
             $model->user->national_code = $profile['national_code'];
             $model->user->setScenario('app-update');
 
