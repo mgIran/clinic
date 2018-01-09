@@ -125,6 +125,7 @@ class Users extends CActiveRecord
             array('mobile, password', 'required', 'on' => 'app-register'),
             array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile'),
             array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
+            array('national_code', 'required', 'on'=>'app-update'),
 
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.

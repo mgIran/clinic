@@ -452,10 +452,10 @@ class ApiController extends ApiBaseController
             $model->first_name = $profile['first_name'];
             $model->last_name = $profile['last_name'];
             $model->phone = $profile['phone'];
-            $model->mobile = $profile['mobile'];
             $model->zip_code = $profile['zip_code'];
             $model->address = $profile['address'];
             $model->user->national_code = $profile['national_code'];
+            $model->user->setScenario('app-update');
 
             if ($model->save() and $model->user->save())
                 $this->_sendResponse(200, CJSON::encode([
@@ -472,8 +472,13 @@ class ApiController extends ApiBaseController
                         'zipCode' => strval($model->zip_code),
                     ],
                 ]), 'application/json');
-            else
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
+            else {
+                if ($model->getErrors())
+                    $errors = $model->getErrors();
+                else
+                    $errors = $model->user->getErrors();
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => reset($errors)[0]]), 'application/json');
+            }
         }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Profile variable is required.']), 'application/json');
     }

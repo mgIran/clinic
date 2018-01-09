@@ -49,6 +49,9 @@ class UserDetails extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, first_name, last_name, phone, zip_code, address, avatar, mobile', 'safe', 'on'=>'search'),
+
+			// API Rules
+			array('first_name, last_name', 'required', 'on' => 'app-update'),
 		);
 	}
 
