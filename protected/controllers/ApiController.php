@@ -444,34 +444,33 @@ class ApiController extends ApiBaseController
     public function actionEditProfile()
     {
         if(isset($this->request['profile'])){
-            $allowed  = ['first_name', 'last_name', 'phone', 'zip_code', 'address', 'national_code'];
+            $allowed  = ['first_name', 'last_name', 'phone', 'zip_code', 'address', 'national_code', 'email'];
             $profile = [];
             foreach($this->request['profile'] as $key => $val)
                 if(in_array($key, $allowed))
                     $profile[$key] = $val;
-            /* @var $model UserDetails */
+            /* @var $model Users */
             $model = Users::model()->findByPk($this->user->id);
             $model->scenario = 'app-update';
             $model->attributes = $profile;
-            $model->user->national_code = $profile['national_code'];
-            $model->user->setScenario('app-update');
-            var_dump($model->save() and $model->user->save());exit;
-            if ($model->save() and $model->user->save())
+            $model->loadPropertyValues($profile);
+            if ($model->save()){
+                $model->loadPropertyValues();
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => true,
                     'message' => 'اطلاعات با موفقیت ثبت شد.',
                     'user' => [
-                        'nationalCode' => strval($model->user->national_code),
+                        'nationalCode' => strval($model->national_code),
                         'firstName' => strval($model->first_name),
                         'lastName' => strval($model->last_name),
                         'mobile' => strval($model->mobile),
-                        'email' => strval($model->user->email),
+                        'email' => strval($model->email),
                         'phone' => strval($model->phone),
                         'address' => strval($model->address),
                         'zipCode' => strval($model->zip_code),
                     ],
                 ]), 'application/json');
-            else {
+            }else {
                 if ($model->getErrors())
                     $errors = $model->getErrors();
                 else

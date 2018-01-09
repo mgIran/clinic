@@ -55,6 +55,8 @@ class Users extends CActiveRecord
     public $last_name;
     public $phone;
     public $mobile;
+    public $address;
+    public $zip_code;
     public $statusFilter;
     public $repeatPassword;
     public $oldPassword;
@@ -72,12 +74,16 @@ class Users extends CActiveRecord
             $this->last_name = isset($values['last_name']) && !empty($values['last_name'])?$values['last_name']:null;
             $this->phone = isset($values['phone']) && !empty($values['phone'])?$values['phone']:null;
             $this->mobile = isset($values['mobile']) && !empty($values['mobile'])?$values['mobile']:null;
+            $this->address = isset($values['address']) && !empty($values['address'])?$values['address']:null;
+            $this->zip_code = isset($values['zip_code']) && !empty($values['zip_code'])?$values['zip_code']:null;
         }
         elseif($this){
             $this->first_name = $this->userDetails->first_name;
             $this->last_name = $this->userDetails->last_name;
             $this->phone = $this->userDetails->phone;
             $this->mobile = $this->userDetails->mobile;
+            $this->address = $this->userDetails->address;
+            $this->zip_code = $this->userDetails->zip_code;
         }
     }
 
@@ -125,7 +131,7 @@ class Users extends CActiveRecord
             array('mobile, password', 'required', 'on' => 'app-register'),
             array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile'),
             array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
-            array('national_code', 'required', 'on'=>'app-update'),
+            array('national_code, first_name, last_name', 'required', 'on'=>'app-update'),
 
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -269,6 +275,8 @@ class Users extends CActiveRecord
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;
             $model->mobile = $this->mobile;
+            $model->zip_code = $this->zip_code;
+            $model->address = $this->address;
             if(!$model->save())
                 $this->addErrors($model->errors);
         }elseif($this->scenario == 'update'){
@@ -278,6 +286,8 @@ class Users extends CActiveRecord
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;
             $model->mobile = $this->mobile;
+            $model->zip_code = $this->zip_code;
+            $model->address = $this->address;
             if(!@$model->save())
                 $this->addErrors($model->errors);
         }
