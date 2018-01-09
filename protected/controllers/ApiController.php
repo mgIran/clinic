@@ -456,6 +456,7 @@ class ApiController extends ApiBaseController
             $model->loadPropertyValues($profile);
             if ($model->save()){
                 $model->loadPropertyValues();
+//                var_dump($model->userDetails->mobile);exit;
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => true,
                     'message' => 'اطلاعات با موفقیت ثبت شد.',

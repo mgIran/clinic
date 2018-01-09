@@ -132,6 +132,7 @@ class Users extends CActiveRecord
             array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile'),
             array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
             array('national_code, first_name, last_name', 'required', 'on'=>'app-update'),
+            array('first_name, last_name, phone, mobile, address, zip_code', 'safe'),
 
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -279,7 +280,7 @@ class Users extends CActiveRecord
             $model->address = $this->address;
             if(!$model->save())
                 $this->addErrors($model->errors);
-        }elseif($this->scenario == 'update'){
+        }elseif($this->scenario == 'update' || $this->scenario == 'app-update'){
             $model = UserDetails::model()->findByPk($this->id);
             $model->scenario = $this->scenario;
             $model->first_name = $this->first_name;
