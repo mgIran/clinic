@@ -459,7 +459,7 @@ class ApiController extends ApiBaseController
             $model->phone = isset($profile['phone']) && !empty($profile['phone'])?$profile['phone']:$model->phone;
             $model->address = isset($profile['address']) && !empty($profile['address'])?$profile['address']:$model->address;
             $model->zip_code = isset($profile['zip_code']) && !empty($profile['zip_code'])?$profile['zip_code']:$model->zip_code;
-            if ($model->save()){
+            if ($model->save() && !$model->hasErrors()){
                 $model->loadPropertyValues();
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => true,
@@ -479,7 +479,7 @@ class ApiController extends ApiBaseController
                 if ($model->getErrors())
                     $errors = $model->getErrors();
                 else
-                    $errors = $model->user->getErrors();
+                    $errors = $model->userDetails->getErrors();
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => reset($errors)[0]]), 'application/json');
             }
         }else
