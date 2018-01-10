@@ -324,7 +324,7 @@ class ApiController extends ApiBaseController
 
     public function actionUserInfo()
     {
-        if (isset($this->request['user']) and isset($this->request['clinic_id']) and isset($this->request['doctor_id']) and isset($this->request['expertise_id']) and isset($this->request['date']) and isset($this->request['time'])) {
+        if (isset($this->request['clinic_id']) and isset($this->request['doctor_id']) and isset($this->request['expertise_id']) and isset($this->request['date']) and isset($this->request['time'])) {
             $userInfo = $this->request['user'];
             $saveResult = false;
             if (empty($userInfo['mobile']))
@@ -451,12 +451,16 @@ class ApiController extends ApiBaseController
                     $profile[$key] = $val;
             /* @var $model Users */
             $model = Users::model()->findByPk($this->user->id);
+            $model->loadPropertyValues();
             $model->scenario = 'app-update';
             $model->attributes = $profile;
-            $model->loadPropertyValues($profile);
+            $model->first_name = isset($profile['first_name']) && !empty($profile['first_name'])?$profile['first_name']:$model->first_name;
+            $model->last_name = isset($profile['last_name']) && !empty($profile['last_name'])?$profile['last_name']:$model->last_name;
+            $model->phone = isset($profile['phone']) && !empty($profile['phone'])?$profile['phone']:$model->phone;
+            $model->address = isset($profile['address']) && !empty($profile['address'])?$profile['address']:$model->address;
+            $model->zip_code = isset($profile['zip_code']) && !empty($profile['zip_code'])?$profile['zip_code']:$model->zip_code;
             if ($model->save()){
                 $model->loadPropertyValues();
-//                var_dump($model->userDetails->mobile);exit;
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => true,
                     'message' => 'اطلاعات با موفقیت ثبت شد.',
@@ -464,7 +468,7 @@ class ApiController extends ApiBaseController
                         'nationalCode' => strval($model->national_code),
                         'firstName' => strval($model->first_name),
                         'lastName' => strval($model->last_name),
-                        'mobile' => strval($model->mobile),
+                        'mobile' => strval($model->userDetails->mobile),
                         'email' => strval($model->email),
                         'phone' => strval($model->phone),
                         'address' => strval($model->address),

@@ -129,7 +129,7 @@ class Users extends CActiveRecord
 
             // API rules
             array('mobile, password', 'required', 'on' => 'app-register'),
-            array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile'),
+            array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile', 'except' => 'app-update'),
             array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
             array('national_code, first_name, last_name', 'required', 'on'=>'app-update'),
             array('first_name, last_name, phone, mobile, address, zip_code', 'safe'),
@@ -286,7 +286,8 @@ class Users extends CActiveRecord
             $model->first_name = $this->first_name;
             $model->last_name = $this->last_name;
             $model->phone = $this->phone;
-            $model->mobile = $this->mobile;
+            if($this->scenario != 'app-update')
+                $model->mobile = $this->mobile;
             $model->zip_code = $this->zip_code;
             $model->address = $this->address;
             if(!@$model->save())
