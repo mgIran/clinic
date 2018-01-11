@@ -451,7 +451,6 @@ class ApiController extends ApiBaseController
                     $profile[$key] = $val;
             /* @var $model Users */
             $model = Users::model()->findByPk($this->user->id);
-            $model->loadPropertyValues();
             $model->scenario = 'app-update';
             $model->attributes = $profile;
             $model->first_name = isset($profile['first_name']) && !empty($profile['first_name'])?$profile['first_name']:$model->first_name;
@@ -460,6 +459,8 @@ class ApiController extends ApiBaseController
             $model->address = isset($profile['address']) && !empty($profile['address'])?$profile['address']:$model->address;
             $model->zip_code = isset($profile['zip_code']) && !empty($profile['zip_code'])?$profile['zip_code']:$model->zip_code;
             if ($model->save() && !$model->hasErrors()){
+                $model->refresh();
+                $model->userDetails->refresh();
                 $model->loadPropertyValues();
                 $this->_sendResponse(200, CJSON::encode([
                     'status' => true,
