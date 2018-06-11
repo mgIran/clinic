@@ -221,8 +221,12 @@ class ApiController extends ApiBaseController
                 $siteName = Yii::app()->name;
                 $message = "ثبت نام شما در سایت {$siteName} با موفقیت انجام شد.";
                 $phone = $model->userDetails->mobile;
-                if($phone)
-                    Notify::SendSms($message, $phone);
+                try {
+                    if ($phone)
+                        Notify::SendSms($message, $phone);
+                }catch (Exception $e){
+
+                }
 
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'ثبت نام شما با موفقیت انجام شد.']), 'application/json');
             }else {

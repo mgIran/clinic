@@ -22,7 +22,7 @@ class SendSMS extends CComponent
             $this->lineNumber = $line;
         date_default_timezone_set('Asia/Tehran');
         try {
-            @$this->_client = new SoapClient('http://n.sms.ir/ws/SendReceive.asmx?wsdl',array('encoding' => 'UTF-8'));
+            @$this->_client = new SoapClient('http://ip.sms.ir/ws/SendReceive.asmx?wsdl',array('encoding' => 'UTF-8'));
         }catch (Exception $e){
             throw new CHttpException(501, $e->getMessage());
         }

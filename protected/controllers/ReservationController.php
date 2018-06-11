@@ -244,6 +244,8 @@ class ReservationController extends Controller
                         $existUser->userDetails->first_name = $_POST['Users']['first_name'];
                     if(!$existUser->userDetails->last_name)
                         $existUser->userDetails->last_name = $_POST['Users']['last_name'];
+                    if(!$existUser->userDetails->mobile)
+                        $existUser->userDetails->mobile = $_POST['Users']['mobile'];
                     if(!$existUser->email)
                         $existUser->email = $_POST['Users']['email'];
                     $existUser->save();
