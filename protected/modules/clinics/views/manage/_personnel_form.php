@@ -17,13 +17,13 @@
     <div class="<?= Yii::app()->user->type == 'user'?"col-lg-6 col-md-6 col-sm-6 col-xs-12":'' ?>">
         <?= $this->renderPartial('//partial-views/_flashMessage'); ?>
     </div>
-    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="form-group col-lg-8 col-md-8 col-sm-8 col-xs-12">
     <?php
     if(!$model->isNewRecord):
         ?>
         <div class="alert alert-warning message">
             <strong>کلمه عبور:</strong>&nbsp;&nbsp;
-            <span style="font-size: 18px; font-weight: 500"><?= $model->user->useGeneratedPassword()?$model->user->generatePassword():"کلمه عبور توسط کاربر تغییر یافته"; ?></span>
+            <span style="font-size: 18px; font-weight: 500"><?= $model->user->useGeneratedPassword()?$model->user->generatePassword():"کلمه عبور توسط کاربر تغییر یافته <a class='btn btn-xs btn-danger pull-left' href='".$this->createUrl('/clinics/manage/resetPass/'.$model->clinic_id.'/'.$model->user_id)."'>ریست پسورد</a>"; ?></span>
         </div>
         <?php
     endif;
@@ -31,8 +31,13 @@
     </div>
     <div class="clearfix"></div>
 
+    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <?php echo $form->labelEx($model,'post'); ?>
+        <?php echo $form->dropDownList($model,'post', $model->getValidPosts(),array('class' => 'selectpicker')); ?>
+        <?php echo $form->error($model,'post'); ?>
+    </div>
 
-    <div id="expertises" class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div id="expertises" class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12" style="display: none;">
         <?php echo $form->labelEx($model,'expertise'); ?>
         <select class="selectpicker" data-live-search="true" name="<?= CHtml::activeName($model,'expertise') ?>[]" multiple>
             <?php
@@ -103,11 +108,6 @@
         <?php echo $form->error($model,'national_code'); ?>
     </div>
 
-    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <?php echo $form->labelEx($model,'post'); ?>
-        <?php echo $form->dropDownList($model,'post', $model->getValidPosts(),array('class' => 'selectpicker')); ?>
-        <?php echo $form->error($model,'post'); ?>
-    </div>
 
     <div class="clearfix"></div>
     <div class="form-group buttons">

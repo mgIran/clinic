@@ -124,7 +124,7 @@ class Users extends CActiveRecord
             array('oldPassword', 'oldPass', 'on' => 'change_password'),
 
             // recover password rules
-            array('password', 'required', 'on' => 'recover_password'),
+            array('password', 'required', 'on' => 'recover_password, reset_password'),
             array('repeatPassword', 'compare', 'compareAttribute' => 'password', 'on' => 'recover_password', 'message' => 'کلمه های عبور همخوانی ندارند'),
 
             // API rules

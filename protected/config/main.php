@@ -89,7 +89,7 @@ return array(
 				'api/<action:\w+>'=>'api/<action>',
 				'<action:(about|contactus|help|publishers|search)>' => 'site/<action>',
 				'<action:(logout|dashboard|googleLogin|library|transactions|downloaded|login|register)>' => 'users/public/<action>',
-				'clinics/manage/<action:(updatePersonnel|removePersonnel)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
+				'clinics/manage/<action:(updatePersonnel|removePersonnel|resetPass)>/<clinic:\d+>/<person:\d+>' => 'clinics/manage/<action>',
 				'clinics/manage/<action:(addPersonnel|addNewPersonnel|adminPersonnel)>/<clinic:\d+>' => 'clinics/manage/<action>',
 				'/help'=>'site/help',
 				'search/<id:\d+>'=>'reservation/search',

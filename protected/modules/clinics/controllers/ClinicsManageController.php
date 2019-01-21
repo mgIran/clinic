@@ -16,7 +16,7 @@ class ClinicsManageController extends Controller
 //			),
 			'backend' => array(
 				'view', 'create', 'update', 'admin', 'delete', 'upload',
-				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel'
+				'adminPersonnel', 'addPersonnel', 'addNewPersonnel', 'removePersonnel', 'updatePersonnel', 'resetPass'
 			)
 		);
 	}
@@ -299,6 +299,18 @@ class ClinicsManageController extends Controller
 			'model' => $model
 		));
 	}
+
+    public function actionResetPass($clinic = null, $person = null)
+    {
+        $userModel = Users::model()->findByPk($person);
+        $userModel->setScenario('reset_password');
+        $userModel->password = $userModel->encrypt($userModel->generatePassword());
+        if ($userModel->save())
+            Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت ریست شد.');
+        else
+            Yii::app()->user->setFlash('success', 'ریست کلمه عبور با مشکل مواجه شد.');
+        $this->redirect(array('/clinics/manage/updatePersonnel/' . $clinic . '/' . $person));
+    }
 
 	public function actionRemovePersonnel($clinic = null, $person = null, $id = null)
 	{
