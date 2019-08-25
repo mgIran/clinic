@@ -92,13 +92,12 @@ class Controller extends AuthController
                     'url' => array('/admins/dashboard')
                 ),
                 array(
-                    'label' => '<i class="fa fa-picture-o"></i><span>اسلایدشو</span> <i class="fa fa-angle-left pull-left"></i>',
+                    'label' => 'اسلایدشو<span class="caret"></span>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
-                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => '<i class="fa fa-circle-o"></i>مدیریت تصاویر', 'url' => Yii::app()->createUrl('/slideshow/manage/admin/')),
-                        array('label' => '<i class="fa fa-circle-o"></i>افزودن تصویر جدید', 'url' => Yii::app()->createUrl('/slideshow/manage/create')),
+                        array('label' => 'مدیریت تصاویر', 'url' => Yii::app()->createUrl('/slideshow/manage/admin/')),
+                        array('label' => 'افزودن تصویر جدید', 'url' => Yii::app()->createUrl('/slideshow/manage/create')),
                     )
                 ),
                 array(

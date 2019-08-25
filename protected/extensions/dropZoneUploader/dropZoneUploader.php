@@ -14,6 +14,10 @@ class dropZoneUploader extends CWidget
     private $_scripts;
 
     /**
+     * @var string Container Class
+     */
+    public $containerClass = '';
+    /**
      * @var string The URL that handles the file upload
      */
     public $url = null;
@@ -79,7 +83,7 @@ class dropZoneUploader extends CWidget
     public $dictFileTooBig = "حجم فایل زیاد است.\n حداکثر حجم مجاز :{{maxFilesize}}";
 
     /**
-     * @var array Of array files attributes that exist on server and we will added to DropZone
+     * @var UploadedFiles|array Of array files attributes that exist on server and we will added to DropZone
      * this array format :
      * array(
      *      array(
@@ -122,7 +126,7 @@ class dropZoneUploader extends CWidget
         {
             $this->id = $this->camelCase($this->id);
         }
-        $this->dictDefaultMessage = '<i class="icon icon-cloud-upload icon-4x"></i><span style="display: block;">'.$this->dictDefaultMessage.'</span>';
+        $this->dictDefaultMessage = '<i class="icon icon-cloud-upload icon-2x fa fa-cloud-upload fa-2x"></i><span style="display: block;">'.$this->dictDefaultMessage.'</span>';
         Yii::app()->clientScript->registerCoreScript( 'jquery' );
         $this->_scripts = array(
             'js' . DIRECTORY_SEPARATOR . 'dropzone.js', // core DropZone Js File
@@ -157,6 +161,11 @@ class dropZoneUploader extends CWidget
         // get files from server and added to drop zone
         if($this->serverFiles) {
             $data = CJSON::encode($this->serverFiles);
+            if($this->serverFiles instanceof UploadedFiles)
+            {
+                $data = $this->maxFiles>1?$this->serverFiles->getFiles():(isset($this->serverFiles->getFiles()[0])?$this->serverFiles->getFiles()[0]:null);
+                $data = CJSON::encode($data);
+            }
 
             if($this->maxFiles > 1)
             {
@@ -249,6 +258,7 @@ class dropZoneUploader extends CWidget
                     });
                     this.on("sending", function(file, xhr, formData) {
                         formData.append("data", '.$data.');
+                        '.(Yii::app()->request->enableCsrfValidation?'formData.append("'.Yii::app()->request->csrfTokenName.'", "'.Yii::app()->request->csrfToken.'");':'').'
                     });
                     this.on("success", function(file,res) {
                         '.$this->onSuccess.'
@@ -293,7 +303,7 @@ class dropZoneUploader extends CWidget
     {
         $class = $this->maxFiles == 1 ? 'single':'';
         $this->registerClientScript();
-        echo CHtml::openTag('div', CMap::mergeArray(array('class' => 'dropzone '.$class, 'id' => $this->id ),$this->htmlOptions));
+        echo CHtml::openTag('div', CMap::mergeArray(array('class' => $this->containerClass.' dropzone '.$class, 'id' => $this->id ),$this->htmlOptions));
         echo CHtml::closeTag('div');
     }
 }

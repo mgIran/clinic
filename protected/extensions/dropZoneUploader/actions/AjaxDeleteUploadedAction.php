@@ -1,6 +1,7 @@
 <?php
 class AjaxDeleteUploadedAction extends CAction
 {
+    const STORED_JSON_MODE = 'json';
     const STORED_FIELD_MODE = 'field';
     const STORED_RECORD_MODE = 'record';
     /**
@@ -35,12 +36,13 @@ class AjaxDeleteUploadedAction extends CAction
             throw new CException('{uploadDir} main files folder path is not specified.', 500);
         if (!$this->attribute)
             throw new CException('{attribute} attribute is not specified.', 500);
-        if ($this->modelName && (empty($this->storedMode) || ($this->storedMode !== self::STORED_FIELD_MODE && $this->storedMode !== self::STORED_RECORD_MODE)))
-            throw new CException('{storedMode} stored mode in db is not specified. ("field" or "record")', 500);
+        if ($this->modelName && (empty($this->storedMode) || ($this->storedMode !== self::STORED_FIELD_MODE && $this->storedMode !== self::STORED_RECORD_MODE && $this->storedMode !== self::STORED_JSON_MODE)))
+            throw new CException('{storedMode} stored mode in db is not specified. ("field" or "json" or "record")', 500);
     }
 
     public function run()
     {
+        /* @var $model CActiveRecord */
         $this->init();
         if (Yii::app()->request->isAjaxRequest) {
             $deleteFlag = false;
@@ -49,10 +51,39 @@ class AjaxDeleteUploadedAction extends CAction
                 $fileName = $_POST['fileName'];
                 $tempDir = Yii::getPathOfAlias("webroot").$this->tempDir;
                 $ownerModel = call_user_func(array($this->modelName, 'model'));
-                $model = $ownerModel->findByAttributes(array($this->attribute => $fileName));
+                if ($this->storedMode === self::STORED_JSON_MODE)
+                    $model = $ownerModel->find(array(
+                        'condition' => "{$this->attribute} LIKE :filename",
+                        'params' => [
+                            ':filename' => "%\"{$fileName}\"%"
+                        ]
+                    ));
+                else
+                    $model = $ownerModel->findByAttributes(array($this->attribute => $fileName));
                 if ($model) {
                     if ($this->storedMode === self::STORED_FIELD_MODE)
-                        $deleteFlag = $ownerModel->updateByPk($model->id, array($this->attribute => null))?true:false;
+                    {
+                        $model->{$this->attribute} = null;
+                        $deleteFlag = $model->save(false)?true:false;
+                    }
+                    elseif ($this->storedMode === self::STORED_JSON_MODE)
+                    {
+                        $list = $model->{$this->attribute};
+                        if($list && !is_array($list))
+                            $list = CJSON::decode($list);
+                        $key = array_search($fileName, $list);
+                        if(is_array($list))
+                        {
+                            if($key === false)
+                                $deleteFlag = true;
+                            else{
+                                unset($list[$key]);
+                                $list = $list && is_array($list)?CJSON::encode($list):null;
+                                $model->{$this->attribute} = $list;
+                                $deleteFlag = $model->save(false)?true:false;
+                            }
+                        }
+                    }
                     elseif ($this->storedMode === self::STORED_RECORD_MODE)
                         $deleteFlag = $model->delete()?true:false;
                     if ($deleteFlag) {

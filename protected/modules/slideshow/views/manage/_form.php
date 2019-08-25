@@ -15,19 +15,19 @@
 ?>
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="form-group">
+	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>100,'class' => 'form-control')); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
 	<!--
-	<div class="form-group">
+	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
 		<?php echo $form->textArea($model,'description',array('form-groups'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 -->
-	<div class="form-group">
+	<div class="row">
 		<?php echo $form->labelEx($model,'image'); ?>
 		<?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
 			'id' => 'uploaderFile',
@@ -55,7 +55,7 @@
         <div class="uploader-message error"></div>
 	</div>
 
-    <div class="form-group">
+    <div class="row">
 		<?php echo $form->labelEx($model,'mobile_image'); ?>
 		<?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
 			'id' => 'uploaderMobileFile',
@@ -83,7 +83,7 @@
         <div class="uploader-message error"></div>
 	</div>
 
-	<div class="form-group">
+	<div class="row">
 		<?php echo $form->labelEx($model,'link'); ?>
 		<?php echo $form->textField($model,'link',array('size'=>60,'maxlength'=>2000,'class' => 'form-control')); ?>
 		<?php echo $form->error($model,'link'); ?>
