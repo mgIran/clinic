@@ -39,6 +39,7 @@ return array(
 		'tickets',
 		'places',
 		'holidays',
+        'slideshow',
 	),
 
 	// application components
