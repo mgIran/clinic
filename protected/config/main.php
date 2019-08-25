@@ -19,6 +19,7 @@ return array(
 		'ext.yiiSortableModel.models.*',
 		'application.modules.places.models.*',
 		'application.modules.users.models.*',
+        'ext.dropZoneUploader.*',
 		'application.modules.users.components.*'
 	),
 

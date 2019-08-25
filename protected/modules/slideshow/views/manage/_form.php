@@ -10,7 +10,7 @@
 	<?php $this->renderPartial('//partial-views/_flashMessage'); ?>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'slideshow-form',
-	'enableAjaxValidation'=>true,
+	'enableAjaxValidation'=>false,
 ));
 ?>
 	<?php echo $form->errorSummary($model); ?>

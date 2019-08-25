@@ -157,18 +157,28 @@ a:active{
     display: inline-block;
     vertical-align: middle;
 }
+
 .big-image-container{
-    height:500px;
+    /*height:500px;*/
     overflow: hidden;
     position: relative;
     z-index:1;
 }
-.big-image-container img{
-    max-width: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
+.slideshow{
+    overflow: hidden;
+    width: 100%;
+    min-height: 300px;
+    height: auto;
+    position: relative;
     z-index:1;
+    margin-top: -2px;
+}
+.big-image-container img{
+    height: auto !important;
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*right: 0;*/
+    /*z-index:1;*/
 }
 .big-image-container .black-gradient{
     position: absolute;
@@ -188,7 +198,10 @@ a:active{
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#161616', GradientType=1 );
 }
 .big-image-container .content{
-    position: relative;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
     z-index:3;
     color: #fff;
     height:175px;
