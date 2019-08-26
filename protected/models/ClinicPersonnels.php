@@ -119,7 +119,7 @@ class ClinicPersonnels extends CActiveRecord
 
 		$criteria = new CDbCriteria;
 
-		$criteria->compare('clinic_id', $this->clinic_id, true);
+		$criteria->compare('clinic_id', $this->clinic_id);
 		$criteria->compare('user_id', $this->user_id, true);
 		if(is_array($this->post))
 			$criteria->addInCondition('post', $this->post);

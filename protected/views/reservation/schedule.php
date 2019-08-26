@@ -4,8 +4,8 @@
 /* @var $doctor Users */
 /* @var $clinic Clinics */
 ?>
-
 <div class="inner-page">
+<!--    --><?php //if(date('H',time()) <= SiteSetting::get('ceil_reservation_time')): ?>
     <?php $this->renderPartial('_steps', array('active'=>2));?>
 
     <div class="page-help">

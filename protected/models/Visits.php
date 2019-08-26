@@ -123,10 +123,11 @@ class Visits extends CActiveRecord
      * - Pass data provider to CGridView, CListView or any similar widget.
      *
      * @param $mode string
+     * @param $orderBy string
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search($mode = null)
+    public function search($mode = null, $orderBy = null)
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -140,23 +141,26 @@ class Visits extends CActiveRecord
         $criteria->compare('t.status', $this->status);
         $criteria->compare('tracking_code', $this->tracking_code, true);
         $criteria->compare('clinic_checked_number', $this->clinic_checked_number);
-        if(!Yii::app()->user->isGuest && !Yii::app()->user->type == 'admin')
+        if (!Yii::app()->user->isGuest && !Yii::app()->user->type == 'admin')
             $criteria->addCondition('t.status > 1');
-        if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin')
+        if (!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin')
             $criteria->addCondition('t.status >= 0');
-        if($this->userNameFilter){
+        if ($this->userNameFilter) {
             $criteria->addCondition('userDetails.first_name LIKE :userNameFilter OR userDetails.last_name LIKE :userNameFilter');
             $criteria->params[':userNameFilter'] = "%{$this->userNameFilter}%";
             $criteria->with = array('user', 'user.userDetails');
         }
 
-        if($this->date){
+        if ($this->date) {
             $toDay = strtotime(date("Y/m/d", $this->date) . " 00:00");
             $toNight = $toDay + 24 * 60 * 60 - 1;
             $criteria->addBetweenCondition('date', $toDay, $toNight);
         }
-        $criteria->order = 't.date ,t.time, t.status DESC, t.clinic_checked_number';
-        if($mode == 'array')
+        if ($orderBy)
+            $criteria->order = 't.id DESC';
+        else
+            $criteria->order = 't.date ,t.time, t.status DESC, t.clinic_checked_number';
+        if ($mode == 'array')
             return $this->findAll($criteria);
         else
             return new CActiveDataProvider($this, array(

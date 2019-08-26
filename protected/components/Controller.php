@@ -36,6 +36,7 @@ class Controller extends AuthController
     public $userNotifications;
     public $aboutFooter;
     public $siteAppUrls = array();
+    public $socialLinks = array();
     public $pageSizes = array(10 => 10, 20 => 20, 50 => 50, 100 => 100);
 
     public function getPageSizeDropDownTag()
@@ -60,26 +61,11 @@ class Controller extends AuthController
             var baseUrl = "' . Yii::app()->getBaseUrl(true) . '";
         ', CClientScript::POS_HEAD);
 
-        $this->description = Yii::app()->db->createCommand()
-            ->select('value')
-            ->from('ym_site_setting')
-            ->where('name = "site_description"')
-            ->queryScalar();
-        $this->keywords = Yii::app()->db->createCommand()
-            ->select('value')
-            ->from('ym_site_setting')
-            ->where('name = "keywords"')
-            ->queryScalar();
-        $this->siteName = Yii::app()->db->createCommand()
-            ->select('value')
-            ->from('ym_site_setting')
-            ->where('name = "site_title"')
-            ->queryScalar();
-        $this->pageTitle = Yii::app()->db->createCommand()
-            ->select('value')
-            ->from('ym_site_setting')
-            ->where('name = "default_title"')
-            ->queryScalar();
+        $this->description = SiteSetting::get('site_description');
+        $this->keywords = SiteSetting::get('keywords');
+        $this->siteName = SiteSetting::get('site_title');
+        $this->pageTitle = SiteSetting::get('default_title');
+        $this->socialLinks = SiteSetting::get('social_links',true);
         return true;
     }
 

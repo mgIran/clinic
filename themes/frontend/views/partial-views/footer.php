@@ -1,3 +1,6 @@
+<?php
+/** @var $this Controller */
+?>
 <div class="footer">
     <div class="container">
         <ul class="nav navbar-nav">
@@ -7,9 +10,9 @@
 <!--            <li><a href="--><?//= Yii::app()->createUrl('/terms') ?><!--">شرایط و ضوابط</a></li>-->
         </ul>
         <ul class="navbar-socials">
-            <li><a href="#"><i class="facebook-icon"></i></a></li>
-            <li><a href="#"><i class="instagram-icon"></i></a></li>
-            <li><a href="#"><i class="telegram-icon"></i></a></li>
+            <?php if(isset($this->socialLinks['facebook'])):?><li><a target="_blank" rel="nofollow" href="<?= $this->socialLinks['facebook'] ?>"><i class="facebook-icon"></i></a></li><?php endif;?>
+            <?php if(isset($this->socialLinks['instagram'])):?><li><a target="_blank" rel="nofollow" href="<?= $this->socialLinks['instagram'] ?>"><i class="instagram-icon"></i></a></li><?php endif;?>
+            <?php if(isset($this->socialLinks['telegram'])):?><li><a target="_blank" rel="nofollow" href="<?= $this->socialLinks['telegram'] ?>"><i class="telegram-icon"></i></a></li><?php endif;?>
         </ul>
     </div>
     <div class="copyright">

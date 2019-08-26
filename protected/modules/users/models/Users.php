@@ -63,6 +63,7 @@ class Users extends CActiveRecord
     public $newPassword;
     public $roleId;
     public $type;
+    public $verifyCode;
 
     /**
      * @param array $values
@@ -104,8 +105,8 @@ class Users extends CActiveRecord
             array('email, national_code', 'unique', 'on' => 'insert, create, OAuthInsert, update'),
             array('change_password_request_count', 'numerical', 'integerOnly' => true),
             array('email', 'email'),
-            array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update'),
-            array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update'),
+            array('email', 'filter', 'filter' => 'trim', 'on' => 'create, update,update_personnel'),
+            array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update,update_personnel'),
             array('email', 'length', 'max' => 255),
             array('role_id, national_code', 'length', 'max' => 10),
             array('status', 'length', 'max' => 8),
@@ -117,6 +118,7 @@ class Users extends CActiveRecord
             array('email', 'email', 'on' => 'reserve_register'),
             array('email, national_code', 'unique', 'on' => 'reserve_register'),
             array('mobile', 'checkUnique', 'on' => 'reserve_register'),
+            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'on' => 'reserve_register'),
 
             // change password rules
             array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'change_password'),
@@ -129,7 +131,7 @@ class Users extends CActiveRecord
 
             // API rules
             array('mobile, password', 'required', 'on' => 'app-register'),
-            array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile', 'except' => 'app-update'),
+            array('mobile', 'unique', 'className' => 'UserDetails', 'attributeName' => 'mobile', 'except' => 'app-update,update_personnel'),
             array('mobile', 'length', 'is'=>11, 'message'=>'شماره موبایل اشتباه است'),
             array('national_code, first_name, last_name', 'required', 'on'=>'app-update'),
             array('first_name, last_name, phone, mobile, address, zip_code', 'safe'),
@@ -208,6 +210,7 @@ class Users extends CActiveRecord
             'mobile' => 'تلفن همراه',
             'first_name' => 'نام',
             'last_name' => 'نام خانوادگی',
+            'verifyCode' => 'کد امنیتی',
         );
     }
 

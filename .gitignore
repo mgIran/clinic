@@ -1,0 +1,7 @@
+!.gitignore
+
+.idea
+assets/*
+uploads/*
+protected/runtime/*
+protected/tests/*
