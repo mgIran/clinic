@@ -92,6 +92,15 @@ class Controller extends AuthController
                     'url' => array('/admins/dashboard')
                 ),
                 array(
+                    'label' => 'اسلایدشو<span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'items' => array(
+                        array('label' => 'مدیریت تصاویر', 'url' => Yii::app()->createUrl('/slideshow/manage/admin/')),
+                        array('label' => 'افزودن تصویر جدید', 'url' => Yii::app()->createUrl('/slideshow/manage/create')),
+                    )
+                ),
+                array(
                     'label' => 'نوبت ها',
                     'url' => array('/reservation/admin')
                 ),

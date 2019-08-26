@@ -49,8 +49,12 @@ class SiteController extends Controller
 
         $expertises = Expertises::model()->findAll();
 
+        Yii::app()->getModule("slideshow");
+        $slideShow = Slideshow::model()->findAll();
+
         $this->render('index', array(
             'expertises' => $expertises,
+            'slideShow' => $slideShow,
         ));
     }
 

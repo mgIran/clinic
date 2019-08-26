@@ -193,7 +193,7 @@ class AjaxUploadAction extends CAction
                                     $imager = new Imager();
                                     $imager->createThumbnail($uploadDir.DIRECTORY_SEPARATOR.$model->{$this->attribute},
                                         $this->afterSaveActions['thumbnail']['width'], $this->afterSaveActions['thumbnail']['height'], false,
-                                        $thumbnailPath.DIRECTORY_SEPARATOR.$model->{$this->attribute});
+                                        $thumbnailPath.DIRECTORY_SEPARATOR.$model->{$this->attribute}, ($this->afterSaveActions['thumbnail']['quality']?:100));
                                 }
                             }
                         }
