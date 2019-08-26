@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Yusef Mobasheri
@@ -13,7 +14,7 @@ class Notify
      * @param $email
      * @param null $emailSubject
      */
-    public static function Send($text, $phone, $email, $emailSubject=null)
+    public static function Send($text, $phone, $email, $emailSubject = null)
     {
         self::SendSms($text, $phone);
         self::SendEmail($text, $email, $emailSubject);
@@ -29,24 +30,25 @@ class Notify
      */
     public static function SendSms($message, $phone)
     {
-        if($phone && !empty($phone)){
+        if ($phone && !empty($phone)) {
             $sms = new SendSMS();
             $sms->AddNumber($phone);
-            if($sms->getNumbers()){
+            if ($sms->getNumbers()) {
                 $sms->AddMessage($message);
-                @$sms->SendWithLine();
+                return $sms->SendWithLine();
             }
         }
+        return false;
     }
 
     public static function SendEmail($message, $email, $emailSubject)
     {
-        if($email && !empty($email)){
+        if ($email && !empty($email)) {
             $html = '<div style="font-family:tahoma,arial;font-size:12px;white-space: pre-line;text-align: right;background:#F5F5F5;min-height:100px;padding:5px 30px 5px;direction:rtl;line-height:25px;color:#4b4b4b;">';
             $html .= '<h1 style="direction:ltr;">اطلاعیه جدید</h1>';
             $html .= '<span>' . (CHtml::encode($message)) . '</span>';
             $html .= "</div>";
-            $subject = $emailSubject && !empty($emailSubject)?$emailSubject:'اطلاعیه جدید - وبسایت آوای شهیر';
+            $subject = $emailSubject && !empty($emailSubject) ? $emailSubject : 'اطلاعیه جدید - وبسایت آوای شهیر';
             @(new Mailer())->mail($email, $subject, $html, Yii::app()->params['no-reply-email']);
         }
     }
@@ -65,7 +67,7 @@ class Notify
     {
         /* @var $admin Admins */
         Yii::app()->getModule('admins');
-        if(!$adminIDs)
+        if (!$adminIDs)
             $adminIDs = Admins::GetAdminsColumn('id');
         elseif (!is_array($adminIDs))
             $adminIDs = array($adminIDs);
@@ -87,13 +89,13 @@ class Notify
                     $html = '<html><body>';
                     $html .= '<div style="font-family:tahoma,arial;font-size:12px;width:600px;background:#F5F5F5;min-height:100px;padding:5px 30px 5px;direction:rtl;line-height:25px;color:#4b4b4b;">';
                     $html .= '<h1 style="direction:ltr;">اطلاعیه جدید</h1>';
-                    $html .= '<span>'.($emailMessage).'</span>';
+                    $html .= '<span>' . ($emailMessage) . '</span>';
                     $html .= "</div>";
                     $html .= "</body></html>";
                     $subject = $emailSubject && !empty($emailSubject) ? $emailSubject : 'اطلاعیه جدید در مترجمان پیشتاز';
-                    $result[$adminID]['email'] = @(new Mailer())->mail($admin->email, $subject, $html, "noreply@pishtaztranslation.com")? 1 : 0;
+                    $result[$adminID]['email'] = @(new Mailer())->mail($admin->email, $subject, $html, "noreply@pishtaztranslation.com") ? 1 : 0;
                 }
-            }else
+            } else
                 $result[$adminID] = false;
         }
         return $result;
