@@ -63,6 +63,7 @@ class Users extends CActiveRecord
     public $newPassword;
     public $roleId;
     public $type;
+    public $verifyCode;
 
     /**
      * @param array $values
@@ -117,6 +118,7 @@ class Users extends CActiveRecord
             array('email', 'email', 'on' => 'reserve_register'),
             array('email, national_code', 'unique', 'on' => 'reserve_register'),
             array('mobile', 'checkUnique', 'on' => 'reserve_register'),
+            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'on' => 'reserve_register'),
 
             // change password rules
             array('oldPassword ,newPassword ,repeatPassword', 'required', 'on' => 'change_password'),
@@ -208,6 +210,7 @@ class Users extends CActiveRecord
             'mobile' => 'تلفن همراه',
             'first_name' => 'نام',
             'last_name' => 'نام خانوادگی',
+            'verifyCode' => 'کد امنیتی',
         );
     }
 

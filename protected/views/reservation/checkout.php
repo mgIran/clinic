@@ -128,7 +128,8 @@
                                 <?php echo CHtml::link('بازگشت', $this->createUrl('info'), array('class'=>'btn-black'));?>
                         <?php endif;?>
                     <?php else:?>
-                        <h4>کد رهگیری: <span><?php echo $model->tracking_code;?></span></h4>
+<!--                        <h4>کد رهگیری: <span>--><?php //echo $model->tracking_code;?><!--</span></h4>-->
+                        <h4><span style="font-size: 18px">کد رهگیری نوبت ویزیت به شماره همراه شما پیامک گردید، لطفا در تاریخ مقرر در مطب حاضر شوید.</span></h4>
                     <?php endif;?>
                 <?php echo  CHtml::endForm();?>
             </div>

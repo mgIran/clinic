@@ -33,6 +33,20 @@
                         <?php echo CHtml::textField("SiteSetting[$field->name]" ,$field->value ,array('size' => 10)); ?> تومان
                     </div>
                 </div>
+            <?php elseif($field->name == 'sms_schedule_time'): ?>
+                <div class="row">
+                    <div class="row">
+                        <?php echo CHtml::label($field->title ,'' ,array('class' => 'col-lg-3 control-label')); ?>
+                        <?php echo CHtml::textField("SiteSetting[$field->name]" ,$field->value ,array('size' => 4)); ?> قبل از نوبت
+                    </div>
+                </div>
+            <?php elseif($field->name == 'sms_schedule_message'): ?>
+                <div class="row">
+                    <div class="row">
+                        <?php echo CHtml::label($field->title ,'' ,array('class' => 'col-lg-3 control-label')); ?>
+                        <?php echo CHtml::textField("SiteSetting[$field->name]" ,$field->value ,array('size' => 4)); ?> قبل از نوبت
+                    </div>
+                </div>
             <?php else: ?>
                 <div class="row">
                     <div class="row">

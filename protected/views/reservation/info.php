@@ -4,36 +4,36 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="inner-page">
-    <?php $this->renderPartial('_steps', array('active'=>3));?>
+    <div class="inner-page">
+        <?php $this->renderPartial('_steps', array('active' => 3)); ?>
 
-    <div class="page-help">
-        <div class="container">
-            <h4>ثبت اطلاعات بیمار</h4>
-            <ul>
-                <li>اطلاعات خود را بصورت صحیح و کامل وارد نمایید.</li>
-                <li>وارد کردن شماره همراه الزامی می باشد. با لغو یا تغییر نوبت برای شما پیامی ارسال خواهد شد.</li>
-            </ul>
+        <div class="page-help">
+            <div class="container">
+                <h4>ثبت اطلاعات بیمار</h4>
+                <ul>
+                    <li>اطلاعات خود را بصورت صحیح و کامل وارد نمایید.</li>
+                    <li>وارد کردن شماره همراه الزامی می باشد. با لغو یا تغییر نوبت برای شما پیامی ارسال خواهد شد.</li>
+                </ul>
+            </div>
         </div>
-    </div>
 
-    <div class="form-container">
-        <?php $form=$this->beginWidget('CActiveForm', array(
-            'id'=>'users-form',
-            'enableAjaxValidation'=>false,
-            'enableClientValidation'=>true,
-            'clientOptions'=>array(
-                'validateOnSubmit'=>true,
-            ),
-            'htmlOptions'=>array('class'=>'info-form'),
-        )); ?>
+        <div class="form-container">
+            <?php $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'users-form',
+                'enableAjaxValidation' => false,
+                'enableClientValidation' => true,
+                'clientOptions' => array(
+                    'validateOnSubmit' => true,
+                ),
+                'htmlOptions' => array('class' => 'info-form'),
+            )); ?>
             <div class="row" style="margin-bottom: 0;">
-                <?php $this->renderPartial('//partial-views/_flashMessage');?>
+                <?php $this->renderPartial('//partial-views/_flashMessage'); ?>
                 <?php echo $form->errorSummary($user); ?>
             </div>
             <div class="row">
-                <?php echo $form->textField($user,'national_code',array('placeholder'=>'کد ملی *', 'maxlength'=>10)); ?>
-                <?php echo $form->error($user,'national_code'); ?>
+                <?php echo $form->textField($user, 'national_code', array('placeholder' => 'کد ملی *', 'maxlength' => 10)); ?>
+                <?php echo $form->error($user, 'national_code'); ?>
                 <span class="errorMessage" id="national-code-error"></span>
                 <div class="loading-container" id="national-code-loading">
                     <div class="spinner">
@@ -44,32 +44,42 @@
                 </div>
             </div>
             <div class="row">
-                <?php echo $form->textField($user,'first_name',array('placeholder'=>'نام *')); ?>
-                <?php echo $form->error($user,'first_name'); ?>
+                <?php echo $form->textField($user, 'first_name', array('placeholder' => 'نام *')); ?>
+                <?php echo $form->error($user, 'first_name'); ?>
             </div>
             <div class="row">
-                <?php echo $form->textField($user,'last_name',array('placeholder'=>'نام خانوادگی *')); ?>
-                <?php echo $form->error($user,'last_name'); ?>
+                <?php echo $form->textField($user, 'last_name', array('placeholder' => 'نام خانوادگی *')); ?>
+                <?php echo $form->error($user, 'last_name'); ?>
             </div>
             <div class="row">
-                <?php echo $form->textField($user,'mobile',array('placeholder'=>'تلفن همراه *', 'maxlength'=>11)); ?>
-                <?php echo $form->error($user,'mobile'); ?>
+                <?php echo $form->textField($user, 'mobile', array('placeholder' => 'تلفن همراه *', 'maxlength' => 11)); ?>
+                <?php echo $form->error($user, 'mobile'); ?>
             </div>
             <div class="row">
-                <?php echo $form->textField($user,'email',array('placeholder'=>'پست الکترونیکی')); ?>
-                <?php echo $form->error($user,'email'); ?>
+                <?php echo $form->textField($user, 'email', array('placeholder' => 'پست الکترونیکی')); ?>
+                <?php echo $form->error($user, 'email'); ?>
             </div>
+            <?php if (CCaptcha::checkRequirements()): ?>
+                <div class="row">
+                    <?php echo $form->labelEx($user, 'verifyCode'); ?>
+                    <div>
+                        <?php $this->widget('CCaptcha'); ?>
+                        <?php echo $form->textField($user, 'verifyCode'); ?>
+                    </div>
+                    <div class="hint">لطفا امنیتی را وارد کنید
+                    </div>
+                    <?php echo $form->error($user, 'verifyCode'); ?>
+                </div>
+            <?php endif; ?>
             <div class="row">
-                <input type="text" placeholder="کد امنیتی گوگل">
+                <small class="desc">در پایان فرایند رزرو نوبت، سیستم برای شما کد رهگیری در نظر می گیرد. لطفا هنگام
+                    مراجعه به درمانگاه، کد رهگیری را همراه داشته باشید.</small>
+                <?php echo CHtml::submitButton('ثبت', array('class' => 'btn-red pull-left')); ?>
+                <?php echo CHtml::link('بازگشت', $this->createUrl('schedule'), array('class' => 'btn-black pull-left')); ?>
             </div>
-            <div class="row">
-                <small class="desc">در پایان فرایند رزرو نوبت، سیستم برای شما کد رهگیری در نظر می گیرد. لطفا هنگام مراجعه به درمانگاه، کد رهگیری را همراه داشته باشید.</small>
-                <?php echo CHtml::submitButton('ثبت', array('class'=>'btn-red pull-left'));?>
-                <?php echo CHtml::link('بازگشت', $this->createUrl('schedule'), array('class'=>'btn-black pull-left'));?>
-            </div>
-        <?php $this->endWidget();?>
+            <?php $this->endWidget(); ?>
+        </div>
     </div>
-</div>
 <?php Yii::app()->clientScript->registerScript('load-user-info', "
     $('#Users_national_code').focusout(function(){
         if($(this).val() != ''){
@@ -80,7 +90,7 @@
                     $('#national-code-loading').show();
 
                     $.ajax({
-                        url: '".$this->createUrl('/users/public/getUserByCode')."',
+                        url: '" . $this->createUrl('/users/public/getUserByCode') . "',
                         type: 'POST',
                         dataType: 'JSON',
                         data: {code: $(this).val()},
@@ -138,4 +148,4 @@
             }
         }
     });
-");?>
+"); ?>

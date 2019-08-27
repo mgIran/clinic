@@ -4,7 +4,6 @@
 /* @var $doctor Users */
 /* @var $clinic Clinics */
 ?>
-
 <div class="inner-page">
     <?php $this->renderPartial('_steps', array('active'=>2));?>
 
