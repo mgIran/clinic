@@ -277,7 +277,7 @@ class ClinicsManageController extends Controller
 			$model->post = $_POST['ClinicPersonnels']['post'];
 			$model->loadPropertyValues($_POST['ClinicPersonnels']);
 			$userModel = Users::model()->findByPk($model->user_id);
-			$userModel->scenario = 'update';
+			$userModel->scenario = 'update_personnel';
 			$userModel->attributes = $_POST['ClinicPersonnels'];
 			$userModel->loadPropertyValues($_POST['ClinicPersonnels']);
 			if($userModel->save() && !$userModel->hasErrors()){
@@ -291,7 +291,7 @@ class ClinicsManageController extends Controller
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}else{
 				$model->addErrors($userModel->errors);
-				$userModel->delete();
+//				$userModel->delete();
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات کاربری خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 		}

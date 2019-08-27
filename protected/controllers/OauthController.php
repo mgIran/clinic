@@ -53,6 +53,7 @@ class OauthController extends ApiBaseController
                 if(!$refresh_token)
                     $this->_sendResponse(200, CJSON::encode(['status' => false,
                         'message' => 'Refresh Token is invalid.']), 'application/json');
+                /* @var Sessions $session */
                 $session = Sessions::model()->findByAttributes(array('refresh_token' => $refresh_token));
                 if($session === null)
                     $this->_sendResponse(200, CJSON::encode(['status' => false,
@@ -88,6 +89,7 @@ class OauthController extends ApiBaseController
                             'phone' => strval($session->user->userDetails->phone),
                             'address' => strval($session->user->userDetails->address),
                             'zipCode' => strval($session->user->userDetails->zip_code),
+                            'avatar' => $session->user->userDetails->getApiAvatar(),
                         ],
                     ]), 'application/json');
                 }else
@@ -95,6 +97,7 @@ class OauthController extends ApiBaseController
                         'message' => 'Generate new access token failed. Please try again.']), 'application/json');
             }else if($this->request['grant_type']=='access_token' && isset($this->request['authorization_code'])){
                 $code = $this->request['authorization_code'];
+                /* @var Sessions $session */
                 $session = Sessions::model()->findByPk($code);
                 if($session === null)
                     $this->_sendResponse(200, CJSON::encode([
@@ -127,6 +130,7 @@ class OauthController extends ApiBaseController
                         'phone' => strval($session->user->userDetails->phone),
                         'address' => strval($session->user->userDetails->address),
                         'zipCode' => strval($session->user->userDetails->zip_code),
+                        'avatar' => $session->user->userDetails->getApiAvatar(),
                     ],
                 ]), 'application/json');
             }else if($this->request['grant_type']=='revoke_token' && isset($this->request['access_token'])){

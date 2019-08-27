@@ -98,9 +98,9 @@ class SiteSetting extends CActiveRecord
 		return parent::model($className);
 	}
 
-    public static function get($name)
+    public static function get($name, $decode = false)
     {
         $model = self::model()->findByAttributes(array('name' => $name));
-        return $model?$model->value:null;
+        return $model?$decode?json_decode($model->value, true):$model->value:null;
 	}
 }
