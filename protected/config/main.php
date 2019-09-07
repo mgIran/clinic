@@ -20,7 +20,8 @@ return array(
 		'application.modules.places.models.*',
 		'application.modules.users.models.*',
         'ext.dropZoneUploader.*',
-		'application.modules.users.components.*'
+		'application.modules.users.components.*',
+		'application.modules.setting.models.*'
 	),
 
 	'modules'=>array(

@@ -260,7 +260,7 @@ class Users extends CActiveRecord
 
     protected function afterValidate()
     {
-        if($this->isNewRecord)
+        if($this->isNewRecord && !$this->hasErrors())
             $this->password = $this->encrypt($this->password);
         parent::afterValidate();
     }
