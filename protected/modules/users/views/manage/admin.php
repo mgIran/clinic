@@ -24,19 +24,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'columns'=>array(
         array(
             'header' => 'نام کامل',
-            'value' => '$data->userDetails->getShowName()',
+            'value' => '$data->userDetails?$data->userDetails->getShowName():"--"',
             'filter' => CHtml::activeTextField($model,'first_name')
         ),
         array(
             'header' => 'وضعیت',
             'value' => '$data->statusLabels[$data->status]',
+            'visible' => '$data->status != "active_number"',
             'filter' => CHtml::activeDropDownList($model,'statusFilter',$model->statusLabels,array('prompt' => 'همه'))
-        ),array(
-            'header' => 'کلمه عبور',
-            'value' => function($data){
-                return $data->useGeneratedPassword()?$data->generatePassword():"کلمه عبور توسط کاربر تغییر یافته";
-            }
         ),
+//        array(
+//            'header' => 'کلمه عبور',
+//            'value' => function($data){
+//                return $data->useGeneratedPassword()?$data->generatePassword():"کلمه عبور توسط کاربر تغییر یافته";
+//            }
+//        ),
         array(
             'class'=>'CButtonColumn',
             'buttons' => array(

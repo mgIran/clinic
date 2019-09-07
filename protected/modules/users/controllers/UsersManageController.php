@@ -21,6 +21,7 @@ class UsersManageController extends Controller
                 'create',
                 'update',
                 'admin',
+                'pending',
                 'delete',
                 'userTransactions',
                 'transactions'
@@ -139,6 +140,24 @@ class UsersManageController extends Controller
         if(isset($_GET['Users']))
             $model->attributes = $_GET['Users'];
         $model->role_id = 1;
+        $model->status = 'active';
+        $this->render('admin', array(
+            'model' => $model,
+            'role' => 1
+        ));
+    }
+
+    /**
+     * Manages all models.
+     */
+    public function actionPending()
+    {
+        $model = new Users('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Users']))
+            $model->attributes = $_GET['Users'];
+        $model->role_id = 1;
+        $model->status = 'active_number';
         $this->render('admin', array(
             'model' => $model,
             'role' => 1

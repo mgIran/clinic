@@ -254,7 +254,7 @@ class UsersPublicController extends Controller
         if ($model) {
             if ($model->status == 'pending') {
                 if (time() <= (double)$model->create_date + 259200) {
-                    $model->updateByPk($model->id, array('status' => 'active'));
+                    $model->updateByPk($model->id, array('status' => 'active_number'));
                     Yii::app()->user->setFlash('success', 'حساب کاربری شما فعال گردید.');
                     $login = new UserLoginForm('OAuth');
                     $login->email = $model->email;
@@ -268,6 +268,9 @@ class UsersPublicController extends Controller
                 }
             } elseif ($model->status == 'active') {
                 Yii::app()->user->setFlash('failed', 'این حساب کاربری قبلا فعال شده است.');
+                $this->redirect($this->createUrl('/login'));
+            }  elseif ($model->status == 'active_number') {
+                Yii::app()->user->setFlash('failed', 'حساب کاربری در انتظار تایید مدیریت است.');
                 $this->redirect($this->createUrl('/login'));
             } else {
                 Yii::app()->user->setFlash('failed', 'امکان فعال سازی این کاربر وجود ندارد. لطفا مجددا ثبت نام کنید.');

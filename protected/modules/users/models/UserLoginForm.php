@@ -105,6 +105,8 @@ class UserLoginForm extends CFormModel
                     $this->addError($attribute,'این حساب کاربری مسدود شده است.');
                 elseif($this->_identity->errorCode===5)
                     $this->addError($attribute,'این حساب کاربری حذف شده است.');
+                elseif($this->_identity->errorCode===6)
+                    $this->addError($attribute,'این حساب کاربری در انتظار تایید مدیریت است.');
                 else
                     $this->addError($attribute,($this->scenario == 'app_login'?'شماره موبایل':$this->getAttributeLabel($attribute))." یا کلمه عبور اشتباه است .");
             }

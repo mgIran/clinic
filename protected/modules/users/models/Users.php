@@ -47,6 +47,7 @@ class Users extends CActiveRecord
 
     public $statusLabels = array(
         'pending' => 'در انتظار تایید',
+        'active_number' => 'شماره فعال شده',
         'active' => 'فعال',
         'blocked' => 'مسدود',
         'deleted' => 'حذف شده'
@@ -109,7 +110,7 @@ class Users extends CActiveRecord
             array('username, password, verification_token', 'length', 'max' => 100, 'on' => 'create, update,update_personnel'),
             array('email', 'length', 'max' => 255),
             array('role_id, national_code', 'length', 'max' => 10),
-            array('status', 'length', 'max' => 8),
+            array('status', 'length', 'max' => 13),
             array('create_date', 'length', 'max' => 20),
             array('type, first_name, last_name, phone, mobile, national_code', 'safe'),
 
@@ -236,6 +237,7 @@ class Users extends CActiveRecord
         $criteria->compare('status', $this->statusFilter, true);
         $criteria->compare('role_id', $this->role_id);
         $criteria->compare('national_code',$this->national_code,true);
+        $criteria->compare('status',$this->status);
         $criteria->addSearchCondition('userDetails.first_name', $this->first_name);
         $criteria->addSearchCondition('userDetails.last_name', $this->last_name);
         $criteria->with = array('userDetails');

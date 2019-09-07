@@ -134,6 +134,7 @@ class Controller extends AuthController
                     'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
                         array('label' => 'مدیریت تخصص ها', 'url' => Yii::app()->createUrl('/users/expertises/admin')),
+                        array('label' => 'مدیریت کاربران تایید نشده', 'url' => Yii::app()->createUrl('/users/manage/pending')),
                         array('label' => 'مدیریت کاربران', 'url' => Yii::app()->createUrl('/users/manage')),
                     )
                 ),

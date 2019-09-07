@@ -40,6 +40,7 @@ class UserIdentity extends CUserIdentity
     const ERROR_STATUS_PENDING = 3;
     const ERROR_STATUS_BLOCKED = 4;
     const ERROR_STATUS_DELETED = 5;
+    const ERROR_STATUS_ACTIVE_NUMBER = 6;
 
     /**
      * UserIdentity constructor.
@@ -77,6 +78,8 @@ class UserIdentity extends CUserIdentity
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         elseif ($record->status == 'pending')
             $this->errorCode = self::ERROR_STATUS_PENDING;
+        elseif ($record->status == 'active_number')
+            $this->errorCode = self::ERROR_STATUS_ACTIVE_NUMBER;
         elseif ($record->status == 'blocked')
             $this->errorCode = self::ERROR_STATUS_BLOCKED;
         elseif ($record->status == 'deleted')

@@ -27,6 +27,11 @@ $this->menu=array(
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
+        <label class="control-label">کلمه عبور:</label>
+		<?= $model->useGeneratedPassword()?$model->generatePassword():"کلمه عبور توسط کاربر تغییر یافته" ?>
+	</div>
+
+    <div class="row">
 		<?php echo $form->labelEx($model,'status'); ?>
 		<?php echo $form->dropDownList($model,'status',$model->statusLabels); ?>
 		<?php echo $form->error($model,'status'); ?>
