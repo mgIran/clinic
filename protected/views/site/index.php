@@ -27,7 +27,7 @@ $cs->registerScriptFile($baseUrl . '/js/persian-datepicker-0.4.5.min.js');
             <div class="container">
                 <h2>ما کار را برای شما آسوده کرده ایم</h2>
                 <h3 class="hidden-xs">به راحتی می توانید از پزشک خود نوبت ویزیت دریافت کنید</h3>
-                <a href="#reservation" class="anchor-link">شروع کنید</a>
+                <a href="#reservation" class="anchor-link">نوبت دهی</a>
             </div>
         </div>
 

@@ -35,7 +35,7 @@ class UserLoginForm extends CFormModel
             array('email', 'email', 'on' => 'OAuth'),
             array('verification_field_value', 'email', 'on' => 'emailAuth'),
             array('verification_field_value', 'numerical', 'integerOnly' => true, 'on' => 'mobileAuth, nationalAuth'),
-            array('verification_field_value', 'length', 'is' => 10, 'on' => 'mobileAuth, nationalAuth'),
+//            array('verification_field_value', 'length', 'is' => 10, 'on' => 'mobileAuth, nationalAuth'),
 			// multiple username
 			array('verification_field_value, verification_field', 'safe'),
 			array('verification_field_value', 'check', 'fields' => ['national_code', 'mobile', 'email']),

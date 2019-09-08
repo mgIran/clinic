@@ -97,7 +97,7 @@ class Users extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('email, password', 'required', 'on' => 'insert,create'),
+            array('mobile, password', 'required', 'on' => 'insert,create'),
             array('national_code', 'length', 'is' => 10, 'message'=>'کد ملی باید 10 رقم باشد.'),
             array('national_code, mobile', 'numerical', 'integerOnly' => true, 'message'=>'{attribute} باید عددی باشد.'),
             array('email', 'required', 'on' => 'update'),

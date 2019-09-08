@@ -23,9 +23,14 @@
                     }",
                 ),
             )); ?>
+<!--            <div class="form-row">-->
+<!--                --><?php //echo $form->textField($model,'email',array('class'=>'form-control','placeholder'=>'پست الکترونیکی')); ?>
+<!--                --><?php //echo $form->error($model,'email'); ?>
+<!--                <span class="transition icon-envelope"></span>-->
+<!--            </div>-->
             <div class="form-row">
-                <?php echo $form->textField($model,'email',array('class'=>'form-control','placeholder'=>'پست الکترونیکی')); ?>
-                <?php echo $form->error($model,'email'); ?>
+                <?php echo $form->textField($model,'mobile',array('class'=>'form-control','placeholder'=>'تلفن همراه')); ?>
+                <?php echo $form->error($model,'mobile'); ?>
                 <span class="transition icon-envelope"></span>
             </div>
             <div class="form-row">

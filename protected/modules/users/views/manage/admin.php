@@ -43,7 +43,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'class'=>'CButtonColumn',
             'buttons' => array(
                 'view' => array(
-                    'url' => 'Yii::app()->createUrl("/users/manage/view",array("id" => $data->id))'
+                    'url' => 'Yii::app()->createUrl("/users/manage/show",array("id" => $data->id))'
                 )
             )
         )

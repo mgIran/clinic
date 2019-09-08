@@ -183,6 +183,8 @@ class ClinicsManageController extends Controller
 				$model->user->save(false);
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 				$this->redirect(Yii::app()->user->type == 'user'?array('/clinics/panel/'):
+					array('manage/updatePersonnel/' . $model->clinic_id.'/'.$model->user_id));
+				$this->redirect(Yii::app()->user->type == 'user'?array('/clinics/panel/'):
 					array('manage/adminPersonnel/' . $model->clinic_id));
 			}else
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');

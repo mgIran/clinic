@@ -22,7 +22,9 @@ class UsersManageController extends Controller
                 'update',
                 'admin',
                 'pending',
+                'approve',
                 'delete',
+                'show',
                 'userTransactions',
                 'transactions'
             )
@@ -51,6 +53,13 @@ class UsersManageController extends Controller
         ));
     }
 
+    public function actionShow($id)
+    {
+        $this->render('view', array(
+            'model' => $this->loadModel($id),
+        ));
+    }
+
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'views' page.
@@ -62,9 +71,9 @@ class UsersManageController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['Users'])){
+        if (isset($_POST['Users'])) {
             $model->attributes = $_POST['Users'];
-            if($model->save())
+            if ($model->save())
                 $this->redirect(array('views', 'id' => $model->id));
         }
 
@@ -82,18 +91,18 @@ class UsersManageController extends Controller
     {
         $model = $this->loadModel($id);
         $model->scenario = 'changeStatus';
-        if(isset($_POST['Users'])){
+        if (isset($_POST['Users'])) {
             $model->attributes = $_POST['Users'];
-            if($model->save()){
+            if ($model->save()) {
                 Yii::app()->user->setFlash('success', '<span class="icon-check"></span>&nbsp;&nbsp;اطلاعات با موفقیت ذخیره شد.');
-                if(isset($_POST['ajax'])){
+                if (isset($_POST['ajax'])) {
                     echo CJSON::encode(['status' => 'ok']);
                     Yii::app()->end();
-                }else
+                } else
                     $this->redirect(array('admin'));
-            }else{
+            } else {
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
-                if(isset($_POST['ajax'])){
+                if (isset($_POST['ajax'])) {
                     echo CJSON::encode(['status' => 'error']);
                     Yii::app()->end();
                 }
@@ -105,6 +114,33 @@ class UsersManageController extends Controller
         ));
     }
 
+    public function actionApprove($id)
+    {
+        $model = $this->loadModel($id);
+        $model->scenario = 'changeStatus';
+        $model->status = 'active';
+        if ($model->save()) {
+            $siteName = Yii::app()->name;
+            $message = "حساب کاربری شما در سایت {$siteName} توسط مدیریت تایید شد.";
+            $phone = $model->userDetails->mobile;
+            if ($phone)
+                Notify::SendSms($message, $phone);
+            Yii::app()->user->setFlash('success', '<span class="icon-check"></span>&nbsp;&nbsp;اطلاعات با موفقیت ذخیره شد.');
+            if (isset($_POST['ajax'])) {
+                echo CJSON::encode(['status' => 'ok']);
+                Yii::app()->end();
+            }
+        } else {
+            Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+            if (isset($_POST['ajax'])) {
+                echo CJSON::encode(['status' => 'error']);
+                Yii::app()->end();
+            }
+        }
+
+        $this->redirect(array('show', 'id' => $model->id));
+    }
+
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -113,13 +149,13 @@ class UsersManageController extends Controller
     public function actionDelete($id)
     {
         $model = $this->loadModel($id);
-        if($model->status == 'deleted')
+        if ($model->status == 'deleted')
             $model->delete();
         $model->updateByPk($model->id, array('status' => 'deleted'));
 
         // if AJAX request (triggered by deletion via admin grid views), we should not redirect the browser
-        if(!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl'])?$_POST['returnUrl']:array('admin'));
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
     /**
@@ -137,7 +173,7 @@ class UsersManageController extends Controller
     {
         $model = new Users('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['Users']))
+        if (isset($_GET['Users']))
             $model->attributes = $_GET['Users'];
         $model->role_id = 1;
         $model->status = 'active';
@@ -154,7 +190,7 @@ class UsersManageController extends Controller
     {
         $model = new Users('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['Users']))
+        if (isset($_GET['Users']))
             $model->attributes = $_GET['Users'];
         $model->role_id = 1;
         $model->status = 'active_number';
@@ -163,6 +199,7 @@ class UsersManageController extends Controller
             'role' => 1
         ));
     }
+
     /**
      * Show User Transactions
      *
@@ -170,9 +207,9 @@ class UsersManageController extends Controller
      */
     public function actionUserTransactions($id)
     {
-        $model =new UserTransactions('search');
+        $model = new UserTransactions('search');
         $model->unsetAttributes();
-        if(isset($_GET['UserTransactions']))
+        if (isset($_GET['UserTransactions']))
             $model->attributes = $_GET['UserTransactions'];
         $model->user_id = $id;
         //
@@ -207,7 +244,7 @@ class UsersManageController extends Controller
     public function loadModel($id)
     {
         $model = Users::model()->findByPk($id);
-        if($model === null)
+        if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
@@ -218,7 +255,7 @@ class UsersManageController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax'] === 'users-form'){
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'users-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
