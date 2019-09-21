@@ -652,7 +652,7 @@ class UsersPublicController extends Controller
 //                    Yii::app()->user->setFlash('register-success', 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد. لطفا Inbox و Spam پست الکترونیکی خود را چک کنید.');
                     Yii::app()->user->setFlash('register-success', 'ثبت نام شما با موفقیت انجام شد و در انتظار تایید مدیریت قرار گرفت. پس از تایید میتوانید وارد حساب کاربری خود شوید.');
 
-                Yii::app()->session->set('user_id',$model->id);
+//                Yii::app()->session->set('user_id',$model->id);
                 $this->refresh();
                 $this->redirect(array('verify'));
             } else {

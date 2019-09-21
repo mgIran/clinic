@@ -29,7 +29,7 @@ $ceil_reservation_time = SiteSetting::get('ceil_reservation_time');
                 <?php $this->endWidget(); ?>
             </div>
         </div>
-        <?php if (date('H', time()) <= $ceil_reservation_time): ?>
+        <?php if (empty($ceil_reservation_time) || date('H', time()) <= $ceil_reservation_time): ?>
         <div class="table-container">
             <div class="container table-responsive">
                 <?php $this->widget('zii.widgets.grid.CGridView', array(
