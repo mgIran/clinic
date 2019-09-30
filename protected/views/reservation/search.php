@@ -50,16 +50,16 @@ $ceil_reservation_time = SiteSetting::get('ceil_reservation_time');
                             'header' => 'تخصص',
                             'value' => '$data->user->expertises[0]->title'
                         ),
-                        array(
-                            'header' => 'روزهای حضور در مطب',
-                            'value' => function ($data) {
-                                /* @var $data ClinicPersonnels */
-                                $html = [];
-                                foreach ($data->user->doctorSchedules as $schedule)
-                                    $html[] = DoctorSchedules::$weekDays[$schedule->week_day];
-                                return implode('، ', $html);
-                            }
-                        ),
+//                        array(
+//                            'header' => 'روزهای حضور در مطب',
+//                            'value' => function ($data) {
+//                                /* @var $data ClinicPersonnels */
+//                                $html = [];
+//                                foreach ($data->user->doctorSchedules as $schedule)
+//                                    $html[] = DoctorSchedules::$weekDays[$schedule->week_day];
+//                                return implode('، ', $html);
+//                            }
+//                        ),
                         array(
                             'header' => 'عملیات',
                             'htmlOptions' => array('class' => 'text-center'),

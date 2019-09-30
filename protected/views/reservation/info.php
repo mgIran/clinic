@@ -59,18 +59,18 @@
                 <?php echo $form->textField($user, 'email', array('placeholder' => 'پست الکترونیکی')); ?>
                 <?php echo $form->error($user, 'email'); ?>
             </div>
-            <?php if (CCaptcha::checkRequirements()): ?>
-                <div class="row">
-                    <?php echo $form->labelEx($user, 'verifyCode'); ?>
-                    <div>
-                        <?php $this->widget('CCaptcha'); ?>
-                        <?php echo $form->textField($user, 'verifyCode'); ?>
-                    </div>
-                    <div class="hint">لطفا امنیتی را وارد کنید
-                    </div>
-                    <?php echo $form->error($user, 'verifyCode'); ?>
-                </div>
-            <?php endif; ?>
+<!--            --><?php //if (CCaptcha::checkRequirements()): ?>
+<!--                <div class="row">-->
+<!--                    --><?php //echo $form->labelEx($user, 'verifyCode'); ?>
+<!--                    <div>-->
+<!--                        --><?php //$this->widget('CCaptcha'); ?>
+<!--                        --><?php //echo $form->textField($user, 'verifyCode'); ?>
+<!--                    </div>-->
+<!--                    <div class="hint">لطفا امنیتی را وارد کنید-->
+<!--                    </div>-->
+<!--                    --><?php //echo $form->error($user, 'verifyCode'); ?>
+<!--                </div>-->
+<!--            --><?php //endif; ?>
             <div class="row">
                 <small class="desc">در پایان فرایند رزرو نوبت، سیستم برای شما کد رهگیری در نظر می گیرد. لطفا هنگام
                     مراجعه به درمانگاه، کد رهگیری را همراه داشته باشید.</small>

@@ -533,3 +533,12 @@
         right: -moz-calc((100% - 1140px) / 2 + 30px);
     }
 }
+@media (min-width: 992px) {
+    .sidebar{
+        position: fixed;
+    }
+    .content{
+        width: calc(100% - 300px);
+        right: 300px;
+    }
+}

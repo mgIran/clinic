@@ -118,10 +118,13 @@ class ReservationController extends Controller
             $user = Users::model()->findByPk(Yii::app()->user->reservation['doctorID']);
             $criteria = new CDbCriteria();
             $criteria->compare('clinic_id', Yii::app()->user->reservation['clinicID']);
+            $criteria->addCondition('date >= :from and date <= :to');
+            $criteria->params[':from'] = $from;
+            $criteria->params[':to'] = $to;
             /* @var $schedules DoctorSchedules[] */
             $schedules = $user->doctorSchedules($criteria);
             $leaves = $user->doctorLeaves($criteria);
-            $weekDays = CHtml::listData($schedules, 'week_day', 'week_day');
+            $weekDays = CHtml::listData($schedules, 'id', 'date');
             $leaveDays = CHtml::listData($leaves, 'id', 'date');
             $now = strtotime(date('Y/m/d 00:00', time()));
             $from = strtotime(date('Y/m/d 00:00', $from));
@@ -132,11 +135,11 @@ class ReservationController extends Controller
             for ($i = 0; $i <= $daysCount; $i++) {
                 $dayTimestamp = strtotime(date('Y/m/d 00:00', $from + ($i * (60 * 60 * 24))));
                 if ((int)Holidays::model()->countByAttributes(['date' => $dayTimestamp]) === 0) {
-                    if (in_array(JalaliDate::date('N', $dayTimestamp, false), $weekDays)) {
-                        if (!in_array(strtotime(date('Y/m/d 00:00', $dayTimestamp)), $leaveDays)) {
+                    if (in_array($dayTimestamp, $weekDays)) {
+                        if (!in_array($dayTimestamp, $leaveDays)) {
                             if ($dayTimestamp >= $from) {
                                 foreach ($schedules as $key => $schedule)
-                                    if ($schedule->week_day == JalaliDate::date('N', $dayTimestamp, false)) {
+                                    if ($schedule->date == $dayTimestamp) {
                                         $checkAM = true;
                                         if ($i === 0 && $fromIsToday && date('a', time()) != 'am')
                                             $checkAM = false;
@@ -182,7 +185,8 @@ class ReservationController extends Controller
             $schedule = DoctorSchedules::model()->findByAttributes(array(
                 'doctor_id' => $reservation['doctorID'],
                 'clinic_id' => $reservation['clinicID'],
-                'week_day' => (int)JalaliDate::date('w', $reservation['date'], false) + 1,
+//                'week_day' => (int)JalaliDate::date('w', $reservation['date'], false) + 1,
+                'date' => strtotime(date("Y/m/d 00:00",$reservation['date'])),
             ));
             $reservation['visitStartTime'] = $schedule->{'entry_time_' . $reservation['time']};
             $reservation['visitEndTime'] = $schedule->{'exit_time_' . $reservation['time']};
@@ -325,9 +329,9 @@ class ReservationController extends Controller
                     $sendDate = $reservation['date'] + (($doctorScheduleTime - (int)SiteSetting::get('sms_schedule_time')) * 60 * 60);
 
                     $smsScheduleText = strtr(SiteSetting::get('sms_schedule_message'), array(
-                        '{from}'=> $doctorScheduleTime,
-                        '{to}'=> $doctorScheduleTimeEnd,
-                        '{turn}'=> $visitTimeLabel,
+                        '{from}' => $doctorScheduleTime,
+                        '{to}' => $doctorScheduleTimeEnd,
+                        '{turn}' => $visitTimeLabel,
                     ));
 
                     @SmsSchedules::AddSchedule(

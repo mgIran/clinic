@@ -42,7 +42,7 @@
     ');
     ?>
 </head>
-<body style="overflow: hidden;">
+<body>
 <div class="overlay fade"></div>
 <div class="panel-page">
     <div class="sidebar">

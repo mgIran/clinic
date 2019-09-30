@@ -1,69 +1,128 @@
 <?php
-/* @var $this ClinicsManageController */
-/* @var $model DoctorSchedules[] */
+/* @var $this ClinicsDoctorController */
+/* @var $model DoctorSchedules */
+/* @var $search DoctorSchedules */
 /* @var $form CActiveForm */
-/* @var $errors [] */
 ?>
+    <div class="container-fluid" style="min-height: 600px">
 
-    <h3>مدیریت برنامه زمانی نوبت دهی</h3>
-    <p class="description">جهت تعیین برنامه زمانی نوبت گیری خود در این کلینیک، لطفا جدول هفتگی زیر را پر کنید.</p>
-<?php $this->renderPartial('//partial-views/_flashMessage') ?>
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'doctor-schedules',
-    'enableAjaxValidation' => false
-));
-?>
-
-<?php echo DoctorSchedules::errorSummary($errors); ?>
-<?php echo CHtml::submitButton('ثبت / ویرایش',array('class' => 'btn btn-success')) ?>
-    <table class="table table-bordered table-hover table-striped table-schedules">
-        <thead>
-        <tr>
-            <th>روز هفته</th>
-            <th colspan="3">نوبت صبح</th>
-            <th colspan="3">نوبت بعد از ظهر</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>ساعت ورود</th>
-            <th>ساعت خروج</th>
-            <th>تعداد ویزیت (نفر)</th>
-            <th>ساعت ورود</th>
-            <th>ساعت خروج</th>
-            <th>تعداد ویزیت (نفر)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach(DoctorSchedules::$weekDays as $dayNum => $day):
-            $row = isset($model[$dayNum])?$model[$dayNum]:false;
-            ?>
-            <tr<?= !$row?' class="disable"':''; ?>>
-                <td><div class="row-overlay"></div><?php
-                    echo CHtml::checkBox("DoctorSchedules[$dayNum][week_day]",$row?true:false,array('value' =>$dayNum));
-                    echo CHtml::label($day, "week_day_{$dayNum}"); ?></td>
-                <td><?php echo CHtml::dropDownList("DoctorSchedules[$dayNum][entry_time_am]",$row?$row->entry_time_am:null,Controller::parseNumbers(DoctorSchedules::$AM),array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید'));?></td>
-                <td><?php echo CHtml::dropDownList("DoctorSchedules[$dayNum][exit_time_am]",$row?$row->exit_time_am:null,Controller::parseNumbers(DoctorSchedules::$AM),array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید'));?></td>
-                <td><?php echo CHtml::textField("DoctorSchedules[$dayNum][visit_count_am]",$row?$row->visit_count_am:null);?></td>
-                <td><?php echo CHtml::dropDownList("DoctorSchedules[$dayNum][entry_time_pm]",$row?$row->entry_time_pm:null,Controller::parseNumbers(DoctorSchedules::$PM),array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید'));?></td>
-                <td><?php echo CHtml::dropDownList("DoctorSchedules[$dayNum][exit_time_pm]",$row?$row->exit_time_pm:null,Controller::parseNumbers(DoctorSchedules::$PM),array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید'));?></td>
-                <td><?php echo CHtml::textField("DoctorSchedules[$dayNum][visit_count_pm]",$row?$row->visit_count_pm:null);?></td>
-            </tr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3>افزودن روز جدید</h3>
+        <!--        <p class="description">جهت تعیین برنامه زمانی مرخصی های خود در این کلینیک، لطفا تاریخ موردنظر را به جدول اضافه کنید.</p>-->
+        <?php $this->renderPartial('//partial-views/_flashMessage') ?>
+        <div class="form well">
             <?php
-        endforeach;
-        ?>
-        </tbody>
-    </table>
-<?php echo CHtml::submitButton('ثبت / ویرایش',array('class' => 'btn btn-success')) ?>
-<?php
-$this->endWidget();
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'doctor-schedules',
+                'htmlOptions' => array('class' => 'form-inline'),
+                'enableAjaxValidation' => false,
+                'enableClientValidation' => true,
+                'clientOptions' => array(
+                    'validateOnSubmit' => true,
+                ),
+            ));
+            echo CHtml::hiddenField('insert', true);
+            ?>
+            <?= $form->errorSummary($model) ?>
 
-Yii::app()->clientScript->registerScript('row-disable', '
-    $("body").on("change", "tr input[type=checkbox]", function(){
-        if($(this).is(":checked"))
-            $(this).parents("tr").removeClass("disable");
-        else
-            $(this).parents("tr").addClass("disable");
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12 relative">
+                    <?php echo $form->labelEx($model, 'date'); ?>
+                    <?php $this->widget('ext.PDatePicker.PDatePicker', array(
+                        'id' => 'date-picker',
+                        'model' => $model,
+                        'attribute' => 'date',
+                        'htmlOptions' => array(
+                            'autocomplete' => 'off'
+                        ),
+                        'options' => array(
+                            'format' => 'YYYY/MM/DD',
+                        )
+                    )); ?>
+                    <?php echo $form->error($model, 'date'); ?>
+                </div>
+                <br>
+                <br>
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <?php echo $form->labelEx($model, 'entry_time_am'); ?>
+                    <?php echo $form->dropDownList($model, 'entry_time_am', Controller::parseNumbers(DoctorSchedules::$AM), array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید')); ?>
+                    <?php echo $form->error($model, 'entry_time_am'); ?>
+                </div>
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <?php echo $form->labelEx($model, 'exit_time_am'); ?>
+                    <?php echo $form->dropDownList($model, 'exit_time_am', Controller::parseNumbers(DoctorSchedules::$AM), array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید')); ?>
+                    <?php echo $form->error($model, 'exit_time_am'); ?>
+                </div>
+                <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <?php echo $form->labelEx($model, 'visit_count_am'); ?>
+                    <?php echo $form->textField($model, 'visit_count_am', array('style' => 'padding-top:0')); ?>
+                    <?php echo $form->error($model, 'visit_count_am'); ?>
+                </div>
+                <br>
+                <br>
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <?php echo $form->labelEx($model, 'entry_time_pm'); ?>
+                    <?php echo $form->dropDownList($model, 'entry_time_pm', Controller::parseNumbers(DoctorSchedules::$PM), array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید')); ?>
+                    <?php echo $form->error($model, 'entry_time_pm'); ?>
+                </div>
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <?php echo $form->labelEx($model, 'exit_time_pm'); ?>
+                    <?php echo $form->dropDownList($model, 'exit_time_pm', Controller::parseNumbers(DoctorSchedules::$PM), array('class' => 'selectpicker', 'prompt' => 'انتخاب کنید')); ?>
+                    <?php echo $form->error($model, 'exit_time_pm'); ?>
+                </div>
+                <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <?php echo $form->labelEx($model, 'visit_count_pm'); ?>
+                    <?php echo $form->textField($model, 'visit_count_pm', array('style' => 'padding-top:0')); ?>
+                    <?php echo $form->error($model, 'visit_count_pm'); ?>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px">
+                    <?php echo CHtml::submitButton('افزودن ', array('class' => 'btn btn-success')); ?>
+                </div>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3>مدیریت برنامه زمانی نوبت دهی</h3>
+        <!--        <p class="description">مرخصی های آینده خود را از جدول زیر حذف کرده، یا از فرم بالا مرخصی جدید ثبت کنید.</p>-->
+        <?php
+        $this->widget('zii.widgets.grid.CGridView', array(
+            'id' => 'visits-grid',
+            'dataProvider' => $search->search(),
+            'itemsCssClass' => 'table',
+            'template' => '{items}',
+            'columns' => array(
+                array(
+                    'name' => 'date',
+                    'value' => function ($data) {
+                        return JalaliDate::date('d F Y', $data->date);
+                    }
+                ),
+                'entry_time_am',
+                'exit_time_am',
+                'visit_count_am',
+                'entry_time_pm',
+                'exit_time_pm',
+                'visit_count_pm',
+//                array(
+//                    'class'=>'CButtonColumn',
+//                    'template'=>'{delete}',
+//                    'buttons' => array(
+//                        'delete' => array(
+//                            'url' => 'Yii::app()->controller->createUrl("doctor/removeLeaves/".$data->id)'
+//                        )
+//                    )
+//                ),
+            ),
+        ));
+        ?>
+    </div>
+<?php
+Yii::app()->clientScript->registerScript('confirm-form', '
+    $("body").on("submit", "#doctor-schedules", function(e){
+        e.preventDefault();
+        if(confirm("آیا از ثبت این روز اطمینان دارید؟"))
+            document.getElementById("doctor-schedules").submit();  
     });
-');
+', CClientScript::POS_READY);

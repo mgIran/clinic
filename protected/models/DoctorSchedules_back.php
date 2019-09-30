@@ -20,7 +20,7 @@
  * @property Users $doctor
  * @property Clinics $clinic
  */
-class DoctorSchedules extends CActiveRecord
+class DoctorScheduless extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
@@ -51,9 +51,8 @@ class DoctorSchedules extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('clinic_id, doctor_id, date', 'required'),
+			array('clinic_id, doctor_id, week_day', 'required'),
 			array('clinic_id, doctor_id', 'length', 'max' => 10),
-			array('date', 'safe'),
 			array('week_day', 'length', 'max' => 1),
 			array('entry_time_am, exit_time_am, entry_time_pm, exit_time_pm', 'length', 'max' => 2),
 			array('visit_count_am, visit_count_pm', 'length', 'max' => 3),
@@ -119,7 +118,6 @@ class DoctorSchedules extends CActiveRecord
 			'entry_time_pm' => 'زمان ورود نوبت بعدازظهر',
 			'exit_time_pm' => 'زمان خروج نوبت بعدازظهر',
 			'visit_count_pm' => 'تعداد ویزیت نوبت بعدازظهر',
-			'date' => 'تاریخ',
 		);
 	}
 
@@ -133,7 +131,7 @@ class DoctorSchedules extends CActiveRecord
 	 * - Pass data provider to CGridView, CListView or any similar widget.
 	 *
 	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the D/filter conditions.
+	 * based on the search/filter conditions.
 	 */
 	public function search()
 	{
@@ -150,10 +148,6 @@ class DoctorSchedules extends CActiveRecord
 		$criteria->compare('entry_time_pm', $this->entry_time_pm, true);
 		$criteria->compare('exit_time_pm', $this->exit_time_pm, true);
 		$criteria->compare('visit_count_pm', $this->visit_count_pm, true);
-		$criteria->compare('date', $this->date);
-        $criteria->addCondition('date >= :now');
-        $criteria->params[':now'] = strtotime(date("Y/m/d", time()) . " 00:00");
-        $criteria->order = 't.date';
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
